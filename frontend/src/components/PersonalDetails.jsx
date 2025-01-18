@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { makeStyles } from "@mui/styles";
-
 import {
   Box,
   Card,
   CardContent,
   CardHeader,
   TextField,
-  Typography,
   Grid2,
 } from "@mui/material";
-// Fields: First Name, Last Name, Phone Number, Email Address, Address, LinkedIn Profile
 
 const obj = {
   fname: "",
@@ -28,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
   },
   card: {
-    width: "400px", // Card width
+    width: "70%", // Take full width of the container
+  //   maxWidth: "600px", // Ensure card doesn't stretch too wide on large screens
     padding: "20px",
   },
 }));
@@ -41,26 +39,19 @@ const PersonalDetails = (props) => {
     const { name, value } = event.target;
     const prevdata = { ...profileData };
 
-    if (name === "url") {
-      if (event.target.files.length > 0) {
-        prevdata[name] = URL.createObjectURL(event.target.files[0]);
-        prevdata["FileName"] = event.target.files[0].name;
-      }
-    } else {
-      prevdata[name] = value;
-    }
+    prevdata[name] = value;
     setProfileData(prevdata); // Update state
     props?.SaveProfileData?.(prevdata); // Call props function if provided
   };
 
   return (
     <div className={classes.root}>
-      <form autoComplete="off" noValidate>
+      Personal Details
+      {/* <form autoComplete="off" noValidate>
         <Card className={classes.card}>
           <CardHeader title="Profile Details" subheader="Add your profile details" />
-          <CardContent>
-            <Grid2 container spacing={2} direction="column">
-              <Grid2 item>
+            <Grid2 container spacing={3}>
+              <Grid2 item md={6} xs={12}>
                 <TextField
                   fullWidth
                   name="fname"
@@ -70,7 +61,7 @@ const PersonalDetails = (props) => {
                   variant="outlined"
                 />
               </Grid2>
-              <Grid2 item>
+              <Grid2 item md={6} xs={12}>
                 <TextField
                   fullWidth
                   name="lname"
@@ -80,7 +71,8 @@ const PersonalDetails = (props) => {
                   variant="outlined"
                 />
               </Grid2>
-              <Grid2 item>
+
+              <Grid2 item md={6} xs={12}>
                 <TextField
                   fullWidth
                   type="number"
@@ -91,7 +83,7 @@ const PersonalDetails = (props) => {
                   variant="outlined"
                 />
               </Grid2>
-              <Grid2 item>
+              <Grid2 imd={6} xs={12}>
                 <TextField
                   fullWidth
                   name="address"
@@ -102,9 +94,8 @@ const PersonalDetails = (props) => {
                 />
               </Grid2>
             </Grid2>
-          </CardContent>
         </Card>
-      </form>
+      </form> */}
     </div>
   );
 };

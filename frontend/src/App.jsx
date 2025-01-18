@@ -5,8 +5,8 @@ import Form from './components/Form'
 export default function App() {
   return (
     <>
-    <Header/>
-    <Form/>
+      <Header />
+      <Form />
     </>
   )
 }

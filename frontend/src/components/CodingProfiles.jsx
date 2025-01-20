@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import useResumeStore from '../app/ResumeStore';
 
 export default function CodingProfiles() {
-  const [profiles, setProfiles] = useState([]);
+  
   const [currentProfile, setCurrentProfile] = useState({
     platform: '',
     link: '',
   });
+
+  const codingProfiles = useResumeStore((state) => state.codingProfiles);
+  const addCodingProfile = useResumeStore((state) => state.addCodingProfile);
 
   const handleChange = (event) => {
     setCurrentProfile({
       ...currentProfile,
       [event.target.name]: event.target.value,
     });
+    console.log(event)
   };
 
   const handleAddProfile = () => {
     if (currentProfile.platform.trim() !== '' && currentProfile.link.trim() !== '') {
-      setProfiles([...profiles, currentProfile]);
+      addCodingProfile(currentProfile);
       setCurrentProfile({
         platform: '',
         link: '',
@@ -52,7 +57,7 @@ export default function CodingProfiles() {
           </Button>
         </Grid2>
       </Grid2>
-      {profiles.map((profile, index) => (
+      {codingProfiles.map((profile, index) => (
         <Box key={index} mt={2}>
           <Typography variant="h6">{profile.platform}</Typography>
           <Typography>Link: {profile.link}</Typography>

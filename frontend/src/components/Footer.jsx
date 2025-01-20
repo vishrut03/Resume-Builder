@@ -1,12 +1,12 @@
-import React from "react";
-import { Box, Typography } from "@mui/material";
+import React from "react"
+import { Box, Typography } from "@mui/material"
 
 const Footer = () => {
   return (
     <Box
+      component="footer"
       sx={{
-        position: "absolute", // Keep the footer at the bottom
-        bottom: 0,
+        mt: "auto", // Push the footer to the bottom
         width: "100%", // Span the full width of the page
         textAlign: "center", // Center-align text
         backgroundColor: "#e0e0e0", // Light gray background
@@ -14,11 +14,10 @@ const Footer = () => {
         padding: "10px 0", // Padding for aesthetics
       }}
     >
-      <Typography variant="body2">
-        © 2025 Resume Builder | Contact Us
-      </Typography>
+      <Typography variant="body2">© 2025 Resume Builder | Contact Us</Typography>
     </Box>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
+

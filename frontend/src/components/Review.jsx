@@ -1,9 +1,11 @@
-import React from "react"
-import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Divider, Button, Chip } from "@mui/material"
+import React, { useState } from "react"
+import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Button, Chip } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
+import Resume from "./Resume";
 
 export default function Review() {
   const resumeData = useResumeStore()
+  const [submit,setSubmit] = useState(false);
 
   const Section = ({ title, children }) => (
     <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
@@ -15,12 +17,12 @@ export default function Review() {
   )
 
   const handleSubmit = () => {
-    // Here you would typically send the data to a server or generate a PDF
     console.log("Submitting resume data:", resumeData)
-    alert("Resume submitted successfully!")
+    setSubmit(true);
   }
-
-  return (
+  return (submit===true) ?  
+  <Resume data={resumeData}/>:
+  ( 
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
       <Typography variant="h4" gutterBottom>
         Resume Review

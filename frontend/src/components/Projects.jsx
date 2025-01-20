@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import useResumeStore from '../app/ResumeStore';
+
 
 export default function Projects() {
-  const [projects, setProjects] = useState([]);
+
+  const projectsStore = useResumeStore((state) => state.projects);
+  const addProjectStore = useResumeStore((state) => state.addProject);
   const [currentProject, setCurrentProject] = useState({
     name: '',
     description: '',
@@ -18,7 +22,7 @@ export default function Projects() {
   };
 
   const handleAddProject = () => {
-    setProjects([...projects, currentProject]);
+    addProjectStore(currentProject);
     setCurrentProject({
       name: '',
       description: '',
@@ -74,7 +78,7 @@ export default function Projects() {
           </Button>
         </Grid2>
       </Grid2>
-      {projects.map((project, index) => (
+      {projectsStore.map((project, index) => (
         <Box key={index} mt={2}>
           <Typography variant="h6">{project.name}</Typography>
           <Typography>{project.description}</Typography>

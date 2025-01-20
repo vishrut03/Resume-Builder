@@ -122,9 +122,9 @@ const useResumeStore = create(
 
       // Add/update project
       addProject: (newProject) =>
-        set((state) => ({
-          projects: [...state.projects, newProject],
-        })),
+          set((state) => ({
+            projects: [...state.projects, newProject],
+          })),
       updateProject: (index, field, value) =>
         set((state) => {
           const updatedProjects = [...state.projects];

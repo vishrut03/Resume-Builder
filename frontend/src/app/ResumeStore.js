@@ -75,6 +75,7 @@ const useResumeStore = create(
       extracurricularActivities: [
         {
           activityName: '',
+          description: '',
           achievements: '',
         },
       ],

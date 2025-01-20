@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Grid2, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useResumeStore from '../app/ResumeStore'
 
 export default function ExtraCurricular() {
-  const [activities, setActivities] = useState([]);
+  
   const [currentActivity, setCurrentActivity] = useState({
     name: '',
     description: '',
     achievements: '',
   });
+
+  const extracurricularActivities = useResumeStore(state=>state.extracurricularActivities);
+  const addExtracurricularActivity = useResumeStore(state=>state.addExtracurricularActivity);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -20,7 +24,7 @@ export default function ExtraCurricular() {
 
   const handleAddActivity = () => {
     if (currentActivity.name.trim() !== '') {
-      setActivities((prev) => [...prev, currentActivity]);
+      addExtracurricularActivity(currentActivity);
       setCurrentActivity({
         name: '',
         description: '',
@@ -77,7 +81,7 @@ export default function ExtraCurricular() {
         </Grid2>
       </Grid2>
       <List sx={{ mt: 2 }}>
-        {activities.map((activity, index) => (
+        {extracurricularActivities.map((activity, index) => (
           <ListItem
             key={index}
             secondaryAction={

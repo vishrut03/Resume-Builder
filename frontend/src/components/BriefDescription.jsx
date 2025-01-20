@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField, Button } from '@mui/material';
+import useResumeStore from '../app/ResumeStore';
 
 export default function BriefDescription() {
+  const descriptionFromStore = useResumeStore((state) => state.briefDescription);
+  const setDescriptionInStore = useResumeStore((state) => state.setBriefDescription);
+
   const [description, setDescription] = useState('');
+
+  useEffect(() => {
+    setDescription(descriptionFromStore);
+  }, [descriptionFromStore]);
 
   const handleChange = (event) => {
     setDescription(event.target.value);
+  };
+
+  const handleSave = () => {
+    console.log(description);
+    setDescriptionInStore(description);
+    alert('Description saved!');
   };
 
   return (
@@ -19,7 +33,9 @@ export default function BriefDescription() {
         onChange={handleChange}
         placeholder="Motivated software engineer with a passion for developing scalable solutions."
       />
+      <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: '16px' }}>
+        Save and Continue
+      </Button>
     </Box>
   );
 }
-

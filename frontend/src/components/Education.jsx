@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import { Box, TextField, Button, Grid2 } from '@mui/material';
+import EducationEntry from './EducationEntry';
+import useResumeStore from '../app/ResumeStore';
 
 export default function Education() {
-  const [educations, setEducations] = useState([]);
-  const [currentEducation, setCurrentEducation] = useState({
-    degree: '',
-    institution: '',
-    graduationYear: '',
+  const education = useResumeStore((state) => state.education);
+  const addEducation = useResumeStore((state) => state.addEducation);
+
+  const [newEducation, setNewEducation] = useState({
+    degreeName: '',
+    institutionName: '',
+    yearOfGraduation: '',
     cgpa: '',
-    achievements: '',
   });
 
   const handleChange = (event) => {
-    setCurrentEducation({
-      ...currentEducation,
+    setNewEducation({
+      ...newEducation,
       [event.target.name]: event.target.value,
     });
   };
 
-  const handleAddEducation = () => {
-    setEducations([...educations, currentEducation]);
-    setCurrentEducation({
-      degree: '',
-      institution: '',
-      graduationYear: '',
-      cgpa: '',
-      achievements: '',
-    });
+  const handleAdd = () => {
+    console.log(newEducation);
+    addEducation(newEducation);
+    setNewEducation({ degreeName: '', institutionName: '', yearOfGraduation: '', cgpa: '' });
   };
 
   return (
@@ -36,8 +34,8 @@ export default function Education() {
           <TextField
             fullWidth
             label="Degree Name"
-            name="degree"
-            value={currentEducation.degree}
+            name="degreeName"
+            value={newEducation.degreeName}
             onChange={handleChange}
           />
         </Grid2>
@@ -45,8 +43,8 @@ export default function Education() {
           <TextField
             fullWidth
             label="Institution Name"
-            name="institution"
-            value={currentEducation.institution}
+            name="institutionName"
+            value={newEducation.institutionName}
             onChange={handleChange}
           />
         </Grid2>
@@ -54,9 +52,9 @@ export default function Education() {
           <TextField
             fullWidth
             label="Year of Graduation"
-            name="graduationYear"
+            name="yearOfGraduation"
             type="number"
-            value={currentEducation.graduationYear}
+            value={newEducation.yearOfGraduation}
             onChange={handleChange}
           />
         </Grid2>
@@ -65,36 +63,22 @@ export default function Education() {
             fullWidth
             label="CGPA/Percentage"
             name="cgpa"
-            value={currentEducation.cgpa}
+            value={newEducation.cgpa}
             onChange={handleChange}
           />
         </Grid2>
         <Grid2 item xs={12}>
-          <TextField
-            fullWidth
-            label="Achievements (Optional)"
-            name="achievements"
-            multiline
-            rows={2}
-            value={currentEducation.achievements}
-            onChange={handleChange}
-          />
-        </Grid2>
-        <Grid2 item xs={12}>
-          <Button variant="contained" onClick={handleAddEducation}>
+          <Button variant="contained" onClick={handleAdd}>
             Add Education
           </Button>
         </Grid2>
       </Grid2>
-      {educations.map((edu, index) => (
-        <Box key={index} mt={2}>
-          <Typography variant="h6">{edu.degree} from {edu.institution}</Typography>
-          <Typography>Graduated: {edu.graduationYear}</Typography>
-          <Typography>CGPA/Percentage: {edu.cgpa}</Typography>
-          {edu.achievements && <Typography>Achievements: {edu.achievements}</Typography>}
-        </Box>
-      ))}
+
+      {education.filter(edu => edu.degreeName && edu.institutionName && edu.yearOfGraduation && edu.cgpa) 
+  .map((edu, index) => (
+    <EducationEntry key={index} index={index} education={edu} />
+  ))}
+
     </Box>
   );
 }
-

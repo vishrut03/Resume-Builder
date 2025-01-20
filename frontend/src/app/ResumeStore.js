@@ -147,6 +147,11 @@ const useResumeStore = create(
           achievements: [...state.achievements, newAchievement],
         })),
 
+      deleteAchievement: (index) =>
+          set((state) => ({
+            achievements: state.achievements.filter((_, i) => i !== index),
+          })),
+
       // Add/update certificate
       addCertificate: (newCertificate) =>
         set((state) => ({

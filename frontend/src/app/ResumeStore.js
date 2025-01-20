@@ -96,15 +96,13 @@ const useResumeStore = create(
         set((state) => ({
           workExperience: [...state.workExperience, newExperience],
         })),
-      updateWorkExperience: (index, field, value) =>
-        set((state) => {
-          const updatedWorkExperience = [...state.workExperience];
-          updatedWorkExperience[index] = {
-            ...updatedWorkExperience[index],
-            [field]: value,
-          };
-          return { workExperience: updatedWorkExperience };
-        }),
+        updateWorkExperience: (index, updatedExperience) =>
+            set((state) => {
+              const updatedWorkExperience = [...state.workExperience];
+              updatedWorkExperience[index] = { ...updatedExperience }; // Update entire object
+              return { workExperience: updatedWorkExperience };
+            }),
+          
 
       // Add/update education
       addEducation: (newEducation) =>

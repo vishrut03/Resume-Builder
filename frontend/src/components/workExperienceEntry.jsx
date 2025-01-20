@@ -1,0 +1,105 @@
+import React, { useState } from 'react';
+import { Box, Button, Typography, TextField } from '@mui/material';
+import useResumeStore from '../app/ResumeStore';
+
+const WorkExperienceEntry = ({ experience, index }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [localExperience, setLocalExperience] = useState(experience);
+  const updateWorkExperience = useResumeStore((state) => state.updateWorkExperience);
+
+  const handleChange = (field, value) => {
+    setLocalExperience({
+      ...localExperience,
+      [field]: value,
+    });
+  };
+
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleSave = () => {
+    console.log(localExperience);
+    updateWorkExperience(index, localExperience);
+    setIsEditing(false);
+  };
+
+  return (
+    <Box mt={4} border={1} p={3} borderRadius={2} style={{ marginBottom: '24px' }}>
+      {isEditing ? (
+        <>
+          <Typography variant="h6" gutterBottom>
+            <TextField
+              fullWidth
+              label="Job Title"
+              value={localExperience.jobTitle}
+              onChange={(e) => handleChange('jobTitle', e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+          </Typography>
+          <Typography gutterBottom>
+            <TextField
+              fullWidth
+              label="Company Name"
+              value={localExperience.companyName}
+              onChange={(e) => handleChange('companyName', e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+          </Typography>
+          <Typography gutterBottom>
+            <TextField
+              fullWidth
+              label="Start Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={localExperience.startDate}
+              onChange={(e) => handleChange('startDate', e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+            {' '}–{' '}
+            <TextField
+              fullWidth
+              label="End Date"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={localExperience.endDate}
+              onChange={(e) => handleChange('endDate', e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+          </Typography>
+          <Typography>
+            <TextField
+              fullWidth
+              label="Responsibilities"
+              multiline
+              rows={3}
+              value={localExperience.responsibilities}
+              onChange={(e) => handleChange('responsibilities', e.target.value)}
+              style={{ marginBottom: '20px' }}
+            />
+          </Typography>
+          <Button variant="contained" onClick={handleSave} style={{ marginRight: '10px' }}>
+            Save
+          </Button>
+          <Button variant="outlined" onClick={handleEditToggle}>
+            Cancel
+          </Button>
+        </>
+      ) : (
+        <>
+          <Typography variant="h6">{experience.jobTitle}</Typography>
+          <Typography>{experience.companyName}</Typography>
+          <Typography>
+            {experience.startDate} – {experience.endDate}
+          </Typography>
+          <Typography>{experience.responsibilities}</Typography>
+          <Button variant="contained" onClick={handleEditToggle} style={{ marginTop: '10px' }}>
+            Edit
+          </Button>
+        </>
+      )}
+    </Box>
+  );
+};
+
+export default WorkExperienceEntry;

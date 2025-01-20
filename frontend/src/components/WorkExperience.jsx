@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import { Box, Button, Grid2, TextField } from '@mui/material'; 
+import useResumeStore from '../app/ResumeStore';
+import WorkExperienceEntry from './WorkExperienceEntry';
 
 export default function WorkExperience() {
-  const [experiences, setExperiences] = useState([]);
+  const workExperience = useResumeStore((state) => state.workExperience);
+  const addWorkExperience = useResumeStore((state) => state.addWorkExperience);
+
   const [currentExperience, setCurrentExperience] = useState({
     jobTitle: '',
-    company: '',
+    companyName: '',
     startDate: '',
     endDate: '',
     responsibilities: '',
@@ -18,15 +22,20 @@ export default function WorkExperience() {
     });
   };
 
-  const handleAddExperience = () => {
-    setExperiences([...experiences, currentExperience]);
-    setCurrentExperience({
-      jobTitle: '',
-      company: '',
-      startDate: '',
-      endDate: '',
-      responsibilities: '',
-    });
+  const handleSave = () => {
+    if (currentExperience.jobTitle && currentExperience.companyName) {
+      addWorkExperience(currentExperience);
+      setCurrentExperience({
+        jobTitle: '',
+        companyName: '',
+        startDate: '',
+        endDate: '',
+        responsibilities: '',
+      });
+      alert('Work experience saved!');
+    } else {
+      alert('Please fill in the required fields.');
+    }
   };
 
   return (
@@ -45,8 +54,8 @@ export default function WorkExperience() {
           <TextField
             fullWidth
             label="Company Name"
-            name="company"
-            value={currentExperience.company}
+            name="companyName"
+            value={currentExperience.companyName}
             onChange={handleChange}
           />
         </Grid2>
@@ -85,19 +94,20 @@ export default function WorkExperience() {
           />
         </Grid2>
         <Grid2 item xs={12}>
-          <Button variant="contained" onClick={handleAddExperience}>
-            Add Experience
+          <Button variant="contained" onClick={handleSave}>
+            Save and Continue
           </Button>
         </Grid2>
       </Grid2>
-      {experiences.map((exp, index) => (
-        <Box key={index} mt={2}>
-          <Typography variant="h6">{exp.jobTitle} at {exp.company}</Typography>
-          <Typography>{exp.startDate} - {exp.endDate}</Typography>
-          <Typography>{exp.responsibilities}</Typography>
-        </Box>
-      ))}
+      <Box mt={4}>
+        {workExperience.filter(exp => exp.jobTitle && exp.companyName).map((exp, index) => (
+          <WorkExperienceEntry
+            key={index}
+            experience={exp}
+            index={index}
+          />
+        ))}
+      </Box>
     </Box>
   );
 }
-

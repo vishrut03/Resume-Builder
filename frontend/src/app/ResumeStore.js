@@ -120,9 +120,9 @@ const useResumeStore = create(
 
       // Add/update project
       addProject: (newProject) =>
-        set((state) => ({
-          projects: [...state.projects, newProject],
-        })),
+          set((state) => ({
+            projects: [...state.projects, newProject],
+          })),
       updateProject: (index, field, value) =>
         set((state) => {
           const updatedProjects = [...state.projects];
@@ -138,12 +138,22 @@ const useResumeStore = create(
         set((state) => ({
           skills: [...state.skills, newSkill],
         })),
+      
+      deleteSkill: (index) =>
+        set((state) => ({
+          skills: state.skills.filter((_, i) => i !== index),
+        })),
 
       // Add/update achievement
       addAchievement: (newAchievement) =>
         set((state) => ({
           achievements: [...state.achievements, newAchievement],
         })),
+
+      deleteAchievement: (index) =>
+          set((state) => ({
+            achievements: state.achievements.filter((_, i) => i !== index),
+          })),
 
       // Add/update certificate
       addCertificate: (newCertificate) =>

@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Chip, Grid2 } from '@mui/material';
+import useResumeStore from '../app/ResumeStore';
+
 
 export default function Skills() {
-  const [skills, setSkills] = useState([]);
+
   const [currentSkill, setCurrentSkill] = useState('');
+  const skillsStore = useResumeStore((state) => state.skills);
+  const addSkillStore = useResumeStore((state) => state.addSkill);
+  const deleteSkillStore = useResumeStore((state) => state.deleteSkill);
 
   const handleAddSkill = () => {
     if (currentSkill.trim() !== '') {
-      setSkills([...skills, currentSkill.trim()]);
+      addSkillStore(currentSkill.trim());
       setCurrentSkill('');
     }
   };
 
   const handleDeleteSkill = (skillToDelete) => {
-    setSkills(skills.filter((skill) => skill !== skillToDelete));
+    deleteSkillStore(skillToDelete);
   };
 
   return (
@@ -25,7 +30,7 @@ export default function Skills() {
             label="Add Skill"
             value={currentSkill}
             onChange={(e) => setCurrentSkill(e.target.value)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleAddSkill();
               }
@@ -39,11 +44,11 @@ export default function Skills() {
         </Grid2>
       </Grid2>
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 2 }}>
-        {skills.map((skill, index) => (
+        {skillsStore.map((skill, index) => (
           <Chip
             key={index}
             label={skill}
-            onDelete={() => handleDeleteSkill(skill)}
+            onDelete={() => handleDeleteSkill(index)}
           />
         ))}
       </Box>

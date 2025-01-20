@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from '@mui/material';
+import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography, Grid2 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useResumeStore from '../app/ResumeStore';
+
 
 export default function Achievements() {
-  const [achievements, setAchievements] = useState([]);
+
   const [currentAchievement, setCurrentAchievement] = useState('');
+  let achievementsStore = useResumeStore((state) => state.achievements);
+  const addAchievementStore = useResumeStore((state) => state.addAchievement); 
+  const deleteAchievementStore = useResumeStore((state) => state.deleteAchievement); 
 
   const handleAddAchievement = () => {
     if (currentAchievement.trim() !== '') {
-      setAchievements([...achievements, currentAchievement.trim()]);
+      addAchievementStore(currentAchievement.trim());
       setCurrentAchievement('');
     }
   };
 
   const handleDeleteAchievement = (index) => {
-    setAchievements(achievements.filter((_, i) => i !== index));
+    deleteAchievementStore(index);    
   };
 
   const handleKeyDown = (event) => {
@@ -22,6 +27,7 @@ export default function Achievements() {
       handleAddAchievement();
     }
   };
+
 
   return (
     <Box>
@@ -40,7 +46,7 @@ export default function Achievements() {
         Add Achievement
       </Button>
       <List sx={{ mt: 2 }}>
-        {achievements.map((achievement, index) => (
+        {achievementsStore.map((achievement, index) => (
           <ListItem
             key={index}
             secondaryAction={
@@ -53,6 +59,11 @@ export default function Achievements() {
           </ListItem>
         ))}
       </List>
+      {/* <Grid2 item xs={12}>
+          <Button variant="contained" color="primary" onClick={handleSave}>
+            Save and Continue
+          </Button>
+        </Grid2> */}
     </Box>
   );
 }

@@ -140,6 +140,11 @@ const useResumeStore = create(
         set((state) => ({
           skills: [...state.skills, newSkill],
         })),
+      
+      deleteSkill: (index) =>
+        set((state) => ({
+          skills: state.skills.filter((_, i) => i !== index),
+        })),
 
       // Add/update achievement
       addAchievement: (newAchievement) =>

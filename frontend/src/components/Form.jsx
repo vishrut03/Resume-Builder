@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from "react"
 import PersonalDetails from "./PersonalDetails"
 import Projects from "./Projects"
 import Skills from "./Skills"
@@ -7,253 +7,136 @@ import WorkExperience from "./WorkExperience"
 import Review from "./Review"
 import ExtraCurricular from "./ExtraCurricular"
 import CodingProfiles from "./CodingProfiles"
-import Certificates from './Certificates'
-import Achievements from './Achievements'
-import BriefDescription from './BriefDescription'
-import Resume from './Resume'
+import Certificates from "./Certificates"
+import Achievements from "./Achievements"
+import BriefDescription from "./BriefDescription"
+import Resume from "./Resume"
 
-import { Stepper } from "@mui/material";
-import {Step} from "@mui/material";
-import {StepButton} from "@mui/material";
-import {Button} from "@mui/material";
-import {Typography} from "@mui/material";
-import { makeStyles } from '@mui/styles';
-import { spacing } from '@mui/system'
+// Import MUI icons
+import PersonIcon from "@mui/icons-material/Person"
+import DescriptionIcon from "@mui/icons-material/Description"
+import WorkIcon from "@mui/icons-material/Work"
+import SchoolIcon from "@mui/icons-material/School"
+import CodeIcon from "@mui/icons-material/Code"
+import BuildIcon from "@mui/icons-material/Build"
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
+import CardMembershipIcon from "@mui/icons-material/CardMembership"
+import ComputerIcon from "@mui/icons-material/Computer"
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
+import VisibilityIcon from "@mui/icons-material/Visibility"
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%"
-  },
-  button: {
-    marginRight: spacing(1)
-  },
-  completed: {
-    display: "inline-block"
-  },
-  instructions: {
-    marginTop: spacing(1),
-    marginBottom: spacing(1)
-  }
-}));
+const steps = [
+  { label: "Personal Details", icon: <PersonIcon /> },
+  { label: "Brief Description", icon: <DescriptionIcon /> },
+  { label: "Work Experience", icon: <WorkIcon /> },
+  { label: "Education", icon: <SchoolIcon /> },
+  { label: "Projects", icon: <CodeIcon /> },
+  { label: "Skills", icon: <BuildIcon /> },
+  { label: "Achievements", icon: <EmojiEventsIcon /> },
+  { label: "Certificates", icon: <CardMembershipIcon /> },
+  { label: "Coding Profiles", icon: <ComputerIcon /> },
+  { label: "Extra Curricular", icon: <SportsEsportsIcon /> },
+  { label: "Review", icon: <VisibilityIcon /> },
+]
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <PersonalDetails />;
+      return <PersonalDetails />
     case 1:
-      return <BriefDescription />;
+      return <BriefDescription />
     case 2:
-      return <WorkExperience />;
+      return <WorkExperience />
     case 3:
-      return <Education />;
+      return <Education />
     case 4:
-      return <Projects />;
+      return <Projects />
     case 5:
-      return <Skills />;
+      return <Skills />
     case 6:
-      return <Achievements />;
+      return <Achievements />
     case 7:
-      return <Certificates />;
+      return <Certificates />
     case 8:
-      return <CodingProfiles />;
+      return <CodingProfiles />
     case 9:
-      return <ExtraCurricular />;
+      return <ExtraCurricular />
     case 10:
-      return <Review />;
+      return <Review />
     default:
-      return "Unknown step";
-  }    
+      return "Unknown step"
+  }
 }
 
-const steps = [
-  "Personal Details",        // 0
-  "Brief Description",       // 1
-  "Work Experience",         // 2
-  "Education",               // 3
-  "Projects",                // 4
-  "Skills",                  // 5
-  "Achievements",            // 6
-  "Certificates",            // 7
-  "Coding Profiles",         // 8
-  "Extra Curricular",        // 9
-  "Review",                  // 10
-];
-
 const Form = () => {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
-  const classes = useStyles();
+  const [activeStep, setActiveStep] = useState(0)
+  const [completed, setCompleted] = useState({})
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
-  };
-
-  const handleBack=()=>{
-    setActiveStep((prevActiveStep)=>prevActiveStep-1);
+    setActiveStep(step)
   }
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
+    setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  }
 
-
-  // const ValidatePersonalDetails = () => {
-  //   if(!props.PersonalData){
-  //     return false
-  //   } 
-  //   if(!props.PersonalData.Data.fname || !props.PersonalData.Data.lname || !props.PersonalData.Data.phone  ||  !props.PersonalData.Data.address ||  !props.PersonalData.Data.url ) {
-  //     alert("Please fill all the data")
-  //     return false
-  //   }
-
-  //   if(props.PersonalData.Data.fname.length < 1 || props.PersonalData.Data.lname.length < 1 || props.PersonalData.Data.address.length < 1  ||  props.PersonalData.Data.url.length < 1  ) {
-  //     alert("Pleasej fill all the data. ")
-  //     return false
-  //   }
-
-  //   if(props.PersonalData.Data.phone.length != 10 && props.PersonalData.Data.phone.length != 12 ){
-  //     alert("Enter a valid phone number.")
-  //     return false
-  //   }
-  //   return true
-  // }
-
-
-  // const validateEducationDetails= () => {
-  //   if(!props.educationFormData) return false;
-  //   const Data = props.educationFormData.Data;
-  //   for(let i = 0 ; i < Data.length ; i++){
-  //     const instance = Data[i]
-  //     if(!instance.courseName || !instance.completionYear || !instance.college || !instance.percentage){
-  //       alert("Please fill all the data")
-  //       return false
-  //     } 
-
-  //     if(instance.courseName.length < 1 || instance.completionYear.length != 4 || instance.college.length < 1 || instance.percentage.length < 1){
-  //       alert("Incomplete or invalid data")
-  //       return false
-  //     } 
-
-  //   }
-
-  //   return true
-  // }
-
-//   const validateProjectDetails= () => {
-//     if(!props.projectFormData) return false;
-//     const Data = props.projectFormData.Data;
-//     for(let i = 0 ; i < Data.length ; i++){
-//       const instance = Data[i]
-//       if(!instance.projectName){
-//         alert("Please enter the name of project")
-//         return false
-//       } 
-
-//       if(instance.projectName.length < 1 ){
-//         alert("Please enter the name of project")
-//         return false
-//       } 
-//     }
-//     return true
-//   }
-
-
-//   const validateSkills = () => {
-
-//     console.log(props.SkillsFormData.Data.length)
-//     if(props.SkillsFormData.Data.length < 1){
-//       alert("Please enter your skill")
-//       return false
-//     };
-//     for(let i = 0 ; i < props.SkillsFormData.Data.length ; i++){
-//       console.log(props.SkillsFormData.Data[i])
-//       if(!props.SkillsFormData.Data[i] || (props.SkillsFormData.Data[i] && props.SkillsFormData.Data[i].length < 1)) {
-//         alert("Please fill all skills")
-//         return false
-//      }
-//     }
-//     return true
-//   }
-
-
-// const validateSocialLinks = () => {
-//   if(props.SocialFormData.Data.length < 1) {
-//     alert("Please enter your social url")
-//     return false;
-//   }
-//     for(let i = 0 ; i < props.SocialFormData.Data.length ; i++){
-//       if(!props.SocialFormData.Data[i] || (props.SocialFormData.Data[i] && props.SocialFormData.Data[i].length < 1)) {
-//         alert("Please fill all urls")
-//         return false
-//       }
-//     }
-//   return true
-//   }
-  return activeStep===11?(<Resume/>):(
-    <div className={classes.root}>
-    <Stepper nonLinear activeStep={activeStep}>
-      {steps.map((label, index) => (
-        <Step key={label}>
-          <StepButton
-            color="secondary"
-            onClick={handleStep(index)}
-            completed={completed[index]}
-          >
-            {label}
-          </StepButton>
-        </Step>
-      ))}
-    </Stepper>
-    <div>
-      {Object.keys(completed).length===steps.length? (
-        <div className={classes.instructions}>
-          <Typography >
-            All steps completed - your resume is ready!!
-          </Typography>
-          <Button onClick={()=>window.location.reload(false)}>Reset</Button>
-          <Button onClick={()=>{
-            setCompleted({});
-            setActiveStep(0)
-          }}>Edit
-          </Button>
-          {/* <Resume /> */}
+  return activeStep === 11 ? (
+    <Resume />
+  ) : (
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="mb-8">
+        <div className="flex flex-wrap -mx-2 overflow-hidden">
+          {steps.map(({ label, icon }, index) => (
+            <div key={label} className="my-2 px-2 w-1/2 overflow-hidden sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">
+              <button
+                onClick={handleStep(index)}
+                className={`w-full py-2 px-4 rounded-full text-sm font-medium transition-colors duration-150 flex items-center justify-center ${
+                  activeStep === index
+                    ? "bg-blue-500 text-white"
+                    : completed[index]
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
+                <span className="mr-2">{icon}</span>
+                <span className="hidden sm:inline">{label}</span>
+              </button>
+            </div>
+          ))}
         </div>
-      ) : (
+      </div>
+      <div className="bg-white shadow-md rounded-lg p-6 mb-8">{getStepContent(activeStep)}</div>
+      <div className="flex justify-between">
+        <button
+          onClick={handleBack}
+          disabled={activeStep === 0}
+          className={`py-2 px-4 rounded-md text-sm font-medium ${
+            activeStep === 0
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+          }`}
+        >
+          Back
+        </button>
         <div>
-        <Typography className={classes.instructions}> 
-            {getStepContent(activeStep)}
-          </Typography>
-          <div>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              className={classes.button}
-            >
-              Back
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleNext}
-              className={classes.button}
-            >
-              Next
-            </Button>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  // onClick={handleComplete}
-                >
-                  {Object.keys(completed).length === steps.length - 1
-                    ? "Finish"
-                    : "Save and Continue"}
-                </Button>
-          </div>
+          <button
+            onClick={handleNext}
+            className="py-2 px-4 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 mr-2"
+          >
+            Next
+          </button>
+          <button className="py-2 px-4 bg-green-500 text-white rounded-md text-sm font-medium hover:bg-green-600">
+            {Object.keys(completed).length === steps.length - 1 ? "Finish" : "Save and Continue"}
+          </button>
         </div>
-      )}
+      </div>
     </div>
-  </div>
   )
 }
 
 export default Form
+

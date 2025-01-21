@@ -1,6 +1,7 @@
 import React from "react"
-import { Box, Typography, Paper, Stack, Divider, List, ListItem, ListItemText, Chip } from "@mui/material"
+import { Box, Typography, Paper, Stack, Divider, List, ListItem, ListItemText, Chip,Button } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 
 const Template1 = () => {
   const resumeData = useResumeStore()
@@ -16,6 +17,10 @@ const Template1 = () => {
   )
 
   return (
+    <>
+    <Button variant="contained" color="primary" onClick={() => window.print()} endIcon={<DownloadForOfflineIcon/>}>
+      Download
+    </Button>
     <Paper elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
       <Box mb={4}>
         <Typography variant="h4" gutterBottom>
@@ -71,6 +76,7 @@ const Template1 = () => {
         </Stack>
       </Section>
     </Paper>
+    </>
   )
 }
 

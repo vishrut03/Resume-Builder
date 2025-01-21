@@ -1,11 +1,16 @@
 import React from "react"
-import { Box, Typography, Paper, Grid2, Divider, List, ListItem, ListItemText } from "@mui/material"
+import { Box, Typography, Paper, Grid2, Divider, List, ListItem, ListItemText, Button} from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 
 const Template4 = () => {
   const resumeData = useResumeStore()
 
   return (
+    <>
+    <Button variant="contained" color="primary" onClick={() => window.print()} endIcon={<DownloadForOfflineIcon/>}>
+      Download
+    </Button>
     <Paper elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4, backgroundColor: "#e3f2fd" }}>
       <Grid2 container spacing={2}>
         <Grid2 item xs={12}>
@@ -73,6 +78,7 @@ const Template4 = () => {
         </Grid2>
       </Grid2>
     </Paper>
+    </>
   )
 }
 

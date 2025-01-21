@@ -43,6 +43,7 @@ export default function Education() {
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Degree Name"
             name="degreeName"
@@ -52,15 +53,18 @@ export default function Education() {
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Institution Name"
             name="institutionName"
+            type="text"
             value={newEducation.institutionName}
             onChange={handleChange}
           />
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Year of Graduation"
             name="yearOfGraduation"
@@ -71,9 +75,11 @@ export default function Education() {
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="CGPA/Percentage"
             name="cgpa"
+            type="number"
             value={newEducation.cgpa}
             onChange={handleChange}
           />

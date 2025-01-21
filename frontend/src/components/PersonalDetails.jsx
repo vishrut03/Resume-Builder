@@ -53,6 +53,7 @@ export default function PersonalDetails() {
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="First Name"
             name="firstName"
@@ -62,6 +63,7 @@ export default function PersonalDetails() {
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Last Name"
             name="lastName"
@@ -71,6 +73,7 @@ export default function PersonalDetails() {
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Phone Number"
             name="phoneNumber"
@@ -80,6 +83,7 @@ export default function PersonalDetails() {
         </Grid2>
         <Grid2 item xs={12} sm={6}>
           <TextField
+            required
             fullWidth
             label="Email Address"
             name="email"
@@ -101,6 +105,7 @@ export default function PersonalDetails() {
         </Grid2>
         <Grid2 item xs={12}>
           <TextField
+            required
             fullWidth
             label="LinkedIn Profile"
             name="linkedIn"

@@ -92,7 +92,7 @@ const useResumeStore = create(
       // Update brief description
       setBriefDescription: (value) => set({ briefDescription: value }),
 
-      // Add/update work experience
+      // Add/update/delete work experience
       addWorkExperience: (newExperience) =>
         set((state) => ({
           workExperience: [...state.workExperience, newExperience],
@@ -103,9 +103,14 @@ const useResumeStore = create(
               updatedWorkExperience[index] = { ...updatedExperience }; 
               return { workExperience: updatedWorkExperience };
             }),
+            deleteWorkExperience: (index) =>
+              set((state) => {
+                const updatedWorkExperience = state.workExperience.filter((_, i) => i !== index);
+                return { workExperience: updatedWorkExperience };
+              }),
           
 
-      // Add/update education
+      // Add/update/delete education
       addEducation: (newEducation) =>
         set((state) => ({
           education: [...state.education, newEducation],
@@ -116,6 +121,11 @@ const useResumeStore = create(
               updatedEducation[index] = { ...updatedEducationData };  
               return { education: updatedEducation };
             }),
+            deleteEducation: (index) =>
+              set((state) => ({
+                education: state.education.filter((_, i) => i !== index),
+              })),
+            
           
 
       // Add/update project

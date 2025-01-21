@@ -4,6 +4,7 @@ import useResumeStore from '../app/ResumeStore';
 
 function EducationEntry({ education, index }) {
   const updateEducation = useResumeStore((state) => state.updateEducation);
+  const deleteEducation = useResumeStore((state) => state.deleteEducation); 
   const [localEducation, setLocalEducation] = useState(education);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -19,50 +20,57 @@ function EducationEntry({ education, index }) {
     setIsEditing(false);
   };
 
+  const handleDelete = () => {
+    deleteEducation(index); 
+  };
+
   return (
     <Box mt={2}>
       {isEditing ? (
         <>
-        <Box mb={2}>
-          <TextField
-            label="Degree Name"
-            name="degreeName"
-            value={localEducation.degreeName}
-            onChange={handleChange}
-            fullWidth
-          />
-        </Box>
-        <Box mb={2}>
-          <TextField
-            label="Institution Name"
-            name="institutionName"
-            value={localEducation.institutionName}
-            onChange={handleChange}
-            fullWidth
-          />
-        </Box>
-        <Box mb={2}>
-          <TextField
-            label="Year of Graduation"
-            name="yearOfGraduation"
-            value={localEducation.yearOfGraduation}
-            onChange={handleChange}
-            fullWidth
-          />
-        </Box>
-        <Box mb={2}>
-          <TextField
-            label="CGPA/Percentage"
-            name="cgpa"
-            value={localEducation.cgpa}
-            onChange={handleChange}
-            fullWidth
-          />
-        </Box>
-        <Button onClick={handleSave} variant="contained">
-          Save
-        </Button>
-      </>
+          <Box mb={2}>
+            <TextField
+              label="Degree Name"
+              name="degreeName"
+              value={localEducation.degreeName}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              label="Institution Name"
+              name="institutionName"
+              value={localEducation.institutionName}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              label="Year of Graduation"
+              name="yearOfGraduation"
+              value={localEducation.yearOfGraduation}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              label="CGPA/Percentage"
+              name="cgpa"
+              value={localEducation.cgpa}
+              onChange={handleChange}
+              fullWidth
+            />
+          </Box>
+          <Button onClick={handleSave} variant="contained" sx={{ mr: 2 }}>
+            Save
+          </Button>
+          <Button onClick={handleDelete} variant="outlined" color="error">
+            Delete
+          </Button>
+        </>
       ) : (
         <>
           <Typography variant="h6">

@@ -6,6 +6,7 @@ const WorkExperienceEntry = ({ experience, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localExperience, setLocalExperience] = useState(experience);
   const updateWorkExperience = useResumeStore((state) => state.updateWorkExperience);
+  const deleteWorkExperience = useResumeStore((state) => state.deleteWorkExperience); // Access delete function
 
   const handleChange = (field, value) => {
     setLocalExperience({
@@ -19,9 +20,12 @@ const WorkExperienceEntry = ({ experience, index }) => {
   };
 
   const handleSave = () => {
-    console.log(localExperience);
     updateWorkExperience(index, localExperience);
     setIsEditing(false);
+  };
+
+  const handleDelete = () => {
+    deleteWorkExperience(index); 
   };
 
   return (
@@ -81,8 +85,8 @@ const WorkExperienceEntry = ({ experience, index }) => {
           <Button variant="contained" onClick={handleSave} style={{ marginRight: '10px' }}>
             Save
           </Button>
-          <Button variant="outlined" onClick={handleEditToggle}>
-            Cancel
+          <Button variant="outlined" color="error" onClick={handleDelete}>
+            Delete
           </Button>
         </>
       ) : (

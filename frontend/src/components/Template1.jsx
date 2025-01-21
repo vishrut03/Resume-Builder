@@ -2,6 +2,8 @@ import React from "react"
 import { Box, Typography, Paper, Stack, Divider, List, ListItem, ListItemText, Chip,Button } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import html2pdf from 'html2pdf.js';
+import '../index.css';
 
 const Template1 = () => {
   const resumeData = useResumeStore()
@@ -16,12 +18,16 @@ const Template1 = () => {
     </Box>
   )
 
+  const handleDownload = () => {
+    const el=document.getElementById("container");
+    html2pdf(el);
+  }
   return (
     <>
-    <Button variant="contained" color="primary" onClick={() => window.print()} endIcon={<DownloadForOfflineIcon/>}>
+    <Button variant="contained" color="primary" onClick={handleDownload} endIcon={<DownloadForOfflineIcon/>}>
       Download
     </Button>
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
+    <Paper id="container" elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
       <Box mb={4}>
         <Typography variant="h4" gutterBottom>
           {resumeData.personalDetails.firstName} {resumeData.personalDetails.lastName}

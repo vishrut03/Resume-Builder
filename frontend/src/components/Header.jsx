@@ -67,7 +67,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <LogoImage src='../favicon.png' alt="Logo" />
+            <LogoImage src='../resumepic.png' alt="Logo" />
             <Typography variant="h6" component="div">
               Resume Builder
             </Typography>

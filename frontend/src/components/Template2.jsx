@@ -2,16 +2,23 @@ import React from "react"
 import { Box, Typography, Paper, Grid2, Divider, Button } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline"
+import html2pdf from 'html2pdf.js';
+import '../index.css';
 
 const Template2 = () => {
   const resumeData = useResumeStore()
+  
+  const handleDownload = () => {
+    const el=document.getElementById("container1");
+    html2pdf(el);
+  }
 
   return (
     <>
-    <Button variant="contained" color="primary" onClick={() => window.print()} endIcon={<DownloadForOfflineIcon/>}>
+    <Button variant="contained" color="primary" onClick={() => handleDownload()} endIcon={<DownloadForOfflineIcon/>}>
       Download
     </Button>
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4, backgroundColor: "#f5f5f5" }}>
+    <Paper id="container1" elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4, backgroundColor: "#f5f5f5" }}>
       <Grid2 container spacing={2}>
         <Grid2 item xs={12}>
           <Typography variant="h3" align="center" gutterBottom>

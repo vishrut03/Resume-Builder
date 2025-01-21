@@ -1,40 +1,40 @@
-import React, { useState } from "react"
-import { Box, TextField, Button, Grid2, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
-import useResumeStore from "../app/ResumeStore"
+import React, { useState } from "react";
+import { Box, TextField, Button, Grid2, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import useResumeStore from "../app/ResumeStore";
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
     name: "",
     organization: "",
     date: "",
-  })
+  });
 
-  const certificates = useResumeStore((state) => state.certificates)
-  const addCertificate = useResumeStore((state) => state.addCertificate)
-  const deleteCertificate = useResumeStore((state) => state.deleteCertificate)
+  const certificates = useResumeStore((state) => state.certificates);
+  const addCertificate = useResumeStore((state) => state.addCertificate);
+  const deleteCertificate = useResumeStore((state) => state.deleteCertificate);
 
   const handleChange = (event) => {
     setCurrentCertificate({
       ...currentCertificate,
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
   const handleAddCertificate = () => {
-    if (currentCertificate.name.trim() !== "") {
-      addCertificate(currentCertificate)
+    if (currentCertificate.name.trim() !== "" && currentCertificate.organization.trim() !== "") {
+      addCertificate(currentCertificate);
       setCurrentCertificate({
         name: "",
         organization: "",
         date: "",
-      })
+      });
     }
-  }
+  };
 
   const handleDeleteCertificate = (index) => {
-    deleteCertificate(index)
-  }
+    deleteCertificate(index);
+  };
 
   return (
     <Box>
@@ -78,33 +78,34 @@ export default function Certificates() {
         </Grid2>
       </Grid2>
       <List sx={{ mt: 2 }}>
-        {certificates.map((cert, index) => (
-          <ListItem
-            key={index}
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteCertificate(index)}>
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText
-              primary={cert.name}
-              secondary={
-                <>
-                  <Typography component="span" variant="body2" color="text.primary">
-                    Organization: {cert.organization}
-                  </Typography>
-                  <br />
-                  <Typography component="span" variant="body2" color="text.secondary">
-                    Date: {cert.date}
-                  </Typography>
-                </>
+        {certificates
+          .filter((cert) => cert.name.trim() !== "" && cert.organization.trim() !== "")
+          .map((cert, index) => (
+            <ListItem
+              key={index}
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteCertificate(index)}>
+                  <DeleteIcon />
+                </IconButton>
               }
-            />
-          </ListItem>
-        ))}
+            >
+              <ListItemText
+                primary={cert.name}
+                secondary={
+                  <>
+                    <Typography component="span" variant="body2" color="text.primary">
+                      Organization: {cert.organization}
+                    </Typography>
+                    <br />
+                    <Typography component="span" variant="body2" color="text.secondary">
+                      Date: {cert.date}
+                    </Typography>
+                  </>
+                }
+              />
+            </ListItem>
+          ))}
       </List>
     </Box>
-  )
+  );
 }
-

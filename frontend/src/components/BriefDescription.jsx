@@ -17,7 +17,6 @@ export default function BriefDescription() {
   };
 
   const handleSave = () => {
-    console.log(description);
     setDescriptionInStore(description);
     alert('Description saved!');
   };

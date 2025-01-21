@@ -22,7 +22,18 @@ export default function Education() {
   };
 
   const handleAdd = () => {
-    console.log(newEducation);
+    if(!newEducation.degreeName || !newEducation.institutionName || !newEducation.yearOfGraduation || !newEducation.cgpa) {
+      alert('fill all fields will add toast/other UI later');
+      return;
+    }
+    if(newEducation.yearOfGraduation < 1900 || newEducation.yearOfGraduation > new Date().getFullYear()+5) {
+      alert('Invalid year of graduation');
+      return;
+    }
+    if(newEducation.cgpa < 0 || newEducation.cgpa > 100) {
+      alert('Invalid cgpa/percentage');
+      return;
+    }
     addEducation(newEducation);
     setNewEducation({ degreeName: '', institutionName: '', yearOfGraduation: '', cgpa: '' });
   };

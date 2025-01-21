@@ -25,6 +25,23 @@ export default function PersonalDetails() {
   };
 
   const handleSave = () => {
+
+    if(localPersonalDetails.firstName === '' || localPersonalDetails.lastName === '' || localPersonalDetails.phoneNumber === '' || localPersonalDetails.email === '' || localPersonalDetails.address === '' || localPersonalDetails.linkedIn === ''){
+      alert('fill all entries will add toast/other instead of alert');
+      return;
+    }
+    if(localPersonalDetails.phoneNumber.length !== 10){
+      alert('Phone number should be 10 digits will add toast/other instead of alert');
+      return;
+    }
+    if(localPersonalDetails.email.indexOf('@') === -1 || localPersonalDetails.email.indexOf('.') === -1){
+      alert('Enter a valid email address will add toast/other instead of alert');
+      return;
+    }
+    if(typeof localPersonalDetails.linkedIn !== 'string' || typeof localPersonalDetails.firstName !== 'string' || typeof localPersonalDetails.lastName !== 'string'  || typeof localPersonalDetails.email !== 'string' || typeof localPersonalDetails.address !== 'string'){
+      alert('Enter a valid details will add toast/other instead of alert');
+      return;
+    }
     for (const [key, value] of Object.entries(localPersonalDetails)) {
       setPersonalDetails(key, value);
     }

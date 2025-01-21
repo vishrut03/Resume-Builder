@@ -10,6 +10,7 @@ import CodingProfiles from "./CodingProfiles"
 import Certificates from './Certificates'
 import Achievements from './Achievements'
 import BriefDescription from './BriefDescription'
+import Resume from './Resume'
 
 import { Stepper } from "@mui/material";
 import {Step} from "@mui/material";
@@ -188,7 +189,7 @@ const Form = () => {
 //     }
 //   return true
 //   }
-  return (
+  return activeStep===11?(<Resume/>):(
     <div className={classes.root}>
     <Stepper nonLinear activeStep={activeStep}>
       {steps.map((label, index) => (

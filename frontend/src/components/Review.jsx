@@ -5,7 +5,6 @@ import Resume from "./Resume";
 
 export default function Review() {
   const resumeData = useResumeStore()
-  const [submit,setSubmit] = useState(false);
 
   const Section = ({ title, children }) => (
     <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
@@ -18,11 +17,9 @@ export default function Review() {
 
   const handleSubmit = () => {
     console.log("Submitting resume data:", resumeData)
-    setSubmit(true);
   }
-  return (submit===true) ?  
-  <Resume data={resumeData}/>:
-  ( 
+
+  return ( 
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
       <Typography variant="h4" gutterBottom>
         Resume Review
@@ -145,12 +142,6 @@ export default function Review() {
           </Box>
         ))}
       </Section>
-
-      <Box sx={{ mt: 4, textAlign: "center" }}>
-        <Button variant="contained" color="primary" size="large" onClick={handleSubmit}>
-          Submit Resume
-        </Button>
-      </Box>
     </Box>
   )
 }

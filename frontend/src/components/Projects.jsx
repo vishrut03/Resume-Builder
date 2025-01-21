@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Grid2 } from '@mui/material';
 import useResumeStore from '../app/ResumeStore';
-
+import ProjectEntry from './ProjectEntry';
 
 export default function Projects() {
-
   const projectsStore = useResumeStore((state) => state.projects);
   const addProjectStore = useResumeStore((state) => state.addProject);
   const [currentProject, setCurrentProject] = useState({
@@ -22,13 +21,17 @@ export default function Projects() {
   };
 
   const handleAddProject = () => {
-    addProjectStore(currentProject);
-    setCurrentProject({
-      name: '',
-      description: '',
-      technologies: '',
-      link: '',
-    });
+    if (currentProject.name && currentProject.link) {
+      addProjectStore(currentProject);
+      setCurrentProject({
+        name: '',
+        description: '',
+        technologies: '',
+        link: '',
+      });
+    } else {
+      alert('Project Name and Link are required fields.');
+    }
   };
 
   return (
@@ -78,15 +81,11 @@ export default function Projects() {
           </Button>
         </Grid2>
       </Grid2>
-      {projectsStore.map((project, index) => (
-        <Box key={index} mt={2}>
-          <Typography variant="h6">{project.name}</Typography>
-          <Typography>{project.description}</Typography>
-          <Typography>Technologies: {project.technologies}</Typography>
-          <Typography>Link: {project.link}</Typography>
-        </Box>
-      ))}
+      {projectsStore
+        .filter((project) => project.name && project.link)
+        .map((project, index) => (
+          <ProjectEntry key={index} project={project} index={index} />
+        ))}
     </Box>
   );
 }
-

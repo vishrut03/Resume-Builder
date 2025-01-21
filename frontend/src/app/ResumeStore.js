@@ -127,21 +127,22 @@ const useResumeStore = create(
               })),
             
           
-
-      // Add/update project
+      // Add/update/delete project
       addProject: (newProject) =>
           set((state) => ({
             projects: [...state.projects, newProject],
           })),
-      updateProject: (index, field, value) =>
-        set((state) => {
-          const updatedProjects = [...state.projects];
-          updatedProjects[index] = {
-            ...updatedProjects[index],
-            [field]: value,
-          };
-          return { projects: updatedProjects };
-        }),
+          updateProject: (index, updatedProject) =>
+            set((state) => {
+              const updatedProjects = [...state.projects];
+              updatedProjects[index] = { ...updatedProject };
+              return { projects: updatedProjects };
+            }),
+          deleteProject: (index) =>
+            set((state) => {
+              const updatedProjects = state.projects.filter((_, i) => i !== index);
+              return { projects: updatedProjects };
+            }),
 
       // Add/update skill
       addSkill: (newSkill) =>

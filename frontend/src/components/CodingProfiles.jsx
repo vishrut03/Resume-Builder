@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Grid2, Typography } from '@mui/material';
+import { Box, TextField, Button, Grid2, Typography, List, ListItem, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../app/ResumeStore';
 
 export default function CodingProfiles() {
-  
   const [currentProfile, setCurrentProfile] = useState({
     platform: '',
     link: '',
@@ -11,13 +11,13 @@ export default function CodingProfiles() {
 
   const codingProfiles = useResumeStore((state) => state.codingProfiles);
   const addCodingProfile = useResumeStore((state) => state.addCodingProfile);
+  const deleteCodingProfile = useResumeStore((state) => state.deleteCodingProfile);
 
   const handleChange = (event) => {
     setCurrentProfile({
       ...currentProfile,
       [event.target.name]: event.target.value,
     });
-    console.log(event)
   };
 
   const handleAddProfile = () => {
@@ -30,8 +30,15 @@ export default function CodingProfiles() {
     }
   };
 
+  const handleDeleteProfile = (index) => {
+    deleteCodingProfile(index);
+  };
+
   return (
     <Box>
+      <Typography variant="h6" gutterBottom>
+        Coding Profiles
+      </Typography>
       <Grid2 container spacing={2}>
         <Grid2 item xs={12} sm={6}>
           <TextField
@@ -57,13 +64,23 @@ export default function CodingProfiles() {
           </Button>
         </Grid2>
       </Grid2>
-      {codingProfiles.map((profile, index) => (
-        <Box key={index} mt={2}>
-          <Typography variant="h6">{profile.platform}</Typography>
-          <Typography>Link: {profile.link}</Typography>
-        </Box>
-      ))}
+      <List sx={{ mt: 2 }}>
+        {codingProfiles.map((profile, index) => (
+          <ListItem
+            key={index}
+            secondaryAction={
+              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteProfile(index)}>
+                <DeleteIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText
+              primary={profile.platform}
+              secondary={`Link: ${profile.link}`}
+            />
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 }
-

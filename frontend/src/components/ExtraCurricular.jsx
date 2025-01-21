@@ -13,7 +13,8 @@ export default function ExtraCurricular() {
 
   const extracurricularActivities = useResumeStore(state=>state.extracurricularActivities);
   const addExtracurricularActivity = useResumeStore(state=>state.addExtracurricularActivity);
-
+  const deleteExtracurricularActivity = useResumeStore(state=>state.deleteExtracurricularActivity);
+  
   const handleChange = (event) => {
     const { name, value } = event.target;
     setCurrentActivity((prev) => ({
@@ -34,7 +35,7 @@ export default function ExtraCurricular() {
   };
 
   const handleDeleteActivity = (index) => {
-    setActivities((prev) => prev.filter((_, i) => i !== index));
+    deleteExtracurricularActivity(index);
   };
 
   return (

@@ -179,11 +179,20 @@ const useResumeStore = create(
           };
           return { certificates: updatedCertificates };
         }),
+      deleteCertificate: (index) =>{
+        set((state) => ({
+          certificates: state.certificates.filter((_, i) => i !== index),
+        }));
+      },
 
       // Add/update coding profile
       addCodingProfile: (newProfile) =>
         set((state) => ({
           codingProfiles: [...state.codingProfiles, newProfile],
+        })),
+      deleteCodingProfile : (index) =>
+        set((state) => ({
+          codingProfiles: state.codingProfiles.filter((_, i) => i !== index),
         })),
 
       // Add/update extra curricular activity
@@ -194,6 +203,11 @@ const useResumeStore = create(
             newActivity,
           ],
         })),
+
+      deleteExtracurricularActivity: (index) =>
+          set((state) => ({
+            extracurricularActivities: state.extracurricularActivities.filter((_, i) => i !== index),
+          })),
     }),
     {
       name: "resumeDetails", 

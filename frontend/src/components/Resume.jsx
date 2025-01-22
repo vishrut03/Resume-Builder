@@ -1,24 +1,26 @@
-import React, { useState } from "react"
-import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from "@mui/material"
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
-import Template1 from "./Template1"
-import Template2 from "./Template2"
-import Template3 from "./Template3"
-import Template4 from "./Template4"
+import React, { useState } from 'react';
+import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Template1 from './Template1';
+import Template2 from './Template2';
+import Template3 from './Template3';
+import Template4 from './Template4';
+import useResumeStore from '../app/ResumeStore';
 
 const Resume = () => {
-  const [expandedPanel, setExpandedPanel] = useState(false)
+  const [expandedPanel, setExpandedPanel] = useState(false);
+  const resumeData = useResumeStore();
 
   const handleChange = (panel) => (event, isExpanded) => {
-    setExpandedPanel(isExpanded ? panel : false)
-  }
+    setExpandedPanel(isExpanded ? panel : false);
+  };
 
   const templates = [
-    { name: "Classic Template", component: <Template1 /> },
-    { name: "Modern Template", component: <Template2 /> },
-    { name: "Creative Template", component: <Template3 /> },
-    { name: "Professional Template", component: <Template4 /> },
-  ]
+    { name: "Classic Template", component: <Template1 data={resumeData} /> },
+    { name: "Modern Template", component: <Template2 data={resumeData} /> },
+    { name: "Creative Template", component: <Template3 data={resumeData} /> },
+    { name: "Professional Template", component: <Template4 data={resumeData} /> },
+  ];
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
@@ -38,8 +40,7 @@ const Resume = () => {
         </Accordion>
       ))}
     </Box>
-  )
-}
+  );
+};
 
-export default Resume
-
+export default Resume;

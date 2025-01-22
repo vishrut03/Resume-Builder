@@ -80,6 +80,11 @@ const useResumeStore = create(
         },
       ],
 
+      customDetails: {
+        heading: '',
+        description: '',
+      },
+
       // Update personal details
       setPersonalDetails: (field, value) =>
         set((state) => ({
@@ -205,11 +210,22 @@ const useResumeStore = create(
           ],
         })),
 
+
       deleteExtracurricularActivity: (index) =>
           set((state) => ({
             extracurricularActivities: state.extracurricularActivities.filter((_, i) => i !== index),
           })),
+
+          setCustomDetails: (field, value) =>
+            set((state) => ({
+              customDetails: {
+                ...state.customDetails,
+                [field]: value,
+              },
+            })),
     }),
+
+
     {
       name: "resumeDetails", 
       getStorage: () => localStorage, 

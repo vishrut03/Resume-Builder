@@ -1,29 +1,30 @@
-import React, { useState } from "react"
-import PersonalDetails from "./PersonalDetails"
-import Projects from "./Projects"
-import Skills from "./Skills"
-import Education from "./Education"
-import WorkExperience from "./WorkExperience"
-import Review from "./Review"
-import ExtraCurricular from "./ExtraCurricular"
-import CodingProfiles from "./CodingProfiles"
-import Certificates from "./Certificates"
-import Achievements from "./Achievements"
-import BriefDescription from "./BriefDescription"
-import Resume from "./Resume"
+import React, { useState } from "react";
+import PersonalDetails from "./PersonalDetails";
+import Projects from "./Projects";
+import Skills from "./Skills";
+import Education from "./Education";
+import WorkExperience from "./WorkExperience";
+import Review from "./Review";
+import ExtraCurricular from "./ExtraCurricular";
+import CodingProfiles from "./CodingProfiles";
+import Certificates from "./Certificates";
+import Achievements from "./Achievements";
+import BriefDescription from "./BriefDescription";
+import Resume from "./Resume";
+import Custom from "./Custom";
 
-// Import MUI icons
-import PersonIcon from "@mui/icons-material/Person"
-import DescriptionIcon from "@mui/icons-material/Description"
-import WorkIcon from "@mui/icons-material/Work"
-import SchoolIcon from "@mui/icons-material/School"
-import CodeIcon from "@mui/icons-material/Code"
-import BuildIcon from "@mui/icons-material/Build"
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
-import CardMembershipIcon from "@mui/icons-material/CardMembership"
-import ComputerIcon from "@mui/icons-material/Computer"
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
-import VisibilityIcon from "@mui/icons-material/Visibility"
+import PersonIcon from "@mui/icons-material/Person";
+import DescriptionIcon from "@mui/icons-material/Description";
+import WorkIcon from "@mui/icons-material/Work";
+import SchoolIcon from "@mui/icons-material/School";
+import CodeIcon from "@mui/icons-material/Code";
+import BuildIcon from "@mui/icons-material/Build";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import ComputerIcon from "@mui/icons-material/Computer";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CategoryIcon from "@mui/icons-material/Category";
 
 const steps = [
   { label: "Personal Details", icon: <PersonIcon /> },
@@ -35,56 +36,60 @@ const steps = [
   { label: "Achievements", icon: <EmojiEventsIcon /> },
   { label: "Certificates", icon: <CardMembershipIcon /> },
   { label: "Coding Profiles", icon: <ComputerIcon /> },
+  { label: "Custom Section", icon: <CategoryIcon /> },  
   { label: "Extra Curricular", icon: <SportsEsportsIcon /> },
   { label: "Review", icon: <VisibilityIcon /> },
-]
+];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <PersonalDetails />
+      return <PersonalDetails />;
     case 1:
-      return <BriefDescription />
+      return <BriefDescription />;
     case 2:
-      return <WorkExperience />
+      return <WorkExperience />;
     case 3:
-      return <Education />
+      return <Education />;
     case 4:
-      return <Projects />
+      return <Projects />;
     case 5:
-      return <Skills />
+      return <Skills />;
     case 6:
-      return <Achievements />
+      return <Achievements />;
     case 7:
-      return <Certificates />
+      return <Certificates />;
     case 8:
-      return <CodingProfiles />
+      return <CodingProfiles />;
     case 9:
-      return <ExtraCurricular />
+      return <Custom />;  
     case 10:
-      return <Review />
+      return <ExtraCurricular />;  
+    case 11:
+      return <Review />;
     default:
-      return "Unknown step"
+      return "Unknown step";
   }
 }
 
+
 const Form = () => {
-  const [activeStep, setActiveStep] = useState(0)
-  const [completed, setCompleted] = useState({})
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
 
   const handleStep = (step) => () => {
-    setActiveStep(step)
-  }
+    setActiveStep(step);
+  };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1)
-  }
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1)
-  }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
 
-  return activeStep === 11 ? (
+  return activeStep === 12 ? (
     <Resume />
   ) : (
     <div className="max-w-4xl mx-auto p-6">
@@ -98,8 +103,8 @@ const Form = () => {
                   activeStep === index
                     ? "bg-blue-500 text-white"
                     : completed[index]
-                      ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
                 <span className="mr-2">{icon}</span>
@@ -132,8 +137,7 @@ const Form = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Form
-
+export default Form;

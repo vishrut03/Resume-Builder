@@ -8,7 +8,11 @@ const Custom = () => {
   const customDetails = useResumeStore((state) => state.customDetails); 
   const setCustomDetails = useResumeStore((state) => state.setCustomDetails); 
 
-  const [customSection, setCustomSection] = useState(customDetails); 
+  const customFields={
+    heading: "",
+    description: ""
+  }
+  const [customSection, setCustomSection] = useState(customFields); 
 
   useEffect(() => {
     setCustomSection(customDetails); 

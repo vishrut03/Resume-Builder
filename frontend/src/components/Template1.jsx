@@ -1,90 +1,193 @@
-import React from "react"
-import { Box, Typography, Paper, Stack, Divider, List, ListItem, ListItemText, Chip,Button } from "@mui/material"
-import useResumeStore from "../app/ResumeStore"
+import React from 'react';
+import { Box, Typography, Paper, Stack, Divider, Chip, Button, List, ListItem, ListItemText } from '@mui/material';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import html2pdf from 'html2pdf.js';
-import '../index.css';
 
-const Template1 = () => {
-  const resumeData = useResumeStore()
-
-  const Section = ({ title, children }) => (
-    <Box mb={3}>
-      <Typography variant="h6" gutterBottom color="primary">
-        {title}
-      </Typography>
-      <Divider />
-      <Box mt={2}>{children}</Box>
-    </Box>
-  )
-
+const Template1 = ({ data }) => {
   const handleDownload = () => {
-    const el=document.getElementById("container");
-    html2pdf(el);
-  }
+    const element = document.getElementById("template1");
+    html2pdf(element);
+  };
+
   return (
     <>
-    <Button variant="contained" color="primary" onClick={handleDownload} endIcon={<DownloadForOfflineIcon/>}>
-      Download
-    </Button>
-    <Paper id="container" elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
-      <Box mb={4}>
-        <Typography variant="h4" gutterBottom>
-          {resumeData.personalDetails.firstName} {resumeData.personalDetails.lastName}
-        </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
-          {resumeData.personalDetails.email} | {resumeData.personalDetails.phoneNumber}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {resumeData.personalDetails.address}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          LinkedIn: {resumeData.personalDetails.linkedIn}
-        </Typography>
-      </Box>
+      <Button variant="contained" color="primary" onClick={handleDownload} endIcon={<DownloadForOfflineIcon />}>
+        Download
+      </Button>
+      <Paper id="template1" elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
+        <Box mb={4}>
+          <Typography variant="h4" gutterBottom>
+            {data.personalDetails.firstName} {data.personalDetails.lastName}
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            {data.personalDetails.email} | {data.personalDetails.phoneNumber}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {data.personalDetails.address}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            LinkedIn: {data.personalDetails.linkedIn}
+          </Typography>
+        </Box>
 
-      <Section title="Professional Summary">
-        <Typography variant="body1">{resumeData.briefDescription}</Typography>
-      </Section>
-
-      <Section title="Work Experience">
-        {resumeData.workExperience.map((exp, index) => (
-          <Box key={index} mb={2}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {exp.jobTitle} at {exp.companyName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {exp.startDate} - {exp.endDate}
-            </Typography>
-            <Typography variant="body2">{exp.responsibilities}</Typography>
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Professional Summary
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            <Typography variant="body1">{data.briefDescription}</Typography>
           </Box>
-        ))}
-      </Section>
+        </Box>
 
-      <Section title="Education">
-        {resumeData.education.map((edu, index) => (
-          <Box key={index} mb={2}>
-            <Typography variant="subtitle1" fontWeight="bold">
-              {edu.degreeName} - {edu.institutionName}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Graduated: {edu.yearOfGraduation} | CGPA: {edu.cgpa}
-            </Typography>
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Work Experience
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.workExperience.map((exp, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {exp.jobTitle} at {exp.companyName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {exp.startDate} - {exp.endDate}
+                </Typography>
+                <Typography variant="body2">{exp.responsibilities}</Typography>
+              </Box>
+            ))}
           </Box>
-        ))}
-      </Section>
+        </Box>
 
-      <Section title="Skills">
-        <Stack direction="row" flexWrap="wrap" gap={1}>
-          {resumeData.skills.map((skill, index) => (
-            <Chip key={index} label={skill} variant="outlined" />
-          ))}
-        </Stack>
-      </Section>
-    </Paper>
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Education
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.education.map((edu, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {edu.degreeName} - {edu.institutionName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Graduated: {edu.yearOfGraduation} | CGPA: {edu.cgpa}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Projects
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.projects.map((project, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {project.projectName}
+                </Typography>
+                <Typography variant="body2">{project.description}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Technologies: {project.technologiesUsed}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Link: {project.link}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Skills
+          </Typography>
+          <Divider />
+          <Stack direction="row" flexWrap="wrap" gap={1} mt={2}>
+            {data.skills.map((skill, index) => (
+              <Chip key={index} label={skill} variant="outlined" />
+            ))}
+          </Stack>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Achievements
+          </Typography>
+          <Divider />
+          <List>
+            {data.achievements.map((achievement, index) => (
+              <ListItem key={index}>
+                <ListItemText primary={achievement} />
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Certificates
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.certificates.map((cert, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {cert.certificateName}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {cert.organization} - {cert.date}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Coding Profiles
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.codingProfiles.map((profile, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {profile.platform}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {profile.profileLink}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Extra Curricular Activities
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            {data.extracurricularActivities.map((activity, index) => (
+              <Box key={index} mb={2}>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  {activity.activityName}
+                </Typography>
+                <Typography variant="body2">{activity.description}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Achievements: {activity.achievements}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+      </Paper>
     </>
-  )
-}
+  );
+};
 
-export default Template1
-
+export default Template1;

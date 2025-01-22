@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Template1 from './Template1';
-import Template2 from './Template2';
-import Template3 from './Template3';
-import Template4 from './Template4';
-import useResumeStore from '../app/ResumeStore';
+import Template1 from '../resumeTemplates/Template1';
+import Template2 from '../resumeTemplates/Template2';
+import Template3 from '../resumeTemplates/Template3';
+import Template4 from '../resumeTemplates/Template4';
+import useResumeStore from '../../app/ResumeStore';
 
 const Resume = () => {
   const [expandedPanel, setExpandedPanel] = useState(false);

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Grid2 } from '@mui/material';
 import EducationEntry from './EducationEntry';
-import useResumeStore from '../app/ResumeStore';
+import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

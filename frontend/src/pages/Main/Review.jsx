@@ -1,6 +1,6 @@
 import React from "react"
 import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Button, Chip } from "@mui/material"
-import useResumeStore from "../app/ResumeStore"
+import useResumeStore from '../../app/ResumeStore'
 
 export default function Review() {
   const resumeData = useResumeStore()

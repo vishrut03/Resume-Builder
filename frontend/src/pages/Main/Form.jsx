@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import PersonalDetails from "./PersonalDetails";
-import Projects from "./Projects";
+import Projects from "./Project/Projects";
 import Skills from "./Skills";
-import Education from "./Education";
-import WorkExperience from "./WorkExperience";
+import Education from "./Education/Education";
+import WorkExperience from './WorkExperience/WorkExperience';
 import Review from "./Review";
 import ExtraCurricular from "./ExtraCurricular";
 import CodingProfiles from "./CodingProfiles";

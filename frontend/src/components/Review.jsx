@@ -142,12 +142,18 @@ export default function Review() {
       </Section>
       )}
 
-      {resumeData.customDetails.heading!=='' &&  resumeData.customDetails.description!=='' && (
-        <Section title="Custom Details">
-          <Typography variant="h6">{resumeData.customDetails.heading}</Typography>
-          <Typography variant="body1">{resumeData.customDetails.description}</Typography>
-        </Section>
-      )}
+{resumeData.customDetails.heading !== '' && resumeData.customDetails.description !== '' && (
+  <Section title="Custom Details">
+    <Typography variant="h6">{resumeData.customDetails.heading}</Typography>
+    <Typography 
+      variant="body1"
+      sx={{ whiteSpace: 'pre-line' }} 
+    >
+      {resumeData.customDetails.description}
+    </Typography>
+  </Section>
+)}
+
 
       {resumeData.extracurricularActivities.length > 0 && (
       <Section title="Extra Curricular Activities">

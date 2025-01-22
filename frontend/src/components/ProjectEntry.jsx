@@ -35,8 +35,8 @@ const ProjectEntry = ({ project, index }) => {
   const handleDelete = () => {
     deleteProject(index);
     toast.success("Project deleted successfully!", {
-      position: "top-right",
-      autoClose: 2000,
+      position: "top-center",
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

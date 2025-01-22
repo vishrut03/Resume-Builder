@@ -179,8 +179,7 @@ const Template1 = ({ data }) => {
         </Box>
         )}
 
-        {data.customDetails.heading && data.customDetails.description && (
-
+      {data.customDetails.heading && data.customDetails.description && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Custom Section
@@ -188,10 +187,16 @@ const Template1 = ({ data }) => {
           <Divider />
           <Box mt={2}>
             <Typography variant="subtitle1">{data.customDetails.heading}</Typography>
-            <Typography variant="body2">{data.customDetails.description}</Typography>
+            <Typography 
+              variant="body2"
+              sx={{ whiteSpace: 'pre-line' }} 
+            >
+              {data.customDetails.description}
+            </Typography>
           </Box>
         </Box>
-        )}
+      )}
+
 
         {data.extracurricularActivities.length > 0 && (
         <Box mb={3}>

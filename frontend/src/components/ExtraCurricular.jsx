@@ -6,7 +6,7 @@ import useResumeStore from '../app/ResumeStore'
 export default function ExtraCurricular() {
   
   const [currentActivity, setCurrentActivity] = useState({
-    name: '',
+    activityName: '',
     description: '',
     achievements: '',
   });
@@ -24,10 +24,10 @@ export default function ExtraCurricular() {
   };
 
   const handleAddActivity = () => {
-    if (currentActivity.name.trim() !== '') {
+    if (currentActivity.activityName.trim() !== '') {
       addExtracurricularActivity(currentActivity);
       setCurrentActivity({
-        name: '',
+        activityName: '',
         description: '',
         achievements: '',
       });
@@ -48,8 +48,8 @@ export default function ExtraCurricular() {
           <TextField
             fullWidth
             label="Activity Name"
-            name="name"
-            value={currentActivity.name}
+            name="activityName"
+            value={currentActivity.activityName}
             onChange={handleChange}
           />
         </Grid2>
@@ -92,7 +92,7 @@ export default function ExtraCurricular() {
             }
           >
             <ListItemText
-              primary={activity.name}
+              primary={activity.activityName}
               secondary={
                 <>
                   {activity.description && (

@@ -6,7 +6,7 @@ import useResumeStore from '../app/ResumeStore';
 export default function CodingProfiles() {
   const [currentProfile, setCurrentProfile] = useState({
     platform: '',
-    link: '',
+    profileLink: '',
   });
 
   const codingProfiles = useResumeStore((state) => state.codingProfiles);
@@ -21,11 +21,11 @@ export default function CodingProfiles() {
   };
 
   const handleAddProfile = () => {
-    if (currentProfile.platform.trim() !== '' && currentProfile.link.trim() !== '') {
+    if (currentProfile.platform.trim() !== '' && currentProfile.profileLink.trim() !== '') {
       addCodingProfile(currentProfile);
       setCurrentProfile({
         platform: '',
-        link: '',
+        profileLink: '',
       });
     }
   };
@@ -53,8 +53,8 @@ export default function CodingProfiles() {
           <TextField
             fullWidth
             label="Profile Link"
-            name="link"
-            value={currentProfile.link}
+            name="profileLink"
+            value={currentProfile.profileLink}
             onChange={handleChange}
           />
         </Grid2>
@@ -76,7 +76,7 @@ export default function CodingProfiles() {
           >
             <ListItemText
               primary={profile.platform}
-              secondary={`Link: ${profile.link}`}
+              secondary={`Link: ${profile.profileLink}`}
             />
           </ListItem>
         ))}

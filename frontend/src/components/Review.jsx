@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Button, Chip } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
-import Resume from "./Resume";
 
 export default function Review() {
   const resumeData = useResumeStore()
@@ -14,10 +13,6 @@ export default function Review() {
       {children}
     </Paper>
   )
-
-  const handleSubmit = () => {
-    console.log("Submitting resume data:", resumeData)
-  }
 
   return ( 
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
@@ -47,11 +42,11 @@ export default function Review() {
               <strong>LinkedIn:</strong> {resumeData.personalDetails.linkedIn}
             </Typography>
           </Grid2>
-          <Grid2 item xs={12}>
+          {/* <Grid2 item xs={12}>
             <Typography>
               <strong>Address:</strong> {resumeData.personalDetails.address}
             </Typography>
-          </Grid2>
+          </Grid2> */}
         </Grid2>
       </Section>
 
@@ -138,6 +133,7 @@ export default function Review() {
         {resumeData.extracurricularActivities.map((activity, index) => (
           <Box key={index} mb={1}>
             <Typography variant="subtitle2">{activity.activityName}</Typography>
+            <Typography variant="body2">{activity.description}</Typography>
             <Typography variant="body2">{activity.achievements}</Typography>
           </Box>
         ))}

@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import useResumeStore from "../app/ResumeStore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Custom = () => {
   const customDetails = useResumeStore((state) => state.customDetails); 
   const setCustomDetails = useResumeStore((state) => state.setCustomDetails); 
 
   const [customSection, setCustomSection] = useState(customDetails); 
+
+  useEffect(() => {
+    setCustomSection(customDetails); 
+  }, [customDetails]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,13 +22,31 @@ const Custom = () => {
   const handleSave = () => {
     const { heading, description } = customSection;
     if (!heading || !description) {
-      alert("Please fill both the heading and description.");
+        toast.error("Please fill both the heading and description.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+            });
       return;
     }
     setCustomDetails("heading", heading);
     setCustomDetails("description", description);
     setCustomSection({ heading: "", description: "" });
-    alert("Custom section saved!");
+    toast.success("Custom section details saved successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
   };
 
   return (

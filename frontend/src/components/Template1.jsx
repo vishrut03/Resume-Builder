@@ -182,11 +182,10 @@ const Template1 = ({ data }) => {
       {data.customDetails.heading && data.customDetails.description && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
-            Custom Section
+                {data.customDetails.heading}
           </Typography>
           <Divider />
           <Box mt={2}>
-            <Typography variant="subtitle1">{data.customDetails.heading}</Typography>
             <Typography 
               variant="body2"
               sx={{ whiteSpace: 'pre-line' }} 

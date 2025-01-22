@@ -59,11 +59,6 @@ export default function Achievements() {
           </ListItem>
         ))}
       </List>
-      {/* <Grid2 item xs={12}>
-          <Button variant="contained" color="primary" onClick={handleSave}>
-            Save and Continue
-          </Button>
-        </Grid2> */}
     </Box>
   );
 }

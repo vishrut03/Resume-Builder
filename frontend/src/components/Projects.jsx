@@ -7,9 +7,9 @@ export default function Projects() {
   const projectsStore = useResumeStore((state) => state.projects);
   const addProjectStore = useResumeStore((state) => state.addProject);
   const [currentProject, setCurrentProject] = useState({
-    name: '',
+    projectName: '',
     description: '',
-    technologies: '',
+    technologiesUsed: '',
     link: '',
   });
 
@@ -21,12 +21,12 @@ export default function Projects() {
   };
 
   const handleAddProject = () => {
-    if (currentProject.name && currentProject.link && currentProject.description) {
+    if (currentProject.projectName && currentProject.link && currentProject.description) {
       addProjectStore(currentProject);
       setCurrentProject({
-        name: '',
+        projectName: '',
         description: '',
-        technologies: '',
+        technologiesUsed: '',
         link: '',
       });
     } else {
@@ -41,8 +41,8 @@ export default function Projects() {
           <TextField
             fullWidth
             label="Project Name*"
-            name="name"
-            value={currentProject.name}
+            name="projectName"
+            value={currentProject.projectName}
             onChange={handleChange}
           />
         </Grid2>
@@ -61,8 +61,8 @@ export default function Projects() {
           <TextField
             fullWidth
             label="Technologies Used"
-            name="technologies"
-            value={currentProject.technologies}
+            name="technologiesUsed"
+            value={currentProject.technologiesUsed}
             onChange={handleChange}
           />
         </Grid2>
@@ -82,7 +82,7 @@ export default function Projects() {
         </Grid2>
       </Grid2>
       {projectsStore
-        .filter((project) => project.name && project.link)
+        .filter((project) => project.projectName && project.link)
         .map((project, index) => (
           <ProjectEntry key={index} project={project} index={index} />
         ))}

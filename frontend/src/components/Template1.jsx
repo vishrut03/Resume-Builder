@@ -23,13 +23,11 @@ const Template1 = ({ data }) => {
             {data.personalDetails.email} | {data.personalDetails.phoneNumber}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {data.personalDetails.address}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            LinkedIn: {data.personalDetails.linkedIn}
+            {data.personalDetails.linkedIn}
           </Typography>
         </Box>
 
+        {data.briefDescription && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Professional Summary
@@ -39,7 +37,9 @@ const Template1 = ({ data }) => {
             <Typography variant="body1">{data.briefDescription}</Typography>
           </Box>
         </Box>
+        )}
 
+        {data.workExperience.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Work Experience
@@ -59,7 +59,9 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
 
+        {data.education.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Education
@@ -78,7 +80,9 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
 
+        {data.projects.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Projects
@@ -101,7 +105,9 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
 
+        {data.skills.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Skills
@@ -113,7 +119,9 @@ const Template1 = ({ data }) => {
             ))}
           </Stack>
         </Box>
+        )}
 
+        {data.achievements.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Achievements
@@ -127,7 +135,9 @@ const Template1 = ({ data }) => {
             ))}
           </List>
         </Box>
+        )}
 
+        {data.certificates.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Certificates
@@ -146,7 +156,9 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
 
+        {data.codingProfiles.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Coding Profiles
@@ -165,7 +177,23 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
 
+        {data.customDetails.heading && data.customDetails.description && (
+
+        <Box mb={3}>
+          <Typography variant="h6" gutterBottom color="primary">
+            Custom Section
+          </Typography>
+          <Divider />
+          <Box mt={2}>
+            <Typography variant="subtitle1">{data.customDetails.heading}</Typography>
+            <Typography variant="body2">{data.customDetails.description}</Typography>
+          </Box>
+        </Box>
+        )}
+
+        {data.extracurricularActivities.length > 0 && (
         <Box mb={3}>
           <Typography variant="h6" gutterBottom color="primary">
             Extra Curricular Activities
@@ -185,6 +213,7 @@ const Template1 = ({ data }) => {
             ))}
           </Box>
         </Box>
+        )}
       </Paper>
     </>
   );

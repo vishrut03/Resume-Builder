@@ -31,8 +31,8 @@ const ProjectEntry = ({ project, index }) => {
           <TextField
             fullWidth
             label="Project Name"
-            value={localProject.name}
-            onChange={(e) => handleChange('name', e.target.value)}
+            value={localProject.projectName}
+            onChange={(e) => handleChange('projectName', e.target.value)}
             style={{ marginBottom: '10px' }}
           />
           <TextField
@@ -47,8 +47,8 @@ const ProjectEntry = ({ project, index }) => {
           <TextField
             fullWidth
             label="Technologies"
-            value={localProject.technologies}
-            onChange={(e) => handleChange('technologies', e.target.value)}
+            value={localProject.technologiesUsed}
+            onChange={(e) => handleChange('technologiesUsed', e.target.value)}
             style={{ marginBottom: '10px' }}
           />
           <TextField
@@ -67,9 +67,9 @@ const ProjectEntry = ({ project, index }) => {
         </>
       ) : (
         <>
-          <Typography variant="h6">{project.name}</Typography>
+          <Typography variant="h6">{project.projectName}</Typography>
           <Typography>Description: {project.description}</Typography>
-          <Typography>Technologies: {project.technologies}</Typography>
+          <Typography>Technologies: {project.technologiesUsed}</Typography>
           <Typography>Link: {project.link}</Typography>
           <Button variant="contained" onClick={() => setIsEditing(true)} style={{ marginTop: '10px' }}>
             Edit

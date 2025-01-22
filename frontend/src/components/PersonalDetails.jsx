@@ -115,7 +115,7 @@ export default function PersonalDetails() {
         </Grid2>
         <Grid2 item xs={12}>
           <Button variant="contained" color="primary" onClick={handleSave}>
-            Save and Continue
+            Save details
           </Button>
         </Grid2>
       </Grid2>

@@ -21,7 +21,7 @@ export default function Projects() {
   };
 
   const handleAddProject = () => {
-    if (currentProject.name && currentProject.link) {
+    if (currentProject.name && currentProject.link && currentProject.description) {
       addProjectStore(currentProject);
       setCurrentProject({
         name: '',
@@ -30,7 +30,7 @@ export default function Projects() {
         link: '',
       });
     } else {
-      alert('Project Name and Link are required fields.');
+      alert('Please fill all the mandatory fields.');
     }
   };
 
@@ -40,7 +40,7 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
-            label="Project Name"
+            label="Project Name*"
             name="name"
             value={currentProject.name}
             onChange={handleChange}
@@ -49,7 +49,7 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
-            label="Description"
+            label="Description*"
             name="description"
             multiline
             rows={3}
@@ -69,7 +69,7 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
-            label="Link (GitHub/Deployed)"
+            label="Link (GitHub/Deployed)*"
             name="link"
             value={currentProject.link}
             onChange={handleChange}

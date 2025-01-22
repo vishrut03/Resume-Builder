@@ -23,7 +23,7 @@ export default function Education() {
 
   const handleAdd = () => {
     if(!newEducation.degreeName || !newEducation.institutionName || !newEducation.yearOfGraduation || !newEducation.cgpa) {
-      alert('fill all fields will add toast/other UI later');
+      alert('Please fill all the mandatory fields');
       return;
     }
     if(newEducation.yearOfGraduation < 1900 || newEducation.yearOfGraduation > new Date().getFullYear()+5) {

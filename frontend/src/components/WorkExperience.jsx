@@ -23,7 +23,7 @@ export default function WorkExperience() {
   };
 
   const handleSave = () => {
-    if (currentExperience.jobTitle && currentExperience.companyName) {
+    if (currentExperience.jobTitle && currentExperience.companyName && currentExperience.startDate && currentExperience.endDate) {
       addWorkExperience(currentExperience);
       setCurrentExperience({
         jobTitle: '',
@@ -34,7 +34,7 @@ export default function WorkExperience() {
       });
       alert('Work experience saved!');
     } else {
-      alert('Please fill in the required fields.');
+      alert('Please fill all the mandatory fields.');
     }
   };
 
@@ -44,7 +44,7 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="Job Title"
+            label="Job Title*"
             name="jobTitle"
             value={currentExperience.jobTitle}
             onChange={handleChange}
@@ -53,7 +53,7 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="Company Name"
+            label="Company Name*"
             name="companyName"
             value={currentExperience.companyName}
             onChange={handleChange}
@@ -62,7 +62,7 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="Start Date"
+            label="Start Date*"
             name="startDate"
             type="date"
             InputLabelProps={{ shrink: true }}
@@ -73,7 +73,7 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
-            label="End Date"
+            label="End Date*"
             name="endDate"
             type="date"
             InputLabelProps={{ shrink: true }}

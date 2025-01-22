@@ -100,6 +100,7 @@ export default function ExtraCurricular() {
                       {activity.description}
                     </Typography>
                   )}
+                  <br/>
                   {activity.achievements && (
                     <Typography component="span" variant="body2" color="text.secondary">
                       Achievements: {activity.achievements}

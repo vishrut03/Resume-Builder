@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Button, Chip } from "@mui/material"
 import useResumeStore from "../app/ResumeStore"
 
@@ -49,11 +49,12 @@ export default function Review() {
           </Grid2> */}
         </Grid2>
       </Section>
-
-      <Section title="Brief Description">
+      
+      {resumeData.briefDescription && (<Section title="Brief Description">
         <Typography>{resumeData.briefDescription}</Typography>
-      </Section>
-
+      </Section>)}
+      
+      {resumeData.workExperience.length > 0 && (
       <Section title="Work Experience">
         {resumeData.workExperience.map((exp, index) => (
           <Box key={index} mb={2}>
@@ -67,6 +68,7 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
 
       <Section title="Education">
         {resumeData.education.map((edu, index) => (
@@ -79,7 +81,8 @@ export default function Review() {
           </Box>
         ))}
       </Section>
-
+      
+      {resumeData.projects.length > 0 && (
       <Section title="Projects">
         {resumeData.projects.map((project, index) => (
           <Box key={index} mb={2}>
@@ -90,7 +93,9 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
 
+      {resumeData.skills.length > 0 && (
       <Section title="Skills">
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
           {resumeData.skills.map((skill, index) => (
@@ -98,7 +103,9 @@ export default function Review() {
           ))}
         </Box>
       </Section>
+      )}
 
+      {resumeData.achievements.length > 0 && (
       <Section title="Achievements">
         <List>
           {resumeData.achievements.map((achievement, index) => (
@@ -108,7 +115,9 @@ export default function Review() {
           ))}
         </List>
       </Section>
+      )}
 
+      {resumeData.certificates.length > 0 && (
       <Section title="Certificates">
         {resumeData.certificates.map((cert, index) => (
           <Box key={index} mb={1}>
@@ -119,7 +128,9 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
 
+      {resumeData.codingProfiles.length > 0 && (
       <Section title="Coding Profiles">
         {resumeData.codingProfiles.map((profile, index) => (
           <Box key={index} mb={1}>
@@ -128,7 +139,9 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
 
+      {resumeData.extracurricularActivities.length > 0 && (
       <Section title="Extra Curricular Activities">
         {resumeData.extracurricularActivities.map((activity, index) => (
           <Box key={index} mb={1}>
@@ -138,6 +151,7 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
     </Box>
   )
 }

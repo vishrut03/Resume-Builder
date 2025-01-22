@@ -21,6 +21,7 @@ const Custom = () => {
     }
     setCustomDetails("heading", heading);
     setCustomDetails("description", description);
+    setCustomSection({ heading: "", description: "" });
     alert("Custom section saved!");
   };
 

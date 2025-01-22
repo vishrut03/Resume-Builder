@@ -13,6 +13,7 @@ export default function Review() {
       {children}
     </Paper>
   )
+  console.log(resumeData.customDetails);
 
   return ( 
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
@@ -139,6 +140,13 @@ export default function Review() {
           </Box>
         ))}
       </Section>
+      )}
+
+      {resumeData.customDetails.heading!=='' &&  resumeData.customDetails.description!=='' && (
+        <Section title="Custom Details">
+          <Typography variant="h6">{resumeData.customDetails.heading}</Typography>
+          <Typography variant="body1">{resumeData.customDetails.description}</Typography>
+        </Section>
       )}
 
       {resumeData.extracurricularActivities.length > 0 && (

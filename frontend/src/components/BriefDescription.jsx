@@ -33,7 +33,7 @@ export default function BriefDescription() {
         placeholder="Motivated software engineer with a passion for developing scalable solutions."
       />
       <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: '16px' }}>
-        Save and Continue
+        Save Description
       </Button>
     </Box>
   );

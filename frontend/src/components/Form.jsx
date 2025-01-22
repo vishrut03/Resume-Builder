@@ -129,9 +129,6 @@ const Form = () => {
           >
             Next
           </button>
-          <button className="py-2 px-4 bg-green-500 text-white rounded-md text-sm font-medium hover:bg-green-600">
-            {Object.keys(completed).length === steps.length - 1 ? "Finish" : "Save and Continue"}
-          </button>
         </div>
       </div>
     </div>

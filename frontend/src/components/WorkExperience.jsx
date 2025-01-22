@@ -95,7 +95,7 @@ export default function WorkExperience() {
         </Grid2>
         <Grid2 item xs={12}>
           <Button variant="contained" onClick={handleSave}>
-            Save and Continue
+            Add experience
           </Button>
         </Grid2>
       </Grid2>

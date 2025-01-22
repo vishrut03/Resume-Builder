@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const WorkExperienceEntry = ({ experience, index }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -21,11 +23,31 @@ const WorkExperienceEntry = ({ experience, index }) => {
 
   const handleSave = () => {
     updateWorkExperience(index, localExperience);
+    toast.success("Work experience updated!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     deleteWorkExperience(index); 
+    toast.success("Work experience deleted!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (

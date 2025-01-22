@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, TextField, Grid2, Button } from '@mui/material';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function PersonalDetails() {
   const personalDetails = useResumeStore((state) => state.personalDetails);
@@ -28,21 +30,60 @@ export default function PersonalDetails() {
     const { firstName, lastName, phoneNumber, email, linkedIn } = localPersonalDetails;
 
     if (!firstName || !lastName || !phoneNumber || !email || !linkedIn) {
-      alert('Please fill all mandatory fields (marked as required) to save details.');
+      const errorMessage = "Please fill all mandatory fields (marked as required) to save details.";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if (phoneNumber.length !== 10) {
-      alert('Phone number should be 10 digits.');
+      const errorMessage = "Phone number should be 10 digits.";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-      alert('Enter a valid email address.');
+      const errorMessage = "Enter a valid email address.";
+      toast.error(errorMessage, {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     for (const [key, value] of Object.entries(localPersonalDetails)) {
       setPersonalDetails(key, value);
     }
-    alert('Details saved!');
+    toast.success("Details saved successfully", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (

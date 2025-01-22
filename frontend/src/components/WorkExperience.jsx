@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Button, Grid2, TextField } from '@mui/material'; 
 import useResumeStore from '../app/ResumeStore';
 import WorkExperienceEntry from './WorkExperienceEntry';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function WorkExperience() {
   const workExperience = useResumeStore((state) => state.workExperience);
@@ -23,7 +25,7 @@ export default function WorkExperience() {
   };
 
   const handleSave = () => {
-    if (currentExperience.jobTitle && currentExperience.companyName && currentExperience.startDate && currentExperience.endDate) {
+    if (currentExperience.jobTitle && currentExperience.companyName) {
       addWorkExperience(currentExperience);
       setCurrentExperience({
         jobTitle: '',
@@ -32,9 +34,29 @@ export default function WorkExperience() {
         endDate: '',
         responsibilities: '',
       });
-      alert('Work experience saved!');
+      toast.success("Experience added successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else {
-      alert('Please fill all the mandatory fields.');
+      const errorMessage = "Please fill all the mandatory fields.";
+            toast.error(errorMessage, {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+            return;
     }
   };
 

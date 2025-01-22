@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Grid2, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useResumeStore from "../app/ResumeStore";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
@@ -24,16 +26,51 @@ export default function Certificates() {
   const handleAddCertificate = () => {
     if (currentCertificate.name.trim() !== "" && currentCertificate.organization.trim() !== "") {
       addCertificate(currentCertificate);
+      toast.success("Certificate added successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
       setCurrentCertificate({
         name: "",
         organization: "",
         date: "",
       });
     }
+
+    else
+    {
+      toast.error("Please enter valid certificate details!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
 
   const handleDeleteCertificate = (index) => {
     deleteCertificate(index);
+    toast.success("Certificate deleted successfully!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   return (

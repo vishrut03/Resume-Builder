@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Grid2 } from '@mui/material';
 import EducationEntry from './EducationEntry';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Education() {
   const education = useResumeStore((state) => state.education);
@@ -23,18 +25,57 @@ export default function Education() {
 
   const handleAdd = () => {
     if(!newEducation.degreeName || !newEducation.institutionName || !newEducation.yearOfGraduation || !newEducation.cgpa) {
-      alert('Please fill all the mandatory fields');
+      toast.error("Please fill all mandatory fields (marked as required) to save details.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      
       return;
     }
     if(newEducation.yearOfGraduation < 1900 || newEducation.yearOfGraduation > new Date().getFullYear()+5) {
-      alert('Invalid year of graduation');
+      toast.error("Invalid year of graduation", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     if(newEducation.cgpa < 0 || newEducation.cgpa > 100) {
-      alert('Invalid cgpa/percentage');
+      toast.error("Invalid CGPA/Percentage", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       return;
     }
     addEducation(newEducation);
+    toast.success("Education details added successfully!", {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
     setNewEducation({ degreeName: '', institutionName: '', yearOfGraduation: '', cgpa: '' });
   };
 

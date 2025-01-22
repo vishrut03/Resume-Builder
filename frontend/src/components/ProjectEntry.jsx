@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProjectEntry = ({ project, index }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -17,11 +19,30 @@ const ProjectEntry = ({ project, index }) => {
 
   const handleSave = () => {
     updateProject(index, localProject);
+    toast.success("Project updated successfully!", {
+      position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     deleteProject(index);
+    toast.success("Project deleted successfully!", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (

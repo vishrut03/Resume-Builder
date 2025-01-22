@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, TextField, Button } from '@mui/material';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BriefDescription() {
   const descriptionFromStore = useResumeStore((state) => state.briefDescription);
@@ -18,7 +20,16 @@ export default function BriefDescription() {
 
   const handleSave = () => {
     setDescriptionInStore(description);
-    alert('Description saved!');
+    toast.success("Description saved!", {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
   };
 
   return (

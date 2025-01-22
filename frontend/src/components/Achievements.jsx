@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography, Grid2 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../app/ResumeStore';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function Achievements() {
@@ -14,12 +16,46 @@ export default function Achievements() {
   const handleAddAchievement = () => {
     if (currentAchievement.trim() !== '') {
       addAchievementStore(currentAchievement.trim());
+      toast.success("Achievement added successfully!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       setCurrentAchievement('');
+    }
+
+    else
+    {
+      toast.error("Please enter a valid achievement!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      }); 
     }
   };
 
   const handleDeleteAchievement = (index) => {
     deleteAchievementStore(index);    
+    toast.success("Achievement deleted successfully!", {
+      position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
   };
 
   const handleKeyDown = (event) => {

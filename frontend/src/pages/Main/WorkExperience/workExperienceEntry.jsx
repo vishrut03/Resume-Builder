@@ -7,8 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 const WorkExperienceEntry = ({ experience, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localExperience, setLocalExperience] = useState(experience);
-  const updateWorkExperience = useResumeStore((state) => state.updateWorkExperience);
-  const deleteWorkExperience = useResumeStore((state) => state.deleteWorkExperience); // Access delete function
+  const editArrayField = useResumeStore((state) => state.editArrayField);
+  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry);
 
   const handleChange = (field, value) => {
     setLocalExperience({
@@ -22,7 +22,9 @@ const WorkExperienceEntry = ({ experience, index }) => {
   };
 
   const handleSave = () => {
-    updateWorkExperience(index, localExperience);
+    Object.keys(localExperience).forEach((fieldKey) => {
+      editArrayField('workExperience', index, fieldKey, localExperience[fieldKey]);
+    });
     toast.success("Work experience updated!", {
       position: "top-center",
       autoClose: 3000,
@@ -37,7 +39,7 @@ const WorkExperienceEntry = ({ experience, index }) => {
   };
 
   const handleDelete = () => {
-    deleteWorkExperience(index); 
+    deleteResumeEntry('workExperience', index);
     toast.success("Work experience deleted!", {
       position: "top-center",
       autoClose: 3000,

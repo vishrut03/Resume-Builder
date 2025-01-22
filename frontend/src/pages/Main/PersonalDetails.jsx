@@ -5,8 +5,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function PersonalDetails() {
-  const personalDetails = useResumeStore((state) => state.personalDetails);
-  const setPersonalDetails = useResumeStore((state) => state.setPersonalDetails);
+  const personalDetails = useResumeStore((state) => state.resume.personalDetails);
+  const editSimpleField = useResumeStore((state) => state.editSimpleField);
 
   const [localPersonalDetails, setLocalPersonalDetails] = useState({
     firstName: '',
@@ -30,50 +30,46 @@ export default function PersonalDetails() {
     const { firstName, lastName, phoneNumber, email, linkedIn } = localPersonalDetails;
 
     if (!firstName || !lastName || !phoneNumber || !email || !linkedIn) {
-      const errorMessage = "Please fill all mandatory fields (marked as required) to save details.";
-      toast.error(errorMessage, {
+      toast.error("Please fill all mandatory fields (marked as required) to save details.", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
         theme: "light",
       });
       return;
     }
+
     if (phoneNumber.length !== 10) {
-      const errorMessage = "Phone number should be 10 digits.";
-      toast.error(errorMessage, {
+      toast.error("Phone number should be 10 digits.", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
         theme: "light",
       });
       return;
     }
+
     if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-      const errorMessage = "Enter a valid email address.";
-      toast.error(errorMessage, {
+      toast.error("Enter a valid email address.", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
         theme: "light",
       });
       return;
     }
-    for (const [key, value] of Object.entries(localPersonalDetails)) {
-      setPersonalDetails(key, value);
-    }
+
+    editSimpleField('personalDetails', localPersonalDetails);
+
     toast.success("Details saved successfully", {
       position: "top-center",
       autoClose: 3000,
@@ -81,7 +77,6 @@ export default function PersonalDetails() {
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
-      progress: undefined,
       theme: "light",
     });
   };

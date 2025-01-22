@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function WorkExperience() {
-  const workExperience = useResumeStore((state) => state.workExperience);
-  const addWorkExperience = useResumeStore((state) => state.addWorkExperience);
+  const workExperience = useResumeStore((state) => state.resume.workExperience);
+  const addResumeEntry = useResumeStore((state) => state.addResumeEntry);
 
   const [currentExperience, setCurrentExperience] = useState({
     jobTitle: '',
@@ -26,7 +26,7 @@ export default function WorkExperience() {
 
   const handleSave = () => {
     if (currentExperience.jobTitle && currentExperience.companyName) {
-      addWorkExperience(currentExperience);
+      addResumeEntry('workExperience', currentExperience); 
       setCurrentExperience({
         jobTitle: '',
         companyName: '',
@@ -45,18 +45,16 @@ export default function WorkExperience() {
         theme: "light",
       });
     } else {
-      const errorMessage = "Please fill all the mandatory fields.";
-            toast.error(errorMessage, {
-              position: "top-center",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "light",
-            });
-            return;
+      toast.error("Please fill all the mandatory fields.", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
 
@@ -122,13 +120,15 @@ export default function WorkExperience() {
         </Grid2>
       </Grid2>
       <Box mt={4}>
-        {workExperience.filter(exp => exp.jobTitle && exp.companyName).map((exp, index) => (
-          <WorkExperienceEntry
-            key={index}
-            experience={exp}
-            index={index}
-          />
-        ))}
+      {workExperience
+      .filter((exp) => exp.jobTitle.trim() !== '' && exp.companyName.trim() !== '')
+      .map((exp, index) => (
+        <WorkExperienceEntry
+          key={`${exp.jobTitle}-${exp.companyName}-${index}`}
+          experience={exp}
+          index={index} 
+        />
+      ))}
       </Box>
     </Box>
   );

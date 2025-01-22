@@ -5,31 +5,30 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function BriefDescription() {
-  const descriptionFromStore = useResumeStore((state) => state.briefDescription);
-  const setDescriptionInStore = useResumeStore((state) => state.setBriefDescription);
+  const briefDescription = useResumeStore((state) => state.resume.briefDescription);
+  const editSimpleField = useResumeStore((state) => state.editSimpleField);
 
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    setDescription(descriptionFromStore);
-  }, [descriptionFromStore]);
+    setDescription(briefDescription);
+  }, [briefDescription]);
 
   const handleChange = (event) => {
     setDescription(event.target.value);
   };
 
   const handleSave = () => {
-    setDescriptionInStore(description);
+    editSimpleField('briefDescription', description); 
     toast.success("Description saved!", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "light",
+    });
   };
 
   return (

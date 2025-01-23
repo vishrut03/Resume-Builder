@@ -8,6 +8,8 @@ import ToastTheme from "../../utils/ToastTheme";
 const Custom = () => {
   const customDetails = useResumeStore((state) => state.resume.customDetails);
   const editObjectField = useResumeStore((state) => state.editObjectField);
+  const [headingError,setHeadingError] = useState('');
+  const [descError,setDescError] = useState('');
 
   const customFields = {
     heading: "",
@@ -17,7 +19,7 @@ const Custom = () => {
   const [customSection, setCustomSection] = useState(customFields);
 
   useEffect(() => {
-    console.log(customDetails);
+    // console.log(customDetails);
     setCustomSection(customDetails); 
   }, [customDetails]);
 
@@ -28,15 +30,35 @@ const Custom = () => {
 
   const handleSave = () => {
     const { heading, description } = customSection;
-    if (!heading || !description) {
-      toast.error("Please fill both the heading and description.", ToastTheme);
-      return;
-    }
+    let hasError = false;
 
+    // Validate Heading
+    if (heading.trim() === "") {
+      setHeadingError("Heading cannot be empty");
+      hasError = true;
+    } else {
+      setHeadingError(""); // Clear the error if valid
+    }
+  
+    // Validate Description
+    if (description.trim() === "") {
+      setDescError("Description cannot be empty");
+      hasError = true;
+    } else {
+      setDescError(""); // Clear the error if valid
+    }
+  
+    // If there are errors, stop execution
+    if (hasError) return;
+
+    setDescError('');
+    setHeadingError('');
     const modifiedObject = { heading, description };
     editObjectField("customDetails", modifiedObject);
-
     toast.success("Custom section details saved successfully!", ToastTheme);
+    customSection.heading = "";
+    customSection.description="";
+    
   };
 
   return (
@@ -44,6 +66,8 @@ const Custom = () => {
       <TextField
         label="Section Heading"
         name="heading"
+        error={headingError!==''?true:false}
+        helperText={headingError}
         fullWidth
         value={customSection.heading}
         onChange={handleChange}
@@ -52,6 +76,8 @@ const Custom = () => {
       <TextField
         label="Section Description"
         name="description"
+        error={descError!==''?true:false}
+        helperText={descError}
         fullWidth
         multiline
         rows={4}

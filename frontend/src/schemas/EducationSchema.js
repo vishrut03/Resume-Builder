@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 
 export const EducationSchema = Yup.object().shape({
-    degeeName: Yup.string().required('Degree name is required'),
-    instituteName: Yup.string().required('Institute name is required'),
+    degreeName: Yup.string().required('Degree name is required'),
+    institutionName: Yup.string().required('Institute name is required'),
     yearOfGraduation: Yup
     .number().typeError('Year must be a number')
     .required('Year of graduation is required')

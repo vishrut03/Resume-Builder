@@ -4,12 +4,14 @@ import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
+import {EducationSchema} from '../../../schemas/EducationSchema';
 
 function EducationEntry({ education, index }) {
   const editArrayField = useResumeStore((state) => state.editArrayField);
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
   const [localEducation, setLocalEducation] = useState(education);
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
     setLocalEducation({
@@ -18,13 +20,24 @@ function EducationEntry({ education, index }) {
     });
   };
 
-  const handleSave = () => {
-    Object.entries(localEducation).forEach(([fieldKey, value]) => {
-      editArrayField("education", index, fieldKey, value);
-    });
-
-    toast.success("Education details updated successfully!", ToastTheme);
-    setIsEditing(false);
+  const handleSave = async() => {
+    try{
+      await EducationSchema.validate(localEducation,{abortEarly:false});
+      setErrors({});
+      Object.entries(localEducation).forEach(([fieldKey, value]) => {
+        editArrayField("education", index, fieldKey, value);
+      });
+      toast.success("Education details updated successfully!", ToastTheme);
+      setIsEditing(false);
+    }catch(err){
+      const newErrors={};
+      if(err.inner!==undefined){
+        err.inner.forEach((e)=>{
+          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
+        })
+      }  
+      setErrors(newErrors);
+    }
   };
 
   const handleDelete = () => {
@@ -40,6 +53,8 @@ function EducationEntry({ education, index }) {
             <TextField
               label="Degree Name"
               name="degreeName"
+              error={errors.degreeName?true:false}
+              helperText={errors.degreeName}
               value={localEducation.degreeName}
               onChange={handleChange}
               fullWidth
@@ -49,6 +64,8 @@ function EducationEntry({ education, index }) {
             <TextField
               label="Institution Name"
               name="institutionName"
+              error={errors.institutionName?true:false}
+              helperText={errors.institutionName}
               value={localEducation.institutionName}
               onChange={handleChange}
               fullWidth
@@ -58,6 +75,8 @@ function EducationEntry({ education, index }) {
             <TextField
               label="Year of Graduation"
               name="yearOfGraduation"
+              error={errors.yearOfGraduation?true:false}
+              helperText={errors.yearOfGraduation}
               value={localEducation.yearOfGraduation}
               onChange={handleChange}
               fullWidth
@@ -67,6 +86,8 @@ function EducationEntry({ education, index }) {
             <TextField
               label="CGPA/Percentage"
               name="cgpa"
+              error={errors.cgpa?true:false}
+              helperText={errors.cgpa}
               value={localEducation.cgpa}
               onChange={handleChange}
               fullWidth

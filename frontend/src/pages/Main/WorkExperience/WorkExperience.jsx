@@ -5,6 +5,7 @@ import WorkExperienceEntry from './WorkExperienceEntry';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
+import { WorkExperienceSchema } from '../../../schemas/WorkExperienceSchema';
 
 export default function WorkExperience() {
   const workExperience = useResumeStore((state) => state.resume.workExperience);

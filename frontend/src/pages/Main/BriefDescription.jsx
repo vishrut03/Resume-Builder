@@ -4,7 +4,7 @@ import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
-
+import {BriefDescriptionSchema} from '../../schemas/BriefDescriptionSchema';
 
 export default function BriefDescription() {
   const briefDescription = useResumeStore((state) => state.resume.briefDescription);

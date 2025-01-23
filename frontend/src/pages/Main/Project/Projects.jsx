@@ -5,6 +5,7 @@ import ProjectEntry from './ProjectEntry';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
+import {ProjectSchema} from '../../../schemas/ProjectSchema';
 
 export default function Projects() {
   const projectsStore = useResumeStore((state) => state.resume.projects);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../../app/ResumeStore';
@@ -8,9 +8,13 @@ import ToastTheme from '../../utils/ToastTheme';
 
 export default function Achievements() {
   const [currentAchievement, setCurrentAchievement] = useState('');
-  let achievementsStore = useResumeStore((state) => state.resume.achievements);
+  let achievementsStore = useResumeStore((state) => state.resume.achievements) || []; // Default to empty array
   const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
+
+  useEffect(() => {
+    console.log('Achievements Store:', achievementsStore); // Log achievements store value
+  }, [achievementsStore]);
 
   const handleAddAchievement = () => {
     if (currentAchievement.trim() !== '') {
@@ -51,19 +55,22 @@ export default function Achievements() {
         Add Achievement
       </Button>
       <List sx={{ mt: 2 }}>
-      {achievementsStore.map((achievement, index) => (
-        <ListItem
-          key={index}
-          secondaryAction={
-            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteAchievement(index)}>
-              <DeleteIcon />
-            </IconButton>
-          }
-        >
-          <ListItemText primary={achievement} />
-        </ListItem>
-      ))}
-    </List>
+        {achievementsStore
+          .filter((achievement) => achievement && achievement.trim())  // Filter out empty or falsy achievements
+          .map((achievement, index) => (
+            <ListItem
+              key={index}
+              secondaryAction={
+                <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteAchievement(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              }
+            >
+              <ListItemText primary={achievement.achievement || achievement} />  {/* Access the correct field */}
+            </ListItem>
+          ))}
+      </List>
+
 
     </Box>
   );

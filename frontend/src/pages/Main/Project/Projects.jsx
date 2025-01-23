@@ -7,8 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 
 export default function Projects() {
-  const projectsStore = useResumeStore((state) => state.projects);
-  const addProjectStore = useResumeStore((state) => state.addProject);
+  const projectsStore = useResumeStore((state) => state.resume.projects);
+  const addResumeEntry = useResumeStore((state) => state.addResumeEntry);
   const [currentProject, setCurrentProject] = useState({
     projectName: '',
     description: '',
@@ -25,7 +25,7 @@ export default function Projects() {
 
   const handleAddProject = () => {
     if (currentProject.projectName && currentProject.link && currentProject.description) {
-      addProjectStore(currentProject);
+      addResumeEntry("projects", {...currentProject});
       toast.success("Project added successfully!", ToastTheme);
       setCurrentProject({
         projectName: '',
@@ -86,10 +86,15 @@ export default function Projects() {
         </Grid2>
       </Grid2>
       {projectsStore
-        .filter((project) => project.projectName && project.link)
-        .map((project, index) => (
-          <ProjectEntry key={index} project={project} index={index} />
-        ))}
+      .filter((project) => project.projectName && project.link)
+      .map((project, index) => (
+        <ProjectEntry 
+          key={`${project.projectName}-${project.link}-${index}`}
+          project={project} 
+          index={index} 
+        />
+      ))}
+
     </Box>
   );
 }

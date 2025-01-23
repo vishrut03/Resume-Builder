@@ -8,8 +8,8 @@ import ToastTheme from '../../../utils/ToastTheme';
 const ProjectEntry = ({ project, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localProject, setLocalProject] = useState(project);
-  const updateProject = useResumeStore((state) => state.updateProject);
-  const deleteProject = useResumeStore((state) => state.deleteProject);
+  const editArrayField = useResumeStore((state) => state.editArrayField);
+  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry);
 
   const handleChange = (field, value) => {
     setLocalProject({
@@ -19,13 +19,16 @@ const ProjectEntry = ({ project, index }) => {
   };
 
   const handleSave = () => {
-    updateProject(index, localProject);
+    Object.entries(localProject).forEach(([fieldKey, value]) => {
+      editArrayField("projects", index, fieldKey, value);
+    });
+    
     toast.success("Project updated successfully!", ToastTheme);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    deleteProject(index);
+    deleteResumeEntry("projects", index);
     toast.success("Project deleted successfully!", ToastTheme);
   };
 

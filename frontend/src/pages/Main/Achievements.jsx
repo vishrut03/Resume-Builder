@@ -43,9 +43,7 @@ export default function Achievements() {
 
   return (
     <Box>
-      <Typography variant="h6" gutterBottom>
-        Achievements
-      </Typography>
+      <h1 className="text-2xl font-bold text-center mb-4">Achievements</h1>
       <TextField
         fullWidth
         label="Add Achievement"

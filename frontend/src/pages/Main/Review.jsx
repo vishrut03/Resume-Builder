@@ -3,7 +3,7 @@ import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Chip, Ico
 import EditIcon from "@mui/icons-material/Edit";
 import useResumeStore from "../../app/ResumeStore";
 
-export default function Review({ onEdit }) {
+export default function Review({ setActiveStep,setPreviousStep }) {
   const { resume } = useResumeStore();
 
   useEffect(() => {
@@ -16,7 +16,10 @@ export default function Review({ onEdit }) {
         {title}
       </Typography>
       {children}
-      <IconButton sx={{ position: "absolute", top: 8, right: 8 }} onClick={() => onEdit(editIndex)}>
+      <IconButton sx={{ position: "absolute", top: 8, right: 8 }} onClick={() => {
+        setActiveStep(index);
+        setPreviousStep(11);
+      }}>
         <EditIcon />
       </IconButton>
     </Paper>

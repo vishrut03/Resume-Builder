@@ -95,10 +95,34 @@ const Form = () => {
   };
 
   if(activeStep === 11) {
-    return <Review onEdit={(index) => {
+    return (
+    <>
+    <Review onEdit={(index) => {
       setActiveStep(index);
       setPreviousStep(11);
     }}/>
+    <div className="flex justify-between ml-10"> 
+      <button
+        onClick={handleBack}
+        disabled={activeStep === 0}
+        className={`py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu ${
+          activeStep === 0
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105"
+        } shadow-md`}
+      >
+        Back
+      </button>
+      <div>
+        <button
+          onClick={handleNext}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+    </>)
   }
 
   return activeStep === 12 ? (

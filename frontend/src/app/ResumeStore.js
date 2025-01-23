@@ -1,6 +1,6 @@
 import {create} from 'zustand';
 import { persist } from 'zustand/middleware';
-import { addResumeField, updateSimpleField, updateArrayField, deleteResumeField } from './ResumeUtils';
+import { addResumeField, updateObjectField, updateSimpleField, updateArrayField, deleteResumeField } from './ResumeUtils';
 
 const useResumeStore = create(
   persist(
@@ -77,6 +77,11 @@ const useResumeStore = create(
         set((state) => ({
           resume: updateArrayField(state.resume, section, index, fieldKey, value),
         })),
+
+        editObjectField: (section, modifiedObject) =>
+          set((state) => ({
+            resume: updateObjectField(state.resume, section, modifiedObject),
+          })),
 
       addResumeEntry: (section, newEntry) =>
         set((state) => ({

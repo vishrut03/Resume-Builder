@@ -9,6 +9,12 @@ export const addResumeField = (resume, section, newEntry) => {
         [section]: value,
         };
     };
+
+    export const updateObjectField = (resume, section, modifiedObject) => {
+        const newResume = { ...resume };
+        newResume[section] = { ...newResume[section], ...modifiedObject };
+        return newResume;
+      };
  
   export const updateArrayField = (resume, section, index, fieldKey, value) => {
     const updatedEntry = { ...resume[section][index], [fieldKey]: value };

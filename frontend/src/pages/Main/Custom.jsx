@@ -6,16 +6,18 @@ import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from "../../utils/ToastTheme";
 
 const Custom = () => {
-  const customDetails = useResumeStore((state) => state.customDetails); 
-  const setCustomDetails = useResumeStore((state) => state.setCustomDetails); 
+  const customDetails = useResumeStore((state) => state.resume.customDetails);
+  const editObjectField = useResumeStore((state) => state.editObjectField);
 
-  const customFields={
+  const customFields = {
     heading: "",
-    description: ""
-  }
-  const [customSection, setCustomSection] = useState(customFields); 
+    description: "",
+  };
+
+  const [customSection, setCustomSection] = useState(customFields);
 
   useEffect(() => {
+    console.log(customDetails);
     setCustomSection(customDetails); 
   }, [customDetails]);
 
@@ -30,9 +32,10 @@ const Custom = () => {
       toast.error("Please fill both the heading and description.", ToastTheme);
       return;
     }
-    setCustomDetails("heading", heading);
-    setCustomDetails("description", description);
-    setCustomSection({ heading: "", description: "" });
+
+    const modifiedObject = { heading, description };
+    editObjectField("customDetails", modifiedObject);
+
     toast.success("Custom section details saved successfully!", ToastTheme);
   };
 
@@ -61,17 +64,16 @@ const Custom = () => {
       </Button>
 
       <Box mt={4}>
-    <Typography variant="h5">{customDetails.heading}</Typography>
-    <Typography variant="body1" component="div">
-        {customDetails.description.split('\n').map((line, index) => (
-        <React.Fragment key={index}>
-            {line}
-            <br />
-        </React.Fragment>
-        ))}
-    </Typography>
-</Box>
-
+        <Typography variant="h5">{customDetails.heading}</Typography>
+        <Typography variant="body1" component="div">
+          {(customDetails.description || "").split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </Typography>
+      </Box>
     </Box>
   );
 };

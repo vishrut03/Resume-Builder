@@ -65,8 +65,6 @@ function getStepContent(step) {
       return <Custom />;  
     case 10:
       return <ExtraCurricular />;  
-    case 11:
-      return <Review />;
     default:
       return "Unknown step";
   }
@@ -76,6 +74,7 @@ function getStepContent(step) {
 const Form = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
+  const [previousStep, setPreviousStep] = useState(null)
 
   const handleStep = (step) => () => {
     setActiveStep(step);
@@ -86,8 +85,20 @@ const Form = () => {
   };
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if(previousStep === 11) {
+      setActiveStep(11);
+    }
+    else{
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
+
+  if(activeStep === 11) {
+    return <Review onEdit={(index) => {
+      setActiveStep(index);
+      setPreviousStep(11);
+    }}/>
+  }
 
   return activeStep === 12 ? (
     <Resume />

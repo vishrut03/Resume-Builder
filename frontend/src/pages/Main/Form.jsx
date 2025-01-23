@@ -81,6 +81,7 @@ const Form = () => {
   };
 
   const handleBack = () => {
+    setPreviousStep(0);
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 

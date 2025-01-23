@@ -59,6 +59,7 @@ export default function WorkExperience() {
   };
 
   return (
+    <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
       {/* Heading for Work Experience */}
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}>
@@ -161,9 +162,10 @@ export default function WorkExperience() {
           Add Experience
         </Button>
       </Box>
+    </Box>  
 
       {/* Display Added Work Experiences */}
-      <Box mt={4}>
+      <Box mt={4} className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
         <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 2 }}>
           Previously Added Work Experiences
         </Typography>
@@ -177,6 +179,6 @@ export default function WorkExperience() {
             />
           ))}
       </Box>
-    </Box>
+      </>
   );
 }

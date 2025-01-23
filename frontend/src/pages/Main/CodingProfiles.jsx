@@ -15,6 +15,8 @@ export default function CodingProfiles() {
   const codingProfiles = useResumeStore((state) => state.resume.codingProfiles);
   const addCodingProfile = useResumeStore((state) => state.addResumeEntry);
   const deleteCodingProfile = useResumeStore((state) => state.deleteResumeEntry);
+  const [platformError,setPlatformError] = useState('');
+  const [linkError,setLinkError] = useState('');
 
   const handleChange = (event) => {
     setCurrentProfile({
@@ -24,16 +26,25 @@ export default function CodingProfiles() {
   };
 
   const handleAddProfile = () => {
+    if(currentProfile.platform.trim()===''){
+      if(currentProfile.profileLink.trim()!=='') setLinkError('');
+      setPlatformError("Platform cannot be empty");
+    }
+    if(currentProfile.profileLink.trim()===''){
+      if(currentProfile.platform.trim()!=='') setPlatformError('');
+      setLinkError("Profile link cannot be empty");
+      return;
+    }
     if (currentProfile.platform.trim() !== '' && currentProfile.profileLink.trim() !== '') {
+      setLinkError('');
+      setPlatformError('');
       addCodingProfile("codingProfiles", currentProfile);
       toast.success("Coding Profile added successfully!", ToastTheme);
       setCurrentProfile({
         platform: '',
         profileLink: '',
       });
-    } else {
-      toast.error("Please enter all details!", ToastTheme);
-    }
+    } 
   };
 
   const handleDeleteProfile = (index) => {
@@ -50,6 +61,8 @@ export default function CodingProfiles() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={platformError!==''?true:false}
+            helperText={platformError}
             label="Platform (e.g., LeetCode, GitHub)*"
             name="platform"
             value={currentProfile.platform}
@@ -59,6 +72,8 @@ export default function CodingProfiles() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={linkError!==''?true:false}
+            helperText={linkError}
             label="Profile Link"
             name="profileLink"
             value={currentProfile.profileLink}

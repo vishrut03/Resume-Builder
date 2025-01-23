@@ -46,6 +46,7 @@ export default function Education() {
   }
 
   return (
+    <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold text-center mb-4">Education</h1>
       <TextField
@@ -106,9 +107,10 @@ export default function Education() {
       >
         Add Education
       </Button>
+    </Box>
 
+    <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-6">
       <h1 className="text-xl font-bold text-center mb-4">Previously added Education Details</h1>
-
       <Box className="mt-8 space-y-6">
         {education
           .filter((edu) => edu.degreeName && edu.institutionName && edu.yearOfGraduation && edu.cgpa)
@@ -117,6 +119,7 @@ export default function Education() {
           ))}
       </Box>
     </Box>
+    </>
   )
 }
 

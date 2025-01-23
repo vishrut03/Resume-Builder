@@ -8,14 +8,14 @@ import ToastTheme from "../../utils/ToastTheme";
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
-    name: "",
+    certificateName: "",
     organization: "",
     date: "",
   });
 
-  const certificates = useResumeStore((state) => state.certificates);
-  const addCertificate = useResumeStore((state) => state.addCertificate);
-  const deleteCertificate = useResumeStore((state) => state.deleteCertificate);
+  const certificates = useResumeStore((state) => state.resume.certificates);
+  const addCertificate = useResumeStore((state) => state.addResumeEntry);
+  const deleteCertificate = useResumeStore((state) => state.deleteResumeEntry);
 
   const handleChange = (event) => {
     setCurrentCertificate({
@@ -25,25 +25,22 @@ export default function Certificates() {
   };
 
   const handleAddCertificate = () => {
-    if (currentCertificate.name.trim() !== "" && currentCertificate.organization.trim() !== "") {
-      addCertificate(currentCertificate);
+    if (currentCertificate.certificateName.trim() !== "" && currentCertificate.organization.trim() !== "") {
+      addCertificate("certificates", currentCertificate);
       toast.success("Certificate added successfully!", ToastTheme);
 
       setCurrentCertificate({
-        name: "",
+        certificateName: "",
         organization: "",
         date: "",
       });
-    }
-
-    else
-    {
+    } else {
       toast.error("Please enter valid certificate details!", ToastTheme);
     }
   };
 
   const handleDeleteCertificate = (index) => {
-    deleteCertificate(index);
+    deleteCertificate("certificates", index);
     toast.success("Certificate deleted successfully!", ToastTheme);
   };
 
@@ -57,8 +54,8 @@ export default function Certificates() {
           <TextField
             fullWidth
             label="Certificate Name"
-            name="name"
-            value={currentCertificate.name}
+            name="certificateName"
+            value={currentCertificate.certificateName}
             onChange={handleChange}
           />
         </Grid2>
@@ -90,7 +87,7 @@ export default function Certificates() {
       </Grid2>
       <List sx={{ mt: 2 }}>
         {certificates
-          .filter((cert) => cert.name.trim() !== "" && cert.organization.trim() !== "")
+          .filter((cert) => cert.certificateName.trim() !== "" && cert.organization.trim() !== "")
           .map((cert, index) => (
             <ListItem
               key={index}
@@ -101,7 +98,7 @@ export default function Certificates() {
               }
             >
               <ListItemText
-                primary={cert.name}
+                primary={cert.certificateName}
                 secondary={
                   <>
                     <Typography component="span" variant="body2" color="text.primary">

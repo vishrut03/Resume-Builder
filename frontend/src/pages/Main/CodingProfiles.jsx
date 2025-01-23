@@ -12,9 +12,9 @@ export default function CodingProfiles() {
     profileLink: '',
   });
 
-  const codingProfiles = useResumeStore((state) => state.codingProfiles);
-  const addCodingProfile = useResumeStore((state) => state.addCodingProfile);
-  const deleteCodingProfile = useResumeStore((state) => state.deleteCodingProfile);
+  const codingProfiles = useResumeStore((state) => state.resume.codingProfiles);
+  const addCodingProfile = useResumeStore((state) => state.addResumeEntry);
+  const deleteCodingProfile = useResumeStore((state) => state.deleteResumeEntry);
 
   const handleChange = (event) => {
     setCurrentProfile({
@@ -25,22 +25,19 @@ export default function CodingProfiles() {
 
   const handleAddProfile = () => {
     if (currentProfile.platform.trim() !== '' && currentProfile.profileLink.trim() !== '') {
-      addCodingProfile(currentProfile);
+      addCodingProfile("codingProfiles", currentProfile);
       toast.success("Coding Profile added successfully!", ToastTheme);
       setCurrentProfile({
         platform: '',
         profileLink: '',
       });
-    }
-
-    else
-    {
+    } else {
       toast.error("Please enter all details!", ToastTheme);
     }
   };
 
   const handleDeleteProfile = (index) => {
-    deleteCodingProfile(index);
+    deleteCodingProfile("codingProfiles", index);
     toast.success("Coding Profile deleted successfully!", ToastTheme);
   };
 
@@ -75,7 +72,9 @@ export default function CodingProfiles() {
         </Grid2>
       </Grid2>
       <List sx={{ mt: 2 }}>
-        {codingProfiles.map((profile, index) => (
+      {codingProfiles
+        .filter((profile) => profile.platform.trim() !== "" && profile.profileLink.trim() !== "")  
+        .map((profile, index) => (
           <ListItem
             key={index}
             secondaryAction={
@@ -90,7 +89,7 @@ export default function CodingProfiles() {
             />
           </ListItem>
         ))}
-      </List>
+    </List>
     </Box>
   );
 }

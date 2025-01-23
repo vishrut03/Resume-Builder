@@ -8,13 +8,9 @@ import ToastTheme from '../../utils/ToastTheme';
 
 export default function Achievements() {
   const [currentAchievement, setCurrentAchievement] = useState('');
-  let achievementsStore = useResumeStore((state) => state.resume.achievements) || []; // Default to empty array
+  let achievementsStore = useResumeStore((state) => state.resume.achievements) || []; 
   const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
-
-  useEffect(() => {
-    console.log('Achievements Store:', achievementsStore); // Log achievements store value
-  }, [achievementsStore]);
 
   const handleAddAchievement = () => {
     if (currentAchievement.trim() !== '') {

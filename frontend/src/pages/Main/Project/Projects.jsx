@@ -17,6 +17,8 @@ export default function Projects() {
     link: '',
   });
 
+  const [errors, setErrors] = useState({});
+  
   const handleChange = (event) => {
     setCurrentProject({
       ...currentProject,
@@ -24,8 +26,11 @@ export default function Projects() {
     });
   };
 
-  const handleAddProject = () => {
-    if (currentProject.projectName && currentProject.link && currentProject.description) {
+  const handleAddProject = async() => {
+
+    try {
+      await ProjectSchema.validate(currentProject,{abortEarly:false});
+      setErrors({});
       addResumeEntry("projects", {...currentProject});
       toast.success("Project added successfully!", ToastTheme);
       setCurrentProject({
@@ -34,8 +39,14 @@ export default function Projects() {
         technologiesUsed: '',
         link: '',
       });
-    } else {
-      toast.error("Please fill all mandatory fields (marked as required).", ToastTheme);
+    } catch (err) {
+      const newErrors={};
+      if(err.inner!==undefined){
+        err.inner.forEach((e)=>{
+          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
+        })
+      }  
+      setErrors(newErrors);
     }
   };
 
@@ -45,6 +56,8 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.projectName?true:false}
+            helperText={errors.projectName}
             label="Project Name*"
             name="projectName"
             value={currentProject.projectName}
@@ -54,6 +67,8 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.description?true:false}
+            helperText={errors.description}
             label="Description*"
             name="description"
             multiline
@@ -65,6 +80,8 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.technologiesUsed?true:false}
+            helperText={errors.technologiesUsed}
             label="Technologies Used"
             name="technologiesUsed"
             value={currentProject.technologiesUsed}
@@ -74,6 +91,8 @@ export default function Projects() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.link?true:false}
+            helperText={errors.link}
             label="Link (GitHub/Deployed)*"
             name="link"
             value={currentProject.link}

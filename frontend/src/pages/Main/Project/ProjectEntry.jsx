@@ -4,13 +4,15 @@ import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
+import {ProjectSchema} from '../../../schemas/ProjectSchema';
 
 const ProjectEntry = ({ project, index }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localProject, setLocalProject] = useState(project);
   const editArrayField = useResumeStore((state) => state.editArrayField);
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry);
-
+  const [errors, setErrors] = useState({});
+  
   const handleChange = (field, value) => {
     setLocalProject({
       ...localProject,
@@ -18,13 +20,27 @@ const ProjectEntry = ({ project, index }) => {
     });
   };
 
-  const handleSave = () => {
-    Object.entries(localProject).forEach(([fieldKey, value]) => {
-      editArrayField("projects", index, fieldKey, value);
-    });
+  const handleSave = async() => {
+
+    try {
+      await ProjectSchema.validate(localProject,{abortEarly:false});
+      setErrors({});
+      Object.entries(localProject).forEach(([fieldKey, value]) => {
+        editArrayField("projects", index, fieldKey, value);
+      });
+      toast.success("Project updated successfully!", ToastTheme);
+      setIsEditing(false);
+    }
+    catch (err) {
+      const newErrors={};
+      if(err.inner!==undefined){
+        err.inner.forEach((e)=>{
+          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
+        })
+      }  
+      setErrors(newErrors);
+    }
     
-    toast.success("Project updated successfully!", ToastTheme);
-    setIsEditing(false);
   };
 
   const handleDelete = () => {
@@ -38,6 +54,8 @@ const ProjectEntry = ({ project, index }) => {
         <>
           <TextField
             fullWidth
+            error={errors.projectName?true:false}
+            helperText={errors.projectName}
             label="Project Name"
             value={localProject.projectName}
             onChange={(e) => handleChange('projectName', e.target.value)}
@@ -45,6 +63,8 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
+            error={errors.description?true:false}
+            helperText={errors.description}
             label="Description"
             multiline
             rows={3}
@@ -54,6 +74,8 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
+            error = {errors.technologiesUsed?true:false}
+            helperText={errors.technologiesUsed}
             label="Technologies"
             value={localProject.technologiesUsed}
             onChange={(e) => handleChange('technologiesUsed', e.target.value)}
@@ -61,6 +83,8 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
+            error={errors.link?true:false}
+            helperText={errors.link}
             label="Link"
             value={localProject.link}
             onChange={(e) => handleChange('link', e.target.value)}

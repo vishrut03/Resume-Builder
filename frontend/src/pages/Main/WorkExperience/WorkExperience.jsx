@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid2, TextField } from '@mui/material'; 
+import { Box, Button, TextField, Typography } from '@mui/material'; 
 import useResumeStore from '../../../app/ResumeStore';
 import WorkExperienceEntry from './WorkExperienceEntry';
 import { toast } from "react-toastify";
@@ -20,7 +20,6 @@ export default function WorkExperience() {
   });
 
   const [errors, setErrors] = useState({});
-  
 
   const handleChange = (event) => {
     setCurrentExperience({
@@ -30,16 +29,13 @@ export default function WorkExperience() {
   };
 
   const handleSave = async () => {
-
-
     try {
-      // WorkExperienceSchema.cast(currentExperience);
-      await WorkExperienceSchema.validate(currentExperience,{abortEarly:false});
-      if(currentExperience.endDate && currentExperience.startDate>currentExperience.endDate){
+      await WorkExperienceSchema.validate(currentExperience, { abortEarly: false });
+      if (currentExperience.endDate && currentExperience.startDate > currentExperience.endDate) {
         throw new Error("End date cannot be before start date");
       }
       setErrors({});
-      addResumeEntry('workExperience', currentExperience); 
+      addResumeEntry('workExperience', currentExperience);
       setCurrentExperience({
         jobTitle: '',
         companyName: '',
@@ -47,104 +43,139 @@ export default function WorkExperience() {
         endDate: '',
         responsibilities: '',
       });
-      toast.success("Experience added successfully!", {...ToastTheme,progress: undefined});
-
+      toast.success("Experience added successfully!", { ...ToastTheme, progress: undefined });
     } catch (err) {
-      const newErrors={};
-      if(err.inner!==undefined){
-        err.inner.forEach((e)=>{
-          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
-        })
-      }  
-      if(currentExperience.startDate && currentExperience.endDate && currentExperience.startDate>currentExperience.endDate){
-        newErrors.endDate="End date cannot be before start date";
+      const newErrors = {};
+      if (err.inner !== undefined) {
+        err.inner.forEach((e) => {
+          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message;
+        });
       }
-      // console.log(newErrors);
+      if (currentExperience.startDate && currentExperience.endDate && currentExperience.startDate > currentExperience.endDate) {
+        newErrors.endDate = "End date cannot be before start date";
+      }
       setErrors(newErrors);
     }
   };
 
   return (
-    <Box>
-      <Grid2 container spacing={2}>
-        <Grid2 item xs={12} sm={6}>
+    <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      {/* Heading for Work Experience */}
+      <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}>
+        Work Experience
+      </Typography>
+
+      {/* Job Title */}
+      <Box>
+        <TextField
+          required
+          error={!!errors.jobTitle}
+          helperText={errors.jobTitle}
+          fullWidth
+          label="Job Title"
+          name="jobTitle"
+          value={currentExperience.jobTitle}
+          onChange={handleChange}
+          sx={{ marginBottom: 2 }}
+        />
+      </Box>
+
+      {/* Company Name */}
+      <Box>
+        <TextField
+          required
+          error={!!errors.companyName}
+          helperText={errors.companyName}
+          fullWidth
+          label="Company Name"
+          name="companyName"
+          value={currentExperience.companyName}
+          onChange={handleChange}
+          sx={{ marginBottom: 2 }}
+        />
+      </Box>
+
+      {/* Start Date and End Date */}
+      <Box display="flex" gap={2}>
+        <Box flex={1}>
           <TextField
             fullWidth
-            error={errors.jobTitle?true:false}
-            helperText={errors.jobTitle}
-            label="Job Title*"
-            name="jobTitle"
-            value={currentExperience.jobTitle}
-            onChange={handleChange}
-          />
-        </Grid2>
-        <Grid2 item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            error={errors.companyName?true:false}
-            helperText={errors.companyName}
-            label="Company Name*"
-            name="companyName"
-            value={currentExperience.companyName}
-            onChange={handleChange}
-          />
-        </Grid2>
-        <Grid2 item xs={12} sm={6}>
-          <TextField
-            fullWidth
-            error={errors.startDate?true:false}
+            error={!!errors.startDate}
             helperText={errors.startDate}
-            label="Start Date*"
+            label="Start Date"
             name="startDate"
             type="date"
             InputLabelProps={{ shrink: true }}
             value={currentExperience.startDate}
             onChange={handleChange}
+            sx={{ marginBottom: 2 }}
           />
-        </Grid2>
-        <Grid2 item xs={12} sm={6}>
+        </Box>
+        <Box flex={1}>
           <TextField
             fullWidth
-            error={errors.endDate?true:false}
+            error={!!errors.endDate}
             helperText={errors.endDate}
-            label="End Date*"
+            label="End Date"
             name="endDate"
             type="date"
             InputLabelProps={{ shrink: true }}
             value={currentExperience.endDate}
             onChange={handleChange}
+            sx={{ marginBottom: 2 }}
           />
-        </Grid2>
-        <Grid2 item xs={12}>
-          <TextField
-            fullWidth
-            error={errors.responsibilities?true:false}
-            helperText={errors.responsibilities}
-            label="Responsibilities"
-            name="responsibilities"
-            multiline
-            rows={4}
-            value={currentExperience.responsibilities}
-            onChange={handleChange}
-            placeholder="Enter responsibilities (separated by new lines)"
-          />
-        </Grid2>
-        <Grid2 item xs={12}>
-          <Button variant="contained" onClick={handleSave}>
-            Add experience
-          </Button>
-        </Grid2>
-      </Grid2>
-      <Box mt={4}>
-      {workExperience
-      .filter((exp) => exp.jobTitle.trim() !== '' && exp.companyName.trim() !== '')
-      .map((exp, index) => (
-        <WorkExperienceEntry
-          key={`${exp.jobTitle}-${exp.companyName}-${index}`}
-          experience={exp}
-          index={index} 
+        </Box>
+      </Box>
+
+      {/* Responsibilities */}
+      <Box>
+        <TextField
+          fullWidth
+          multiline
+          rows={4}
+          error={!!errors.responsibilities}
+          helperText={errors.responsibilities}
+          label="Responsibilities"
+          name="responsibilities"
+          value={currentExperience.responsibilities}
+          onChange={handleChange}
+          sx={{ marginBottom: 2 }}
         />
-      ))}
+      </Box>
+
+      {/* Save Button */}
+      <Box textAlign="center">
+        <Button
+          variant="contained"
+          color="primary"
+          sx={{
+            width: '50%', 
+            margin: '0 auto',
+            display: 'block', 
+            marginTop: 2, 
+            padding: '10px 20px',
+            borderRadius: '8px', 
+          }}
+          onClick={handleSave}
+        >
+          Add Experience
+        </Button>
+      </Box>
+
+      {/* Display Added Work Experiences */}
+      <Box mt={4}>
+        <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 2 }}>
+          Previously Added Work Experiences
+        </Typography>
+        {workExperience
+          .filter((exp) => exp.jobTitle.trim() !== '' && exp.companyName.trim() !== '')
+          .map((exp, index) => (
+            <WorkExperienceEntry
+              key={`${exp.jobTitle}-${exp.companyName}-${index}`}
+              experience={exp}
+              index={index}
+            />
+          ))}
       </Box>
     </Box>
   );

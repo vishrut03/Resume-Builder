@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, TextField, Button } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,39 +21,52 @@ export default function BriefDescription() {
   };
 
   const handleSave = async () => {
-
-    if(description.trim()===''){
+    if (description.trim() === '') {
       setErrors("Description cannot be empty");
       return;
-    }
-    else if(description.length>200){
+    } else if (description.length > 200) {
       setErrors("Description cannot exceed 200 characters");
       return;
-    }
-    else if(description.length<10){
-      setErrors("Description should be atleast 10 characters long");
+    } else if (description.length < 10) {
+      setErrors("Description should be at least 10 characters long");
       return;
     }
-    editSimpleField('briefDescription', description); 
+    editSimpleField('briefDescription', description);
     toast.success("Description saved!", ToastTheme);
   };
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+      
+      <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4 }}>
+        Brief Description
+      </Typography>
+
       <TextField
         fullWidth
         label="Brief Description"
-        error={errors!==undefined?true:false}
+        error={errors !== undefined ? true : false}
         helperText={errors}
         multiline
         rows={4}
         value={description}
         onChange={handleChange}
         placeholder="Motivated software engineer with a passion for developing scalable solutions."
+        sx={{ marginBottom: 2, maxWidth: 600 }}
       />
-      <Button variant="contained" color="primary" onClick={handleSave} style={{ marginTop: '16px' }}>
+      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={handleSave} 
+        sx={{ width: 200, fontSize: '16px', textTransform: 'none' }}
+      >
         Save Description
       </Button>
+
+      <Typography variant="caption" color="textSecondary" sx={{ marginTop: 1 }}>
+        Ensure your description is clear and concise.
+      </Typography>
     </Box>
   );
 }

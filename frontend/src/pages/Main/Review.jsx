@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { Box, Typography, Paper, Grid2, List, ListItem, ListItemText, Button, Chip, IconButton } from "@mui/material";
+import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Chip, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import useResumeStore from "../../app/ResumeStore";
 
 export default function Review({ onEdit }) {
-  const { resume } = useResumeStore(); 
+  const { resume } = useResumeStore();
 
   useEffect(() => {
     console.log(resume);
@@ -22,6 +22,8 @@ export default function Review({ onEdit }) {
     </Paper>
   );
 
+  const isNotEmpty = (entry) => Object.values(entry).some((value) => value);
+
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -29,42 +31,31 @@ export default function Review({ onEdit }) {
       </Typography>
 
       <Section title="Personal Details" editIndex={0}>
-        <Grid2 container spacing={2}>
-          <Grid2 item xs={12} sm={6}>
-            <Typography>
-              <strong>Name:</strong>
-              {resume.personalDetails?.firstName && resume.personalDetails?.lastName
-                ? `${resume.personalDetails.firstName} ${resume.personalDetails.lastName}`
-                : "Not Provided"}
-            </Typography>
-          </Grid2>
-          <Grid2 item xs={12} sm={6}>
-            <Typography>
-              <strong>Phone:</strong> {resume.personalDetails?.phoneNumber || "Not Provided"}
-            </Typography>
-          </Grid2>
-          <Grid2 item xs={12} sm={6}>
-            <Typography>
-              <strong>Email:</strong> {resume.personalDetails?.email || "Not Provided"}
-            </Typography>
-          </Grid2>
-          <Grid2 item xs={12} sm={6}>
-            <Typography>
-              <strong>LinkedIn:</strong> {resume.personalDetails?.linkedIn || "Not Provided"}
-            </Typography>
-          </Grid2>
-        </Grid2>
+        <Typography>
+          <strong>Name:</strong> {resume.personalDetails?.firstName && resume.personalDetails?.lastName
+            ? `${resume.personalDetails.firstName} ${resume.personalDetails.lastName}`
+            : "Not Provided"}
+        </Typography>
+        <Typography>
+          <strong>Phone:</strong> {resume.personalDetails?.phoneNumber || "Not Provided"}
+        </Typography>
+        <Typography>
+          <strong>Email:</strong> {resume.personalDetails?.email || "Not Provided"}
+        </Typography>
+        <Typography>
+          <strong>LinkedIn:</strong> {resume.personalDetails?.linkedIn || "Not Provided"}
+        </Typography>
       </Section>
 
       {resume.briefDescription && (
         <Section title="Brief Description" editIndex={1}>
-          <Typography>{resume.briefDescription || "Not Provided"}</Typography>
+          <Typography>{resume.briefDescription}</Typography>
         </Section>
       )}
 
-      {resume.workExperience?.length > 0 && (
+      {resume.workExperience?.filter(isNotEmpty).length > 0 && (
         <Section title="Work Experience" editIndex={2}>
-          {resume.workExperience.map((exp, index) => (
+          {resume.workExperience.filter(isNotEmpty).map((exp, index) => (
             <Box key={index} mb={2}>
               <Typography variant="subtitle1">
                 {exp.jobTitle} at {exp.companyName}
@@ -78,21 +69,23 @@ export default function Review({ onEdit }) {
         </Section>
       )}
 
-      <Section title="Education" editIndex={3}>
-        {resume.education?.map((edu, index) => (
-          <Box key={index} mb={2}>
-            <Typography variant="subtitle1">
-              {edu.degreeName} from {edu.institutionName}
-            </Typography>
-            <Typography variant="body2">Graduated: {edu.yearOfGraduation || "Not Provided"}</Typography>
-            <Typography variant="body2">CGPA: {edu.cgpa || "Not Provided"}</Typography>
-          </Box>
-        ))}
-      </Section>
+      {resume.education?.filter(isNotEmpty).length > 0 && (
+        <Section title="Education" editIndex={3}>
+          {resume.education.filter(isNotEmpty).map((edu, index) => (
+            <Box key={index} mb={2}>
+              <Typography variant="subtitle1">
+                {edu.degreeName} from {edu.institutionName}
+              </Typography>
+              <Typography variant="body2">Graduated: {edu.yearOfGraduation || "Not Provided"}</Typography>
+              <Typography variant="body2">CGPA: {edu.cgpa || "Not Provided"}</Typography>
+            </Box>
+          ))}
+        </Section>
+      )}
 
-      {resume.projects?.length > 0 && (
+      {resume.projects?.filter(isNotEmpty).length > 0 && (
         <Section title="Projects" editIndex={4}>
-          {resume.projects.map((project, index) => (
+          {resume.projects.filter(isNotEmpty).map((project, index) => (
             <Box key={index} mb={2}>
               <Typography variant="subtitle1">{project.projectName}</Typography>
               <Typography variant="body2">{project.description || "Not Provided"}</Typography>
@@ -113,10 +106,10 @@ export default function Review({ onEdit }) {
         </Section>
       )}
 
-      {resume.achievements?.length > 0 && (
+      {resume.achievements?.filter(Boolean).length > 0 && (
         <Section title="Achievements" editIndex={6}>
           <List>
-            {resume.achievements.map((achievement, index) => (
+            {resume.achievements.filter(Boolean).map((achievement, index) => (
               <ListItem key={index}>
                 <ListItemText primary={achievement} />
               </ListItem>
@@ -125,9 +118,9 @@ export default function Review({ onEdit }) {
         </Section>
       )}
 
-      {resume.certificates?.length > 0 && (
+      {resume.certificates?.filter(isNotEmpty).length > 0 && (
         <Section title="Certificates" editIndex={7}>
-          {resume.certificates.map((cert, index) => (
+          {resume.certificates.filter(isNotEmpty).map((cert, index) => (
             <Box key={index} mb={1}>
               <Typography variant="subtitle2">{cert.certificateName}</Typography>
               <Typography variant="body2">
@@ -138,9 +131,9 @@ export default function Review({ onEdit }) {
         </Section>
       )}
 
-      {resume.codingProfiles?.length > 0 && (
+      {resume.codingProfiles?.filter(isNotEmpty).length > 0 && (
         <Section title="Coding Profiles" editIndex={8}>
-          {resume.codingProfiles.map((profile, index) => (
+          {resume.codingProfiles.filter(isNotEmpty).map((profile, index) => (
             <Box key={index} mb={1}>
               <Typography variant="subtitle2">{profile.platform}</Typography>
               <Typography variant="body2">Link: {profile.profileLink || "Not Provided"}</Typography>
@@ -149,18 +142,9 @@ export default function Review({ onEdit }) {
         </Section>
       )}
 
-      {resume.customDetails?.heading && resume.customDetails?.description && (
-        <Section title="Custom Details" editIndex={9}>
-          <Typography variant="h6">{resume.customDetails.heading}</Typography>
-          <Typography variant="body1" sx={{ whiteSpace: "pre-line" }}>
-            {resume.customDetails.description || "Not Provided"}
-          </Typography>
-        </Section>
-      )}
-
-      {resume.extracurricularActivities?.length > 0 && (
+      {resume.extracurricularActivities?.filter(isNotEmpty).length > 0 && (
         <Section title="Extra Curricular Activities" editIndex={10}>
-          {resume.extracurricularActivities.map((activity, index) => (
+          {resume.extracurricularActivities.filter(isNotEmpty).map((activity, index) => (
             <Box key={index} mb={1}>
               <Typography variant="subtitle2">{activity.activityName}</Typography>
               <Typography variant="body2">{activity.description || "Not Provided"}</Typography>

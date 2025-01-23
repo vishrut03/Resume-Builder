@@ -11,8 +11,15 @@ export default function Achievements() {
   let achievementsStore = useResumeStore((state) => state.resume.achievements) || []; 
   const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
+  const [error, setError] = useState(undefined);
 
   const handleAddAchievement = () => {
+
+    if(currentAchievement===""){
+      setError("Please enter a valid skill!")
+      return;
+    }
+    setError(undefined);
     if (currentAchievement.trim() !== '') {
       addResumeEntry("achievements", currentAchievement.trim());
       toast.success("Achievement added successfully!", ToastTheme);
@@ -42,6 +49,8 @@ export default function Achievements() {
       <TextField
         fullWidth
         label="Add Achievement"
+        error={error===undefined?false:true}
+        helperText={error}
         value={currentAchievement}
         onChange={(e) => setCurrentAchievement(e.target.value)}
         onKeyDown={handleKeyDown}

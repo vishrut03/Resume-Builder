@@ -12,8 +12,15 @@ export default function Skills() {
   const skillsStore = useResumeStore((state) => state.resume.skills)
   const addSkillStore = useResumeStore((state) => state.addResumeEntry)
   const deleteSkillStore = useResumeStore((state) => state.deleteResumeEntry)
+  const [error, setError] = useState(undefined);
 
   const handleAddSkill = (skill) => {
+    // console.log(skill);
+    if(skill===""){
+      setError("Please enter a valid skill!")
+      return;
+    }
+    setError(undefined);
     if (skill && skill.trim() !== "" && skillsStore.length < 10) {
       addSkillStore("skills", skill.trim())
       toast.success("Skill added successfully!", ToastTheme)
@@ -36,7 +43,7 @@ export default function Skills() {
       <Autocomplete
         freeSolo
         options={popularSkills}
-        renderInput={(params) => <TextField {...params} label="Add Skill" fullWidth />}
+        renderInput={(params) => <TextField {...params} label="Add Skill" fullWidth error={error===undefined?false:true} helperText={error}/>}
         value={currentSkill}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {

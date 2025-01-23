@@ -3,6 +3,11 @@ import * as Yup from 'yup';
 export const EducationSchema = Yup.object().shape({
     degeeName: Yup.string().required('Degree name is required'),
     instituteName: Yup.string().required('Institute name is required'),
-    yearOfGraduation: Yup.number().min(1950).max(2050).required('Year of graduation is required'),
-    cgpa: Yup.number().min(0).max(100).required('CGPA is required'),
+    yearOfGraduation: Yup
+    .number().typeError('Year must be a number')
+    .required('Year of graduation is required')
+    .positive(`Can't be nagative`)
+    .min(1950,'You are too old to create a resume')
+    .max(2050,'You are too young to create a resume'),
+    cgpa: Yup.number().typeError('CGPA/% must be a number').required('CGPA is required').min(0,"CGPA can't be less than 0").max(100,"CGPA can't be more than 100"),
 });

@@ -10,6 +10,8 @@ export default function PersonalDetails() {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails);
   const editSimpleField = useResumeStore((state) => state.editSimpleField);
 
+  const [errors, setErrors] = useState({});
+
   const [localPersonalDetails, setLocalPersonalDetails] = useState({
     firstName: '',
     lastName: '',
@@ -28,27 +30,37 @@ export default function PersonalDetails() {
     setLocalPersonalDetails((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const { firstName, lastName, phoneNumber, email, linkedIn } = localPersonalDetails;
 
-    if (!firstName || !lastName || !phoneNumber || !email || !linkedIn) {
-      toast.error("Please fill all mandatory fields (marked as required) to save details.", ToastTheme);
-      return;
+    // if (!firstName || !lastName || !phoneNumber || !email || !linkedIn) {
+    //   toast.error("Please fill all mandatory fields (marked as required) to save details.", ToastTheme);
+    //   return;
+    // }
+
+    // if (phoneNumber.length !== 10) {
+    //   toast.error("Phone number should be 10 digits.", ToastTheme);
+    //   return;
+    // }
+
+    // if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+    //   toast.error("Enter a valid email address.", ToastTheme);
+    //   return;
+    // }
+    // PersonalDetailsSchema.cast(localPersonalDetails);
+    try{
+      await PersonalDetailsSchema.validate(localPersonalDetails,{abortEarly:false});
+      editSimpleField('personalDetails', localPersonalDetails);
+      toast.success("Details saved successfully", ToastTheme);
     }
-
-    if (phoneNumber.length !== 10) {
-      toast.error("Phone number should be 10 digits.", ToastTheme);
-      return;
-    }
-
-    if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-      toast.error("Enter a valid email address.", ToastTheme);
-      return;
-    }
-
-    editSimpleField('personalDetails', localPersonalDetails);
-
-    toast.success("Details saved successfully", ToastTheme);
+    catch(err){
+      const newErrors={};
+      err.inner.forEach((e)=>{
+        newErrors[e.path]=e.message;
+      })
+      console.log(newErrors);
+      setErrors(newErrors);
+    } 
   };
 
   return (
@@ -57,6 +69,8 @@ export default function PersonalDetails() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             required
+            error={errors.firstName?true:false}
+            helperText={errors.firstName}
             fullWidth
             label="First Name"
             name="firstName"
@@ -67,6 +81,8 @@ export default function PersonalDetails() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             required
+            error={errors.lastName?true:false}
+            helperText={errors.lastName}
             fullWidth
             label="Last Name"
             name="lastName"
@@ -77,6 +93,8 @@ export default function PersonalDetails() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             required
+            error={errors.phoneNumber?true:false}
+            helperText={errors.phoneNumber}
             fullWidth
             label="Phone Number"
             name="phoneNumber"
@@ -87,6 +105,8 @@ export default function PersonalDetails() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             required
+            helperText={errors.email}
+            error={errors.email?true:false}
             fullWidth
             label="Email Address"
             name="email"
@@ -98,6 +118,8 @@ export default function PersonalDetails() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.address?true:false}
+            helperText={errors.address}
             label="Address"
             name="address"
             multiline
@@ -110,6 +132,8 @@ export default function PersonalDetails() {
           <TextField
             required
             fullWidth
+            helperText={errors.linkedIn}
+            error={errors.linkedIn?true:false}
             label="LinkedIn Profile"
             name="linkedIn"
             value={localPersonalDetails.linkedIn}

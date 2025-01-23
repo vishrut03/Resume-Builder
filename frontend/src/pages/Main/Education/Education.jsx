@@ -5,6 +5,7 @@ import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
+import {EducationSchema} from '../../../schemas/EducationSchema';
 
 export default function Education() {
   const education = useResumeStore((state) => state.resume.education); 

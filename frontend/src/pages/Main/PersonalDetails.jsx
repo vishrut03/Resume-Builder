@@ -4,6 +4,7 @@ import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
+import {PersonalDetailsSchema} from '../../schemas/PersonalDetailsSchema';
 
 export default function PersonalDetails() {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails);

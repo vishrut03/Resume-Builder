@@ -1,34 +1,30 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography, Grid2 } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
 
-
 export default function Achievements() {
-
   const [currentAchievement, setCurrentAchievement] = useState('');
-  let achievementsStore = useResumeStore((state) => state.achievements);
-  const addAchievementStore = useResumeStore((state) => state.addAchievement); 
-  const deleteAchievementStore = useResumeStore((state) => state.deleteAchievement); 
+  let achievementsStore = useResumeStore((state) => state.resume.achievements);
+  const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
+  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
 
   const handleAddAchievement = () => {
     if (currentAchievement.trim() !== '') {
-      addAchievementStore(currentAchievement.trim());
+      addResumeEntry("achievements", currentAchievement.trim());
       toast.success("Achievement added successfully!", ToastTheme);
       setCurrentAchievement('');
     }
-
-    else
-    {
+    else {
       toast.error("Please enter a valid achievement!", ToastTheme); 
     }
   };
 
   const handleDeleteAchievement = (index) => {
-    deleteAchievementStore(index);    
+    deleteResumeEntry("achievements", index);    
     toast.success("Achievement deleted successfully!", ToastTheme);
   };
 
@@ -37,7 +33,6 @@ export default function Achievements() {
       handleAddAchievement();
     }
   };
-
 
   return (
     <Box>
@@ -56,20 +51,20 @@ export default function Achievements() {
         Add Achievement
       </Button>
       <List sx={{ mt: 2 }}>
-        {achievementsStore.map((achievement, index) => (
-          <ListItem
-            key={index}
-            secondaryAction={
-              <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteAchievement(index)}>
-                <DeleteIcon />
-              </IconButton>
-            }
-          >
-            <ListItemText primary={achievement} />
-          </ListItem>
-        ))}
-      </List>
+      {achievementsStore.map((achievement, index) => (
+        <ListItem
+          key={index}
+          secondaryAction={
+            <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteAchievement(index)}>
+              <DeleteIcon />
+            </IconButton>
+          }
+        >
+          <ListItemText primary={achievement} />
+        </ListItem>
+      ))}
+    </List>
+
     </Box>
   );
 }
-

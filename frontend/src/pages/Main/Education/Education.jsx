@@ -7,8 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 
 export default function Education() {
-  const education = useResumeStore((state) => state.education);
-  const addEducation = useResumeStore((state) => state.addEducation);
+  const education = useResumeStore((state) => state.resume.education); 
+  const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
 
   const [newEducation, setNewEducation] = useState({
     degreeName: '',
@@ -25,21 +25,21 @@ export default function Education() {
   };
 
   const handleAdd = () => {
-    if(!newEducation.degreeName || !newEducation.institutionName || !newEducation.yearOfGraduation || !newEducation.cgpa) {
+    if (!newEducation.degreeName || !newEducation.institutionName || !newEducation.yearOfGraduation || !newEducation.cgpa) {
       toast.error("Please fill all mandatory fields (marked as required) to save details.", ToastTheme);
       return;
     }
-    if(newEducation.yearOfGraduation < 1900 || newEducation.yearOfGraduation > new Date().getFullYear()+5) {
+    if (newEducation.yearOfGraduation < 1900 || newEducation.yearOfGraduation > new Date().getFullYear() + 5) {
       toast.error("Invalid year of graduation", ToastTheme);
       return;
     }
-    if(newEducation.cgpa < 0 || newEducation.cgpa > 100) {
+    if (newEducation.cgpa < 0 || newEducation.cgpa > 100) {
       toast.error("Invalid CGPA/Percentage", ToastTheme);
       return;
     }
-    addEducation(newEducation);
-    toast.success("Education details added successfully!", ToastTheme);
 
+    addResumeEntry("education", { ...newEducation });
+    toast.success("Education details added successfully!", ToastTheme);
     setNewEducation({ degreeName: '', institutionName: '', yearOfGraduation: '', cgpa: '' });
   };
 
@@ -96,11 +96,15 @@ export default function Education() {
         </Grid2>
       </Grid2>
 
-      {education.filter(edu => edu.degreeName && edu.institutionName && edu.yearOfGraduation && edu.cgpa) 
-  .map((edu, index) => (
-    <EducationEntry key={index} index={index} education={edu} />
-  ))}
-
+      {education
+      .filter((edu) => edu.degreeName && edu.institutionName && edu.yearOfGraduation && edu.cgpa)
+      .map((edu, index) => (
+        <EducationEntry
+          key={`${edu.degreeName}-${edu.institutionName}-${index}`}
+          index={index}
+          education={edu}
+        />
+      ))}
     </Box>
   );
 }

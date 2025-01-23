@@ -6,8 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 
 function EducationEntry({ education, index }) {
-  const updateEducation = useResumeStore((state) => state.updateEducation);
-  const deleteEducation = useResumeStore((state) => state.deleteEducation); 
+  const editArrayField = useResumeStore((state) => state.editArrayField);
+  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
   const [localEducation, setLocalEducation] = useState(education);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -19,13 +19,16 @@ function EducationEntry({ education, index }) {
   };
 
   const handleSave = () => {
-    updateEducation(index, localEducation);  
+    Object.entries(localEducation).forEach(([fieldKey, value]) => {
+      editArrayField("education", index, fieldKey, value);
+    });
+
     toast.success("Education details updated successfully!", ToastTheme);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
-    deleteEducation(index); 
+    deleteResumeEntry("education", index); 
     toast.success("Education details deleted successfully!", ToastTheme);
   };
 

@@ -104,50 +104,30 @@ const Form = () => {
   return activeStep === 12 ? (
     <Resume />
   ) : (
-    <div className="max-w-4xl mx-auto p-6">
-      {/* <div className="mb-8">
-        <div className="flex flex-wrap -mx-2 overflow-hidden">
-          {steps.map(({ label, icon }, index) => (
-            <div key={label} className="my-2 px-2 w-1/2 overflow-hidden sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">
-              <button
-                onClick={handleStep(index)}
-                className={`w-full py-2 px-4 rounded-full text-sm font-medium transition-colors duration-150 flex items-center justify-center ${
-                  activeStep === index
-                    ? "bg-blue-500 text-white"
-                    : completed[index]
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }`}
-              >
-                <span className="mr-2">{icon}</span>
-                <span className="hidden sm:inline">{label}</span>
-              </button>
-            </div>
-          ))}
-        </div>
-      </div> */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-8">{getStepContent(activeStep)}</div>
-      <div className="flex justify-between">
+    <div className="max-w-4xl mx-auto p-8">
+      <div className="bg-white rounded-lg p-6 mb-4">{getStepContent(activeStep)}</div> 
+
+    <div className="flex justify-between ml-10"> 
+      <button
+        onClick={handleBack}
+        disabled={activeStep === 0}
+        className={`py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu ${
+          activeStep === 0
+            ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+            : "bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105"
+        } shadow-md`}
+      >
+        Back
+      </button>
+      <div>
         <button
-          onClick={handleBack}
-          disabled={activeStep === 0}
-          className={`py-2 px-4 rounded-md text-sm font-medium ${
-            activeStep === 0
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          }`}
+          onClick={handleNext}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
-          Back
+          Next
         </button>
-        <div>
-          <button
-            onClick={handleNext}
-            className="py-2 px-4 bg-blue-500 text-white rounded-md text-sm font-medium hover:bg-blue-600 mr-2"
-          >
-            Next
-          </button>
-        </div>
       </div>
+    </div>
     </div>
   );
 };

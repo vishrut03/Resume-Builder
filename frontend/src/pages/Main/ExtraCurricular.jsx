@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../../app/ResumeStore'
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../utils/ToastTheme';
 
 export default function ExtraCurricular() {
   
@@ -28,16 +29,7 @@ export default function ExtraCurricular() {
   const handleAddActivity = () => {
     if (currentActivity.activityName.trim() !== '') {
       addExtracurricularActivity(currentActivity);
-      toast.success("Activity added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Activity added successfully!", ToastTheme);
       setCurrentActivity({
         activityName: '',
         description: '',
@@ -47,31 +39,13 @@ export default function ExtraCurricular() {
 
     else
     {
-      toast.error("Please enter correct activity details!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please enter correct activity details!", ToastTheme);
     }
   };
 
   const handleDeleteActivity = (index) => {
     deleteExtracurricularActivity(index);
-    toast.success("Activity deleted successfully!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Activity deleted successfully!", ToastTheme);
   };
 
   return (

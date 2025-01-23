@@ -93,7 +93,7 @@ const Form = () => {
     <Resume />
   ) : (
     <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <div className="flex flex-wrap -mx-2 overflow-hidden">
           {steps.map(({ label, icon }, index) => (
             <div key={label} className="my-2 px-2 w-1/2 overflow-hidden sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6">
@@ -113,7 +113,7 @@ const Form = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">{getStepContent(activeStep)}</div>
       <div className="flex justify-between">
         <button

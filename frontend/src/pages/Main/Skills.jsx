@@ -3,6 +3,7 @@ import { Box, TextField, Button, Chip, Grid2 } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../utils/ToastTheme';
 
 
 export default function Skills() {
@@ -15,46 +16,19 @@ export default function Skills() {
   const handleAddSkill = () => {
     if (currentSkill.trim() !== '') {
       addSkillStore(currentSkill.trim());
-      toast.success("Skill added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Skill added successfully!", ToastTheme);
       setCurrentSkill('');
     }
 
     else
     {
-      toast.error("Please enter a valid skill!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please enter a valid skill!", ToastTheme);
     }
   };
 
   const handleDeleteSkill = (skillToDelete) => {
     deleteSkillStore(skillToDelete);
-    toast.success("Skill deleted successfully!", {
-      position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-    });
+    toast.success("Skill deleted successfully!", ToastTheme);
   };
 
   return (

@@ -3,6 +3,7 @@ import { TextField, Button, Box, Typography } from "@mui/material";
 import useResumeStore from "../../app/ResumeStore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../utils/ToastTheme";
 
 const Custom = () => {
   const customDetails = useResumeStore((state) => state.customDetails); 
@@ -26,31 +27,13 @@ const Custom = () => {
   const handleSave = () => {
     const { heading, description } = customSection;
     if (!heading || !description) {
-        toast.error("Please fill both the heading and description.", {
-            position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
+      toast.error("Please fill both the heading and description.", ToastTheme);
       return;
     }
     setCustomDetails("heading", heading);
     setCustomDetails("description", description);
     setCustomSection({ heading: "", description: "" });
-    toast.success("Custom section details saved successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-    });
+    toast.success("Custom section details saved successfully!", ToastTheme);
   };
 
   return (

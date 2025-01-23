@@ -4,6 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../utils/ToastTheme';
 
 export default function CodingProfiles() {
   const [currentProfile, setCurrentProfile] = useState({
@@ -25,16 +26,7 @@ export default function CodingProfiles() {
   const handleAddProfile = () => {
     if (currentProfile.platform.trim() !== '' && currentProfile.profileLink.trim() !== '') {
       addCodingProfile(currentProfile);
-      toast.success("Coding Profile added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Coding Profile added successfully!", ToastTheme);
       setCurrentProfile({
         platform: '',
         profileLink: '',
@@ -43,31 +35,13 @@ export default function CodingProfiles() {
 
     else
     {
-      toast.error("Please enter all details!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please enter all details!", ToastTheme);
     }
   };
 
   const handleDeleteProfile = (index) => {
     deleteCodingProfile(index);
-    toast.success("Coding Profile deleted successfully!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Coding Profile deleted successfully!", ToastTheme);
   };
 
   return (

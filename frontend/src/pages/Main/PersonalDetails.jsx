@@ -3,6 +3,7 @@ import { Box, TextField, Grid2, Button } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../utils/ToastTheme';
 
 export default function PersonalDetails() {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails);
@@ -30,55 +31,23 @@ export default function PersonalDetails() {
     const { firstName, lastName, phoneNumber, email, linkedIn } = localPersonalDetails;
 
     if (!firstName || !lastName || !phoneNumber || !email || !linkedIn) {
-      toast.error("Please fill all mandatory fields (marked as required) to save details.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
+      toast.error("Please fill all mandatory fields (marked as required) to save details.", ToastTheme);
       return;
     }
 
     if (phoneNumber.length !== 10) {
-      toast.error("Phone number should be 10 digits.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
+      toast.error("Phone number should be 10 digits.", ToastTheme);
       return;
     }
 
     if (email.indexOf('@') === -1 || email.indexOf('.') === -1) {
-      toast.error("Enter a valid email address.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-      });
+      toast.error("Enter a valid email address.", ToastTheme);
       return;
     }
 
     editSimpleField('personalDetails', localPersonalDetails);
 
-    toast.success("Details saved successfully", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-    });
+    toast.success("Details saved successfully", ToastTheme);
   };
 
   return (

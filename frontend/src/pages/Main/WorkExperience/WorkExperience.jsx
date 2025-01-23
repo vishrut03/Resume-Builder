@@ -4,6 +4,7 @@ import useResumeStore from '../../../app/ResumeStore';
 import WorkExperienceEntry from './WorkExperienceEntry';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../../utils/ToastTheme';
 
 export default function WorkExperience() {
   const workExperience = useResumeStore((state) => state.resume.workExperience);
@@ -34,27 +35,9 @@ export default function WorkExperience() {
         endDate: '',
         responsibilities: '',
       });
-      toast.success("Experience added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Experience added successfully!", {...ToastTheme,progress: undefined});
     } else {
-      toast.error("Please fill all the mandatory fields.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please fill all the mandatory fields.", {...ToastTheme,progress: undefined});
     }
   };
 

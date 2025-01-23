@@ -4,6 +4,7 @@ import useResumeStore from '../../../app/ResumeStore';
 import ProjectEntry from './ProjectEntry';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../../utils/ToastTheme';
 
 export default function Projects() {
   const projectsStore = useResumeStore((state) => state.projects);
@@ -25,16 +26,7 @@ export default function Projects() {
   const handleAddProject = () => {
     if (currentProject.projectName && currentProject.link && currentProject.description) {
       addProjectStore(currentProject);
-      toast.success("Project added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Project added successfully!", ToastTheme);
       setCurrentProject({
         projectName: '',
         description: '',
@@ -42,16 +34,7 @@ export default function Projects() {
         link: '',
       });
     } else {
-      toast.error("Please fill all mandatory fields (marked as required).", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please fill all mandatory fields (marked as required).", ToastTheme);
     }
   };
 

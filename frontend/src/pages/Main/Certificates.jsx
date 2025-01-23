@@ -4,6 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import useResumeStore from "../../app/ResumeStore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../utils/ToastTheme";
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
@@ -26,16 +27,7 @@ export default function Certificates() {
   const handleAddCertificate = () => {
     if (currentCertificate.name.trim() !== "" && currentCertificate.organization.trim() !== "") {
       addCertificate(currentCertificate);
-      toast.success("Certificate added successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.success("Certificate added successfully!", ToastTheme);
 
       setCurrentCertificate({
         name: "",
@@ -46,31 +38,13 @@ export default function Certificates() {
 
     else
     {
-      toast.error("Please enter valid certificate details!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      toast.error("Please enter valid certificate details!", ToastTheme);
     }
   };
 
   const handleDeleteCertificate = (index) => {
     deleteCertificate(index);
-    toast.success("Certificate deleted successfully!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Certificate deleted successfully!", ToastTheme);
   };
 
   return (

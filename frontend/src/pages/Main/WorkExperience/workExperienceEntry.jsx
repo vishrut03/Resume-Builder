@@ -3,6 +3,7 @@ import { Box, Button, Typography, TextField } from '@mui/material';
 import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../../utils/ToastTheme';
 
 const WorkExperienceEntry = ({ experience, index }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -25,31 +26,13 @@ const WorkExperienceEntry = ({ experience, index }) => {
     Object.keys(localExperience).forEach((fieldKey) => {
       editArrayField('workExperience', index, fieldKey, localExperience[fieldKey]);
     });
-    toast.success("Work experience updated!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Work experience updated!", {...ToastTheme,progress: undefined});
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     deleteResumeEntry('workExperience', index);
-    toast.success("Work experience deleted!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Work experience deleted!", {...ToastTheme,progress: undefined});
   };
 
   return (

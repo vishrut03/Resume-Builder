@@ -3,6 +3,7 @@ import { Box, TextField, Button, Typography } from '@mui/material';
 import useResumeStore from '../../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../../utils/ToastTheme';
 
 function EducationEntry({ education, index }) {
   const updateEducation = useResumeStore((state) => state.updateEducation);
@@ -19,31 +20,13 @@ function EducationEntry({ education, index }) {
 
   const handleSave = () => {
     updateEducation(index, localEducation);  
-    toast.success("Education details updated successfully!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Education details updated successfully!", ToastTheme);
     setIsEditing(false);
   };
 
   const handleDelete = () => {
     deleteEducation(index); 
-    toast.success("Education details deleted successfully!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    toast.success("Education details deleted successfully!", ToastTheme);
   };
 
   return (

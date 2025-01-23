@@ -3,6 +3,8 @@ import { Box, TextField, Button } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from '../../utils/ToastTheme';
+
 
 export default function BriefDescription() {
   const briefDescription = useResumeStore((state) => state.resume.briefDescription);
@@ -20,15 +22,7 @@ export default function BriefDescription() {
 
   const handleSave = () => {
     editSimpleField('briefDescription', description); 
-    toast.success("Description saved!", {
-      position: "top-center",
-      autoClose: 3000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      theme: "light",
-    });
+    toast.success("Description saved!", ToastTheme);
   };
 
   return (

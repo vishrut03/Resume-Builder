@@ -17,6 +17,7 @@ export default function ExtraCurricular() {
   const extracurricularActivities = useResumeStore(state => state.resume.extracurricularActivities) || []; 
   const addResumeEntry = useResumeStore(state => state.addResumeEntry);  
   const deleteResumeEntry = useResumeStore(state => state.deleteResumeEntry); 
+  const [error,setError]=useState(undefined);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,17 +28,19 @@ export default function ExtraCurricular() {
   };
 
   const handleAddActivity = () => {
-    if (currentActivity.activityName.trim() !== '') {
-      addResumeEntry('extracurricularActivities', currentActivity);  
-      toast.success("Activity added successfully!", ToastTheme);
-      setCurrentActivity({
-        activityName: '',
-        description: '',
-        achievements: '',
-      });
-    } else {
-      toast.error("Please enter correct activity details!", ToastTheme);
-    }
+    if(currentActivity.activityName.trim()===''){
+      setError("Activity Name cannot be empty");
+      return;
+    } 
+    setError(undefined);
+    addResumeEntry('extracurricularActivities', currentActivity);  
+    toast.success("Activity added successfully!", ToastTheme);
+    setCurrentActivity({
+      activityName: '',
+      description: '',
+      achievements: '',
+    });
+    
   };
 
   const handleDeleteActivity = (index) => {
@@ -55,6 +58,8 @@ export default function ExtraCurricular() {
           <TextField
             fullWidth
             label="Activity Name"
+            error={error!==undefined?true:false}
+            helperText={error}
             name="activityName"
             value={currentActivity.activityName}
             onChange={handleChange}

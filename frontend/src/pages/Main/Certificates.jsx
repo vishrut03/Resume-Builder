@@ -17,6 +17,10 @@ export default function Certificates() {
   const addCertificate = useResumeStore((state) => state.addResumeEntry);
   const deleteCertificate = useResumeStore((state) => state.deleteResumeEntry);
 
+  const [nameError, setNameError] = useState("");
+  const [organizationError, setOrganizationError] = useState("");
+  const [dateError, setDateError] = useState("");
+
   const handleChange = (event) => {
     setCurrentCertificate({
       ...currentCertificate,
@@ -25,18 +29,44 @@ export default function Certificates() {
   };
 
   const handleAddCertificate = () => {
-    if (currentCertificate.certificateName.trim() !== "" && currentCertificate.organization.trim() !== "") {
-      addCertificate("certificates", currentCertificate);
-      toast.success("Certificate added successfully!", ToastTheme);
 
-      setCurrentCertificate({
-        certificateName: "",
-        organization: "",
-        date: "",
-      });
+    let hasError = false;
+
+    // Validate Certificate Name
+    if (currentCertificate.certificateName.trim() === "") {
+      setNameError("Certificate Name is required");
+      hasError = true;
     } else {
-      toast.error("Please enter valid certificate details!", ToastTheme);
+      setNameError(""); // Clear the error if valid
     }
+
+    // Validate Organization
+    if (currentCertificate.organization.trim() === "") {
+      setOrganizationError("Organization is required");
+      hasError = true;
+    } else {
+      setOrganizationError(""); // Clear the error if valid
+    }
+
+    // Validate Date (if provided)
+    if (currentCertificate.date && new Date(currentCertificate.date) > new Date()) {
+      setDateError("Date cannot be in the future");
+      hasError = true;
+    } else {
+      setDateError(""); // Clear the error if valid
+    }
+
+    // Stop execution if any error exists
+    if (hasError) return;
+
+    addCertificate("certificates", currentCertificate);
+    toast.success("Certificate added successfully!", ToastTheme);
+
+    setCurrentCertificate({
+      certificateName: "",
+      organization: "",
+      date: "",
+    });
   };
 
   const handleDeleteCertificate = (index) => {
@@ -53,6 +83,8 @@ export default function Certificates() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={nameError !== ""?true:false} 
+            helperText={nameError}
             label="Certificate Name"
             name="certificateName"
             value={currentCertificate.certificateName}
@@ -62,6 +94,8 @@ export default function Certificates() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={organizationError !== ""?true:false}
+            helperText={organizationError}
             label="Organization"
             name="organization"
             value={currentCertificate.organization}
@@ -71,6 +105,8 @@ export default function Certificates() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={dateError !== ""?true:false} 
+            helperText={dateError}
             label="Date"
             name="date"
             type="date"

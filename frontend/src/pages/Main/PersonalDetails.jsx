@@ -50,15 +50,17 @@ export default function PersonalDetails() {
     // PersonalDetailsSchema.cast(localPersonalDetails);
     try{
       await PersonalDetailsSchema.validate(localPersonalDetails,{abortEarly:false});
+      setErrors({});
       editSimpleField('personalDetails', localPersonalDetails);
       toast.success("Details saved successfully", ToastTheme);
+
     }
     catch(err){
       const newErrors={};
       err.inner.forEach((e)=>{
-        newErrors[e.path]=e.message;
+        if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
       })
-      console.log(newErrors);
+      // console.log(newErrors);
       setErrors(newErrors);
     } 
   };

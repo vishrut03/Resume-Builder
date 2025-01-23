@@ -11,18 +11,18 @@ import {
   ListItem,
   ListItemText,
   ListItemButton,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { styled } from "@mui/material/styles"
+import Logo from '../Logo/Logo'
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
+  boxShadow: "none",
+  borderBottom: `1px solid ${theme.palette.divider}`,
 }))
-
-const LogoImage = styled("img")({
-  height: "40px",
-  marginRight: "10px",
-})
 
 const DrawerList = styled(List)({
   width: 250,
@@ -30,6 +30,8 @@ const DrawerList = styled(List)({
 
 export default function Header() {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
   const toggleDrawer = (open) => (event) => {
     if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
@@ -38,7 +40,7 @@ export default function Header() {
     setDrawerOpen(open)
   }
 
-  const menuItems = ["Home", "About", "Contact"]
+  const menuItems = ["Home", "Templates", "About", "Contact"]
 
   const list = () => (
     <DrawerList role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
@@ -55,33 +57,29 @@ export default function Header() {
   return (
     <>
       <StyledAppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={toggleDrawer(true)}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-            <LogoImage src='../resumepic.png' alt="Logo" />
-            <Typography variant="h6" component="div">
-              Resume Builder
+        <Toolbar className="flex justify-between items-center px-4 py-2">
+          <Box className="flex items-center">
+            <Logo size={32} color={theme.palette.primary.contrastText} />
+            <Typography variant="h6" component="div" className="ml-2 font-bold">
+              ResumeBuilder
             </Typography>
           </Box>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {menuItems.map((item) => (
-              <Button key={item} color="inherit">
-                {item}
-              </Button>
-            ))}
-          </Box>
+          {isMobile ? (
+            <IconButton size="large" edge="end" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </IconButton>
+          ) : (
+            <Box>
+              {menuItems.map((item) => (
+                <Button key={item} color="inherit" className="mx-2">
+                  {item}
+                </Button>
+              ))}
+            </Box>
+          )}
         </Toolbar>
       </StyledAppBar>
-      <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
+      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         {list()}
       </Drawer>
     </>

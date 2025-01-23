@@ -19,6 +19,9 @@ export default function WorkExperience() {
     responsibilities: '',
   });
 
+  const [errors, setErrors] = useState({});
+  
+
   const handleChange = (event) => {
     setCurrentExperience({
       ...currentExperience,
@@ -26,8 +29,16 @@ export default function WorkExperience() {
     });
   };
 
-  const handleSave = () => {
-    if (currentExperience.jobTitle && currentExperience.companyName) {
+  const handleSave = async () => {
+
+
+    try {
+      // WorkExperienceSchema.cast(currentExperience);
+      await WorkExperienceSchema.validate(currentExperience,{abortEarly:false});
+      if(currentExperience.endDate && currentExperience.startDate>currentExperience.endDate){
+        throw new Error("End date cannot be before start date");
+      }
+      setErrors({});
       addResumeEntry('workExperience', currentExperience); 
       setCurrentExperience({
         jobTitle: '',
@@ -37,8 +48,19 @@ export default function WorkExperience() {
         responsibilities: '',
       });
       toast.success("Experience added successfully!", {...ToastTheme,progress: undefined});
-    } else {
-      toast.error("Please fill all the mandatory fields.", {...ToastTheme,progress: undefined});
+
+    } catch (err) {
+      const newErrors={};
+      if(err.inner!==undefined){
+        err.inner.forEach((e)=>{
+          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
+        })
+      }  
+      if(currentExperience.startDate && currentExperience.endDate && currentExperience.startDate>currentExperience.endDate){
+        newErrors.endDate="End date cannot be before start date";
+      }
+      // console.log(newErrors);
+      setErrors(newErrors);
     }
   };
 
@@ -48,6 +70,8 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={errors.jobTitle?true:false}
+            helperText={errors.jobTitle}
             label="Job Title*"
             name="jobTitle"
             value={currentExperience.jobTitle}
@@ -57,6 +81,8 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={errors.companyName?true:false}
+            helperText={errors.companyName}
             label="Company Name*"
             name="companyName"
             value={currentExperience.companyName}
@@ -66,6 +92,8 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={errors.startDate?true:false}
+            helperText={errors.startDate}
             label="Start Date*"
             name="startDate"
             type="date"
@@ -77,6 +105,8 @@ export default function WorkExperience() {
         <Grid2 item xs={12} sm={6}>
           <TextField
             fullWidth
+            error={errors.endDate?true:false}
+            helperText={errors.endDate}
             label="End Date*"
             name="endDate"
             type="date"
@@ -88,6 +118,8 @@ export default function WorkExperience() {
         <Grid2 item xs={12}>
           <TextField
             fullWidth
+            error={errors.responsibilities?true:false}
+            helperText={errors.responsibilities}
             label="Responsibilities"
             name="responsibilities"
             multiline

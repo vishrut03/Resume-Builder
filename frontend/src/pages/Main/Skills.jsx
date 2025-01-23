@@ -40,6 +40,7 @@ export default function Skills() {
 
   return (
     <Box>
+      <h1 className="text-2xl font-bold text-center mb-4">Skills</h1>
       <Autocomplete
         freeSolo
         options={popularSkills}

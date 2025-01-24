@@ -1,12 +1,24 @@
 import React from 'react';
-import { Box, Typography, Paper, Stack, Divider, Chip, Button, List, ListItem, ListItemText, Link } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Stack,
+  Divider,
+  Chip,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Link,
+} from '@mui/material';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import html2pdf from 'html2pdf.js';
 import useResumeStore from '../../app/ResumeStore';
 
 const Template1 = () => {
   const handleDownload = () => {
-    const element = document.getElementById("template1");
+    const element = document.getElementById('template1');
     html2pdf(element);
   };
 
@@ -14,10 +26,22 @@ const Template1 = () => {
 
   return (
     <>
-      <Button variant="contained" color="primary" onClick={handleDownload} endIcon={<DownloadForOfflineIcon />}>
-        Download
-      </Button>
-      <Paper id="template1" elevation={3} sx={{ p: 4, maxWidth: 800, mx: "auto", my: 4 }}>
+      {/* Centered Download Button */}
+      <Box textAlign="center" mb={2} mt = {3}>
+        <Button 
+          variant="contained"
+          color="primary"
+          onClick={handleDownload}
+          endIcon={<DownloadForOfflineIcon />}
+        >
+          Download
+        </Button>
+      </Box>
+      <Paper
+        id="template1"
+        elevation={3}
+        sx={{ p: 4, maxWidth: 800, mx: 'auto', my: 4 }}
+      >
         {/* Personal Details */}
         <Box mb={4} textAlign="center">
           <Typography variant="h4" gutterBottom>
@@ -111,9 +135,15 @@ const Template1 = () => {
                   <Typography variant="body2" color="text.secondary">
                     Technologies: {project.technologiesUsed}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Link: {project.link}
-                  </Typography>
+                  <Link
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    underline="hover"
+                    color="primary"
+                  >
+                    Project Link
+                  </Link>
                 </Box>
               ))}
             </Box>
@@ -136,18 +166,20 @@ const Template1 = () => {
         )}
 
         {/* Achievements */}
-        {data.achievements.length > 0 && (
+        {data.achievements.filter((ach) => ach).length > 0 && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Achievements
             </Typography>
             <Divider />
             <List>
-              {data.achievements.map((achievement, index) => (
-                <ListItem key={index}>
-                  <ListItemText primary={achievement} />
-                </ListItem>
-              ))}
+              {data.achievements
+                .filter((ach) => ach)
+                .map((achievement, index) => (
+                  <ListItem key={index}>
+                    <ListItemText primary={achievement} />
+                  </ListItem>
+                ))}
             </List>
           </Box>
         )}
@@ -184,12 +216,15 @@ const Template1 = () => {
             <Box mt={2}>
               {data.codingProfiles.map((profile, index) => (
                 <Box key={index} mb={2}>
-                  <Typography variant="subtitle1" fontWeight="bold">
+                  <Link
+                    href={profile.profileLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    underline="hover"
+                    color="primary"
+                  >
                     {profile.platform}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {profile.profileLink}
-                  </Typography>
+                  </Link>
                 </Box>
               ))}
             </Box>

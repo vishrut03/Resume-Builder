@@ -88,6 +88,7 @@ const Form = () => {
   const handleNext = () => {
     if(previousStep === 11) {
       setActiveStep(11);
+      setPreviousStep(10);
     }
     else{
       setActiveStep((prevActiveStep) => prevActiveStep + 1);

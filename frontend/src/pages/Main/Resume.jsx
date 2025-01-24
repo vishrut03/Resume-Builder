@@ -4,6 +4,8 @@ import Image from '../../assets/favicon.png';
 import temp1 from '../../assets/template-1.svg';
 
 function Resume() {
+
+  const resume = useResumeStore().resume;
   const templates = [
     {
       id: 1,
@@ -32,10 +34,9 @@ function Resume() {
   ]
 
   const handleTemplateClick = (templateId) => {
-    const fullName=  useResumeStore().resume.personalDetails.firstName + useResumeStore().resume.personalDetails.lastName;
+    const fullName=  resume.personalDetails.firstName + resume.personalDetails.lastName;
     const url = `http://localhost:5173/${fullName}/template${templateId}`;
     console.log(url);
-
     window.open(url, "_blank");
   }
 

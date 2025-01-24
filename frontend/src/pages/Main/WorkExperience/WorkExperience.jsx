@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 import { WorkExperienceSchema } from '../../../schemas/WorkExperienceSchema';
+import WorkIcon from "@mui/icons-material/Work";
 
 export default function WorkExperience() {
   const workExperience = useResumeStore((state) => state.resume.workExperience);
@@ -78,6 +79,7 @@ export default function WorkExperience() {
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <WorkIcon/>
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}>
         Work Experience
       </Typography>

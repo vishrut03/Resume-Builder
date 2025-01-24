@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 import { EducationSchema } from '../../../schemas/EducationSchema';
+import SchoolIcon from "@mui/icons-material/School";
 
 export default function Education() {
   const education = useResumeStore((state) => state.resume.education);
@@ -78,6 +79,7 @@ export default function Education() {
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <SchoolIcon/>
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}>
         Education
       </Typography>

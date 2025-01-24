@@ -13,33 +13,6 @@ import BriefDescription from "./BriefDescription";
 import Resume from "./Resume";
 import Custom from "./Custom";
 
-import PersonIcon from "@mui/icons-material/Person";
-import DescriptionIcon from "@mui/icons-material/Description";
-import WorkIcon from "@mui/icons-material/Work";
-import SchoolIcon from "@mui/icons-material/School";
-import CodeIcon from "@mui/icons-material/Code";
-import BuildIcon from "@mui/icons-material/Build";
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
-import CardMembershipIcon from "@mui/icons-material/CardMembership";
-import ComputerIcon from "@mui/icons-material/Computer";
-import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import CategoryIcon from "@mui/icons-material/Category";
-
-const steps = [
-  { label: "Personal Details", icon: <PersonIcon /> },
-  { label: "Brief Description", icon: <DescriptionIcon /> },
-  { label: "Work Experience", icon: <WorkIcon /> },
-  { label: "Education", icon: <SchoolIcon /> },
-  { label: "Projects", icon: <CodeIcon /> },
-  { label: "Skills", icon: <BuildIcon /> },
-  { label: "Achievements", icon: <EmojiEventsIcon /> },
-  { label: "Certificates", icon: <CardMembershipIcon /> },
-  { label: "Coding Profiles", icon: <ComputerIcon /> },
-  { label: "Custom Section", icon: <CategoryIcon /> },  
-  { label: "Extra Curricular", icon: <SportsEsportsIcon /> },
-  { label: "Review", icon: <VisibilityIcon /> },
-];
 
 function getStepContent(step) {
   switch (step) {

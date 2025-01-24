@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Chip, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import useResumeStore from "../../app/ResumeStore";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 export default function Review({ setActiveStep, setPreviousStep }) {
   const { resume } = useResumeStore();
@@ -32,6 +33,7 @@ export default function Review({ setActiveStep, setPreviousStep }) {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4, position: "static" }}>
+      <VisibilityIcon/>
       <Typography variant="h4" gutterBottom>
         Resume Review
       </Typography>

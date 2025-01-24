@@ -4,6 +4,8 @@ import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
+import DescriptionIcon from "@mui/icons-material/Description";
+
 
 export default function BriefDescription() {
   const briefDescription = useResumeStore((state) => state.resume.briefDescription);
@@ -38,7 +40,7 @@ export default function BriefDescription() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-      
+      <DescriptionIcon />
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4 }}>
         Brief Description
       </Typography>

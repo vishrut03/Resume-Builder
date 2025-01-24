@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
 import popularSkills from "../../utils/popularSkills"
+import BuildIcon from "@mui/icons-material/Build";
 
 export default function Skills() {
   const [currentSkill, setCurrentSkill] = useState("")
@@ -40,6 +41,7 @@ export default function Skills() {
 
   return (
     <Box>
+      <BuildIcon/>
       <h1 className="text-2xl font-bold text-center mb-4">Skills</h1>
       <Autocomplete
         freeSolo

@@ -5,6 +5,7 @@ import useResumeStore from '../../app/ResumeStore';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function Achievements() {
   const [currentAchievement, setCurrentAchievement] = useState('');
@@ -43,6 +44,7 @@ export default function Achievements() {
 
   return (
     <Box>
+      <EmojiEventsIcon/>
       <h1 className="text-2xl font-bold text-center mb-4">Achievements</h1>
       <TextField
         fullWidth

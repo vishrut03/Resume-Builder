@@ -5,6 +5,7 @@ import useResumeStore from "../../app/ResumeStore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from "../../utils/ToastTheme";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 
 export default function ExtraCurricular() {
   const [currentActivity, setCurrentActivity] = useState({
@@ -49,6 +50,7 @@ export default function ExtraCurricular() {
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+        <SportsEsportsIcon/>
         <h1 className="text-2xl font-bold text-center mb-4">Extra-Curricular Activities</h1>
         <TextField
           fullWidth

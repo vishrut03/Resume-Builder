@@ -5,6 +5,7 @@ import useResumeStore from "../../app/ResumeStore"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
@@ -71,6 +72,7 @@ export default function Certificates() {
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <CardMembershipIcon/>
       <h1 className="text-2xl font-bold text-center mb-4">Certificates</h1>
       <TextField
         fullWidth

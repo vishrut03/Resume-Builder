@@ -4,6 +4,7 @@ import useResumeStore from "../../app/ResumeStore"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
+import CategoryIcon from "@mui/icons-material/Category";
 
 const Custom = () => {
   const customDetails = useResumeStore((state) => state.resume.customDetails)
@@ -57,6 +58,7 @@ const Custom = () => {
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+        <CategoryIcon/>
         <h1 className="text-2xl font-bold text-center mb-4">Custom Section</h1>
         <TextField
           label="Section Heading"

@@ -5,6 +5,7 @@ import useResumeStore from "../../app/ResumeStore"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
+import ComputerIcon from "@mui/icons-material/Computer";
 
 export default function CodingProfiles() {
   const [currentProfile, setCurrentProfile] = useState({
@@ -56,6 +57,7 @@ export default function CodingProfiles() {
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+        <ComputerIcon/>
         <h1 className="text-2xl font-bold text-center mb-4">Coding Profiles</h1>
         <TextField
           fullWidth

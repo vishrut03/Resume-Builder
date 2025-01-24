@@ -2,7 +2,8 @@ import { Box, Button, Grid2, Paper, Typography } from "@mui/material"
 import useResumeStore from "../../app/ResumeStore"
 import Image from '../../assets/favicon.png';
 import temp1 from '../../assets/template-1.svg';
-
+import temp2 from '../../assets/template-2.png';
+import temp3 from '../../assets/temp3.webp';
 function Resume() {
 
   const resume = useResumeStore().resume;
@@ -10,26 +11,22 @@ function Resume() {
     {
       id: 1,
       name: "Classic",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-23%20at%205.39.08%E2%80%AFPM-cQ2dm7UXWfTMN8ixcWicLjsh4HT8KE.png",
+      imageUrl:temp1
     },
     {
       id: 2,
       name: "Modern",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-23%20at%205.39.01%E2%80%AFPM-UHnsnlYsbriAK9lVKCzs5brAe4LLOZ.png",
+      imageUrl:temp2
     },
     {
       id: 3,
       name: "Creative",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-23%20at%205.39.08%E2%80%AFPM-cQ2dm7UXWfTMN8ixcWicLjsh4HT8KE.png", // Using first image as placeholder
+      imageUrl:temp3  
     },
     {
       id: 4,
       name: "Proffesional",
-      imageUrl:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-23%20at%205.39.01%E2%80%AFPM-UHnsnlYsbriAK9lVKCzs5brAe4LLOZ.png", // Using second image as placeholder
+      imageUrl:temp2    
     },
   ]
 
@@ -67,9 +64,9 @@ function Resume() {
               }}
             >
               <img
-                src={temp1}
+                src={template.imageUrl}
                 alt={template.name}
-                style={{ width: '100%', height: 'auto', borderRadius: 8, marginBottom: 2 }}
+                style={{ width: '400px', height: '500px', borderRadius: 8, marginBottom: 2 }}
               />
               <Button
                 variant="contained"

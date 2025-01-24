@@ -1,227 +1,317 @@
 import React from 'react';
-import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
-  Stack,
-  Divider,
-} from '@mui/material';
+import { Box, Typography, Paper, Grid2, Button } from '@mui/material';
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
+import html2pdf from 'html2pdf.js';
 import useResumeStore from '../../app/ResumeStore';
 
-
 const Template4 = () => {
-  const {
-    personalDetails,
-    briefDescription,
-    workExperience,
-    education,
-    projects,
-    skills,
-    achievements,
-    certificates,
-    codingProfiles,
-    extracurricularActivities,
-  } = useResumeStore().resume;
+  const handleDownload = () => {
+    const element = document.getElementById("template4");
+    html2pdf(element);
+  };
+
+  const data = useResumeStore().resume;
 
   return (
-    <Box
-      sx={{
-        padding: 4,
-        backgroundColor: '#f4f4f4',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {/* Header Section */}
-      <Box sx={{ marginBottom: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          {personalDetails.firstName} {personalDetails.lastName}
-        </Typography>
-        <Typography variant="body1">{personalDetails.address}</Typography>
-        <Typography variant="body1">Phone: {personalDetails.phoneNumber}</Typography>
-        <Typography variant="body1">Email: {personalDetails.email}</Typography>
-        <Typography variant="body1">LinkedIn: {personalDetails.linkedIn}</Typography>
-      </Box>
+    <>
+      <Button 
+        variant="contained" 
+        color="primary" 
+        onClick={handleDownload} 
+        endIcon={<DownloadForOfflineIcon />}
+        sx={{ mb: 2 }}
+      >
+        Download
+      </Button>
 
-      {/* Two-Column Layout */}
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={4}>
-        {/* Left Column */}
-        <Stack spacing={4} flex={1}>
-          {/* Brief Description */}
-          {briefDescription && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Brief Description</Typography>
-                <Typography variant="body2">{briefDescription}</Typography>
-              </CardContent>
-            </Card>
-          )}
+      <Paper 
+        id="template4" 
+        elevation={3} 
+        sx={{ 
+          maxWidth: 1200, 
+          mx: 'auto',
+          overflow: 'hidden'
+        }}
+      >
+        <Grid2 container>
+          {/* Left Sidebar */}
+          <Grid2 
+            item 
+            xs={12} 
+            md={3.5} 
+            sx={{ 
+              bgcolor: '#1a237e',
+              color: 'white',
+              p: 4,
+              minHeight: '100vh'
+            }}
+          >
+            <Box sx={{ mb: 4, textAlign: 'center' }}>
+              <Typography variant="h4" gutterBottom>
+                {data.personalDetails.firstName}
+              </Typography>
+              <Typography variant="h4" sx={{ mb: 2 }}>
+                {data.personalDetails.lastName}
+              </Typography>
+              <Box 
+                sx={{ 
+                  width: '40px', 
+                  height: '4px', 
+                  bgcolor: 'white',
+                  mx: 'auto',
+                  mb: 3
+                }} 
+              />
+              <Typography variant="h6" sx={{ mb: 3 }}>
+                {data.briefDescription}
+              </Typography>
+            </Box>
 
-          {/* Work Experience */}
-          {workExperience.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Work Experience</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {workExperience.map((experience, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">
-                      {experience.jobTitle} at {experience.companyName}
-                    </Typography>
-                    <Typography variant="body2">
-                      {experience.startDate} - {experience.endDate}
-                    </Typography>
-                    <Typography variant="body2">{experience.responsibilities}</Typography>
+            <Box sx={{ mb: 4 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  borderBottom: '2px solid white',
+                  pb: 1,
+                  mb: 2
+                }}
+              >
+                CONTACT
+              </Typography>
+              <Typography sx={{ mb: 1 }}>{data.personalDetails.email}</Typography>
+              <Typography sx={{ mb: 1 }}>{data.personalDetails.phoneNumber}</Typography>
+              <Typography sx={{ mb: 1 }}>{data.personalDetails.address}</Typography>
+              <Typography>{data.personalDetails.linkedIn}</Typography>
+            </Box>
+
+            <Box sx={{ mb: 4 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  borderBottom: '2px solid white',
+                  pb: 1,
+                  mb: 2
+                }}
+              >
+                SKILLS
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                {data.skills.map((skill, index) => (
+                  <Box 
+                    key={index}
+                    sx={{
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      p: 1,
+                      borderRadius: 1
+                    }}
+                  >
+                    {skill}
                   </Box>
                 ))}
-              </CardContent>
-            </Card>
-          )}
+              </Box>
+            </Box>
 
-          {/* Projects */}
-          {projects.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Projects</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {projects.map((project, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{project.projectName}</Typography>
-                    <Typography variant="body2">{project.description}</Typography>
-                    <Typography variant="body2">Technologies: {project.technologiesUsed}</Typography>
-                    <Typography variant="body2">
-                      <a href={project.link} target="_blank" rel="noopener noreferrer">
-                        Project Link
-                      </a>
+            <Box>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  borderBottom: '2px solid white',
+                  pb: 1,
+                  mb: 2
+                }}
+              >
+                EDUCATION
+              </Typography>
+              {data.education.map((edu, index) => (
+                <Box key={index} sx={{ mb: 3 }}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {edu.degreeName}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                    {edu.institutionName}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.8 }}>
+                    {edu.yearOfGraduation} | CGPA: {edu.cgpa}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Grid2>
+
+          {/* Right Content Area */}
+          <Grid2 item xs={12} md={8.5} sx={{ p: 4 }}>
+            {/* Work Experience */}
+            <Box sx={{ mb: 5 }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  color: '#1a237e',
+                  borderBottom: '2px solid #1a237e',
+                  pb: 1,
+                  mb: 3
+                }}
+              >
+                WORK EXPERIENCE
+              </Typography>
+              {data.workExperience.map((exp, index) => (
+                <Box 
+                  key={index} 
+                  sx={{ 
+                    mb: 4,
+                    position: 'relative',
+                    pl: 4,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: '2px',
+                      bgcolor: '#1a237e'
+                    }
+                  }}
+                >
+                  <Typography variant="h6" color="primary">
+                    {exp.jobTitle}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {exp.companyName}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    {exp.startDate} - {exp.endDate}
+                  </Typography>
+                  <Typography variant="body1">
+                    {exp.responsibilities}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            {/* Projects */}
+            <Box sx={{ mb: 5 }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  color: '#1a237e',
+                  borderBottom: '2px solid #1a237e',
+                  pb: 1,
+                  mb: 3
+                }}
+              >
+                PROJECTS
+              </Typography>
+              {data.projects.map((project, index) => (
+                <Box 
+                  key={index} 
+                  sx={{ 
+                    mb: 3,
+                    position: 'relative',
+                    pl: 4,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: '2px',
+                      bgcolor: '#1a237e'
+                    }
+                  }}
+                >
+                  <Typography variant="h6">
+                    {project.projectName}
+                  </Typography>
+                  <Typography variant="body1" sx={{ mb: 1 }}>
+                    {project.description}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Technologies: {project.technologiesUsed}
+                  </Typography>
+                  {project.link && (
+                    <Typography variant="body2" color="primary">
+                      Link: {project.link}
+                    </Typography>
+                  )}
+                </Box>
+              ))}
+            </Box>
+
+            {/* Achievements */}
+            <Box sx={{ mb: 5 }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  color: '#1a237e',
+                  borderBottom: '2px solid #1a237e',
+                  pb: 1,
+                  mb: 3
+                }}
+              >
+                ACHIEVEMENTS
+              </Typography>
+              <Box 
+                component="ul" 
+                sx={{ 
+                  pl: 4,
+                  '& li': {
+                    mb: 1
+                  }
+                }}
+              >
+                {data.achievements.map((achievement, index) => (
+                  <Box component="li" key={index}>
+                    <Typography variant="body1">
+                      {achievement}
                     </Typography>
                   </Box>
                 ))}
-              </CardContent>
-            </Card>
-          )}
+              </Box>
+            </Box>
 
-          {/* Coding Profiles */}
-          {codingProfiles.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Coding Profiles</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {codingProfiles.map((profile, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{profile.platform}</Typography>
-                    <Typography variant="body2">
-                      <a href={profile.profileLink} target="_blank" rel="noopener noreferrer">
-                        {profile.profileLink}
-                      </a>
-                    </Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-        </Stack>
-
-        {/* Right Column */}
-        <Stack spacing={4} flex={1}>
-          {/* Education */}
-          {education.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Education</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {education.map((edu, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{edu.degreeName}</Typography>
-                    <Typography variant="body2">{edu.institutionName}</Typography>
-                    <Typography variant="body2">
-                      Graduation Year: {edu.yearOfGraduation} | CGPA: {edu.cgpa}
-                    </Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Skills */}
-          {skills.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Skills</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                <Stack direction="row" spacing={1} flexWrap="wrap">
-                  {skills.map((skill, index) => (
-                    <Typography
-                      key={index}
-                      variant="body2"
-                      sx={{
-                        backgroundColor: '#e0e0e0',
-                        padding: '4px 8px',
-                        borderRadius: 2,
-                      }}
-                    >
-                      {skill}
-                    </Typography>
-                  ))}
-                </Stack>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Achievements */}
-          {achievements.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Achievements</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                <ul>
-                  {achievements.map((achievement, index) => (
-                    <li key={index}>
-                      <Typography variant="body2">{achievement}</Typography>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Certificates */}
-          {certificates.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Certificates</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {certificates.map((cert, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{cert.certificateName}</Typography>
-                    <Typography variant="body2">{cert.organization}</Typography>
-                    <Typography variant="body2">Date: {cert.date}</Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Extra Curricular Activities */}
-          {extracurricularActivities.length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Extra Curricular Activities</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {extracurricularActivities.map((activity, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{activity.activityName}</Typography>
-                    <Typography variant="body2">{activity.description}</Typography>
-                    <Typography variant="body2">{activity.achievements}</Typography>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-        </Stack>
-      </Stack>
-    </Box>
+            {/* Certificates */}
+            <Box>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  color: '#1a237e',
+                  borderBottom: '2px solid #1a237e',
+                  pb: 1,
+                  mb: 3
+                }}
+              >
+                CERTIFICATES
+              </Typography>
+              {data.certificates.map((cert, index) => (
+                <Box 
+                  key={index} 
+                  sx={{ 
+                    mb: 2,
+                    position: 'relative',
+                    pl: 4,
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      width: '2px',
+                      bgcolor: '#1a237e'
+                    }
+                  }}
+                >
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {cert.certificateName}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {cert.organization} - {cert.date}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+          </Grid2>
+        </Grid2>
+      </Paper>
+    </>
   );
 };
 

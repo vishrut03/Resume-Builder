@@ -24,6 +24,16 @@ const Template1 = () => {
 
   const data = useResumeStore().resume;
 
+  const isNonEmpty = (value) => {
+    if (Array.isArray(value)) {
+      return value.some((item) => isNonEmpty(item)); // At least one item is non-empty
+    }
+    if (typeof value === 'object' && value !== null) {
+      return Object.values(value).some((val) => isNonEmpty(val)); // At least one property is non-empty
+    }
+    return value && value.trim && value.trim().length > 0; // Non-empty string
+  };
+
   return (
     <>
       {/* Centered Download Button */}
@@ -43,25 +53,28 @@ const Template1 = () => {
         sx={{ p: 4, maxWidth: 800, mx: 'auto', my: 4 }}
       >
         {/* Personal Details */}
-        <Box mb={4} textAlign="center">
-          <Typography variant="h4" gutterBottom>
-            {data.personalDetails.firstName} {data.personalDetails.lastName}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary">
-            {data.personalDetails.email} | {data.personalDetails.phoneNumber} |{' '}
-            <Link
-              href={data.personalDetails.linkedIn}
-              target="_blank"
-              rel="noopener noreferrer"
-              underline="hover"
-            >
-              LinkedIn
-            </Link>
-          </Typography>
-        </Box>
+        {isNonEmpty(data.personalDetails) && (
+          <Box mb={4} textAlign="center">
+            <Typography variant="h4" gutterBottom>
+              {data.personalDetails.firstName} {data.personalDetails.lastName}
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary">
+              {data.personalDetails.email} | {data.personalDetails.phoneNumber} |{' '}
+              <Link
+                href={data.personalDetails.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                underline="hover"
+              >
+                LinkedIn
+              </Link>
+            </Typography>
+          </Box>
+        )}
+
 
         {/* Professional Summary */}
-        {data.briefDescription && (
+        {isNonEmpty(data.briefDescription) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Professional Summary
@@ -74,7 +87,7 @@ const Template1 = () => {
         )}
 
         {/* Work Experience */}
-        {data.workExperience.length > 0 && (
+        {isNonEmpty(data.workExperience) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Work Experience
@@ -82,22 +95,24 @@ const Template1 = () => {
             <Divider />
             <Box mt={2}>
               {data.workExperience.map((exp, index) => (
-                <Box key={index} mb={2}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {exp.jobTitle} at {exp.companyName}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {exp.startDate} - {exp.endDate}
-                  </Typography>
-                  <Typography variant="body2">{exp.responsibilities}</Typography>
-                </Box>
+                isNonEmpty(exp) && (
+                  <Box key={index} mb={2}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {exp.jobTitle} at {exp.companyName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {exp.startDate} - {exp.endDate}
+                    </Typography>
+                    <Typography variant="body2">{exp.responsibilities}</Typography>
+                  </Box>
+                )
               ))}
             </Box>
           </Box>
         )}
 
         {/* Education */}
-        {data.education.length > 0 && (
+        {isNonEmpty(data.education) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Education
@@ -105,21 +120,23 @@ const Template1 = () => {
             <Divider />
             <Box mt={2}>
               {data.education.map((edu, index) => (
-                <Box key={index} mb={2}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {edu.degreeName} - {edu.institutionName}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {edu.startDate} - {edu.endDate} | CGPA: {edu.cgpa}
-                  </Typography>
-                </Box>
+                isNonEmpty(edu) && (
+                  <Box key={index} mb={2}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {edu.degreeName} - {edu.institutionName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {edu.startDate} - {edu.endDate} | CGPA: {edu.cgpa}
+                    </Typography>
+                  </Box>
+                )
               ))}
             </Box>
           </Box>
         )}
 
-        {/* Projects */}
-        {data.projects.length > 0 && (
+                {/* Projects */}
+                {isNonEmpty(data.projects) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Projects
@@ -127,24 +144,27 @@ const Template1 = () => {
             <Divider />
             <Box mt={2}>
               {data.projects.map((project, index) => (
-                <Box key={index} mb={2}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {project.projectName}
-                  </Typography>
-                  <Typography variant="body2">{project.description}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Technologies: {project.technologiesUsed}
-                  </Typography>
-                  <Link
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    underline="hover"
-                    color="primary"
-                  >
-                    Project Link
-                  </Link>
-                </Box>
+                isNonEmpty(project) && (
+                  <Box key={index} mb={2}>
+                    <Typography variant="subtitle1" fontWeight="bold">
+                      {project.projectName}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Technologies: {project.technologiesUsed}
+                    </Typography>
+                    <br />
+                    <Typography variant="body2">{project.description}</Typography>
+                    <Link
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      underline="hover"
+                      color="primary"
+                    >
+                      Project Link
+                    </Link>
+                  </Box>
+                )
               ))}
             </Box>
           </Box>
@@ -185,7 +205,7 @@ const Template1 = () => {
         )}
 
         {/* Certificates */}
-        {data.certificates.length > 0 && (
+        {isNonEmpty(data.certificates) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Certificates
@@ -207,7 +227,7 @@ const Template1 = () => {
         )}
 
         {/* Coding Profiles */}
-        {data.codingProfiles.length > 0 && (
+        {isNonEmpty(data.codingProfiles) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Coding Profiles
@@ -247,7 +267,7 @@ const Template1 = () => {
         )}
 
         {/* Extra Curricular Activities */}
-        {data.extracurricularActivities.length > 0 && (
+        {isNonEmpty(data.extracurricularActivities) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Extra Curricular Activities
@@ -256,13 +276,14 @@ const Template1 = () => {
             <Box mt={2}>
               {data.extracurricularActivities.map((activity, index) => (
                 <Box key={index} mb={2}>
-                  <Typography variant="subtitle1" fontWeight="bold">
+                  {activity.activityName && (<Typography variant="subtitle1" fontWeight="bold">
                     {activity.activityName}
-                  </Typography>
-                  <Typography variant="body2">{activity.description}</Typography>
+                  </Typography>)}
+                  {activity.description && (<Typography variant="body2">{activity.description}</Typography>)}
+                  {activity.achievements && (
                   <Typography variant="body2" color="text.secondary">
                     Achievements: {activity.achievements}
-                  </Typography>
+                  </Typography>)}
                 </Box>
               ))}
             </Box>

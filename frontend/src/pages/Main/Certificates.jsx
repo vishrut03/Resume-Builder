@@ -44,15 +44,14 @@ export default function Certificates() {
     } else {
       setOrganizationError("")
     }
-
-    if (currentCertificate.date && new Date(currentCertificate.date) > new Date()) {
-      setDateError("Date cannot be in the future")
-      hasError = true
-    } else {
+    if(currentCertificate.date.trim() === "" || new Date(currentCertificate.date) > new Date()) {
+      setDateError("Date is required");
+      hasError = true;
+    }else {
       setDateError("")
     }
 
-    if (hasError) return
+    if (hasError) return;
 
     addCertificate("certificates", currentCertificate)
     toast.success("Certificate added successfully!", ToastTheme)

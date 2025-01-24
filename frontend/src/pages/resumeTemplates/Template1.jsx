@@ -126,7 +126,7 @@ const Template1 = () => {
                       {edu.degreeName} - {edu.institutionName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {edu.startDate} - {edu.endDate} | CGPA: {edu.cgpa}
+                      {edu.startDate} - {edu.endDate?edu.endDate:'Present'} | CGPA: {edu.cgpa}
                     </Typography>
                   </Box>
                 )
@@ -136,7 +136,7 @@ const Template1 = () => {
         )}
 
                 {/* Projects */}
-                {isNonEmpty(data.projects) && (
+          {isNonEmpty(data.projects) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Projects

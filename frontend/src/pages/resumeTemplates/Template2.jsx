@@ -190,7 +190,7 @@ const Template2 = () => {
                     <Typography variant="subtitle1">{edu.degreeName}</Typography>
                     <Typography variant="body2">{edu.institutionName}</Typography>
                     <Typography variant="body2">
-                      Graduation Year: {edu.yearOfGraduation} | CGPA: {edu.cgpa}
+                      Graduation Year: {edu.startDate} - {edu.endDate?edu.endDate:'Present'} | CGPA: {edu.cgpa}
                     </Typography>
                   </Box>
                 ))}

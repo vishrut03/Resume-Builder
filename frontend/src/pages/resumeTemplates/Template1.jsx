@@ -275,8 +275,8 @@ const Template1 = () => {
             <Divider />
             <Box mt={2}>
               {data.extracurricularActivities
-                .filter(activity => activity.achievements) 
                 .map((activity, index) => (
+                  isNonEmpty(activity) && (
                   <Box key={index} mb={2}>
                     {activity.activityName && (
                       <Typography variant="subtitle1" fontWeight="bold">
@@ -291,7 +291,7 @@ const Template1 = () => {
                         Achievements: {activity.achievements}
                       </Typography>
                     )}
-                  </Box>
+                  </Box>)
                 ))}
             </Box>
           </Box>

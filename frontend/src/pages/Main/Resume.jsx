@@ -3,6 +3,7 @@ import useResumeStore from "../../app/ResumeStore"
 import Image from '../../assets/favicon.png';
 import temp1 from '../../assets/template-1.svg';
 import temp2 from '../../assets/template-2.png';
+import temp3 from '../../assets/temp3.webp';
 function Resume() {
 
   const resume = useResumeStore().resume;
@@ -20,7 +21,7 @@ function Resume() {
     {
       id: 3,
       name: "Creative",
-      imageUrl:temp1    
+      imageUrl:temp3  
     },
     {
       id: 4,

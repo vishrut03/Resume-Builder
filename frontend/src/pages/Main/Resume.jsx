@@ -39,7 +39,7 @@ function Resume() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-      <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4 }}>
+      <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4, marginTop: 2 }}>
         Choose a template
       </Typography>
       {/* First Row */}
@@ -97,7 +97,7 @@ function Resume() {
         ))}
       </Box>
       {/* Second Row */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, marginBottom: 4 }}>
         {templates.slice(2).map((template) => (
           <Paper
             key={template.id}

@@ -28,7 +28,8 @@ const useResumeStore = create(
           {
             degreeName: '',
             institutionName: '',
-            yearOfGraduation: '',
+            startDate: '',
+            endDate: '',
             cgpa: '',
           },
         ],

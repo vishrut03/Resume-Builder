@@ -28,11 +28,25 @@ export default function WorkExperience() {
     });
   };
 
+  const checkOverlap = (newExperience) => {
+    return workExperience.some(exp => {
+      const existingStart = new Date(exp.startDate);
+      const existingEnd = exp.endDate ? new Date(exp.endDate) : new Date();
+      const newStart = new Date(newExperience.startDate);
+      const newEnd = newExperience.endDate ? new Date(newExperience.endDate) : new Date();
+
+      return (newStart <= existingEnd && newEnd >= existingStart);
+    });
+  };
+
   const handleSave = async () => {
     try {
       await WorkExperienceSchema.validate(currentExperience, { abortEarly: false });
       if (currentExperience.endDate && currentExperience.startDate > currentExperience.endDate) {
         throw new Error("End date cannot be before start date");
+      }
+      if (checkOverlap(currentExperience)) {
+        throw new Error("Work experience duration overlaps with an existing entry");
       }
       setErrors({});
       addResumeEntry('workExperience', currentExperience);
@@ -54,6 +68,9 @@ export default function WorkExperience() {
       if (currentExperience.startDate && currentExperience.endDate && currentExperience.startDate > currentExperience.endDate) {
         newErrors.endDate = "End date cannot be before start date";
       }
+      if (err.message === "Work experience duration overlaps with an existing entry") {
+        toast.error(err.message, { ...ToastTheme, progress: undefined });
+      }
       setErrors(newErrors);
     }
   };
@@ -61,12 +78,9 @@ export default function WorkExperience() {
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
-      {/* Heading for Work Experience */}
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: 'center' }}>
         Work Experience
       </Typography>
-
-      {/* Job Title */}
       <Box>
         <TextField
           required
@@ -81,7 +95,6 @@ export default function WorkExperience() {
         />
       </Box>
 
-      {/* Company Name */}
       <Box>
         <TextField
           required
@@ -96,7 +109,6 @@ export default function WorkExperience() {
         />
       </Box>
 
-      {/* Start Date and End Date */}
       <Box display="flex" gap={2}>
         <Box flex={1}>
           <TextField
@@ -127,8 +139,6 @@ export default function WorkExperience() {
           />
         </Box>
       </Box>
-
-      {/* Responsibilities */}
       <Box>
         <TextField
           fullWidth
@@ -143,8 +153,6 @@ export default function WorkExperience() {
           sx={{ marginBottom: 2 }}
         />
       </Box>
-
-      {/* Save Button */}
       <Box textAlign="center">
         <Button
           variant="contained"
@@ -164,7 +172,6 @@ export default function WorkExperience() {
       </Box>
     </Box>  
 
-      {/* Display Added Work Experiences */}
       <Box mt={4} className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
         <Typography variant="h6" sx={{ fontWeight: 600, marginBottom: 2 }}>
           Previously Added Work Experiences

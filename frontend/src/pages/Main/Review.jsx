@@ -17,7 +17,7 @@ export default function Review({ setActiveStep,setPreviousStep }) {
       </Typography>
       {children}
       <IconButton sx={{ position: "absolute", top: 8, right: 8 }} onClick={() => {
-        setActiveStep(index);
+        setActiveStep(editIndex);
         setPreviousStep(11);
       }}>
         <EditIcon />

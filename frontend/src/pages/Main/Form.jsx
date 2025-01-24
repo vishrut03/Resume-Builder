@@ -97,10 +97,7 @@ const Form = () => {
   if(activeStep === 11) {
     return (
     <>
-    <Review onEdit={(index) => {
-      setActiveStep(index);
-      setPreviousStep(11);
-    }}/>
+    <Review setActiveStep={setActiveStep} setPreviousStep={setPreviousStep}/>
     <div className="flex justify-between ml-10"> 
       <button
         onClick={handleBack}

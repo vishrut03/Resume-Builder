@@ -2,13 +2,14 @@ import React from 'react';
 import { Box, Typography, Paper, Grid2, Divider, Button, Chip, List, ListItem, ListItemText } from '@mui/material';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import html2pdf from 'html2pdf.js';
+import useResumeStore from '../../app/ResumeStore';
 
-const Template2 = ({ data }) => {
+const Template2 = () => {
   const handleDownload = () => {
     const element = document.getElementById("template2");
     html2pdf(element);
   };
-
+  const data=useResumeStore().resume;
   return (
     <>
       <Button variant="contained" color="primary" onClick={handleDownload} endIcon={<DownloadForOfflineIcon />}>

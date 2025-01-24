@@ -35,9 +35,8 @@ function Resume() {
 
   const handleTemplateClick = (templateId) => {
     const fullName=  resume.personalDetails.firstName + resume.personalDetails.lastName;
-    const url = `http://localhost:5173/${fullName}/template${templateId}`;
-    console.log(url);
-    window.open(url, "_blank");
+    const url = `http://localhost:5173/${fullName}/template/${templateId}`;
+    window.open(url, "_blank");   
   }
 
   return (

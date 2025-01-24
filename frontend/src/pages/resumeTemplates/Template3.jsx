@@ -4,12 +4,12 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
   Stack,
   Divider,
 } from '@mui/material';
+import useResumeStore from '../../app/ResumeStore';
 
-const ResumeTemplate = ({ data }) => {
+const Template3 = () => {
   const {
     personalDetails,
     briefDescription,
@@ -21,7 +21,7 @@ const ResumeTemplate = ({ data }) => {
     certificates,
     codingProfiles,
     extracurricularActivities,
-  } = data;
+  } = useResumeStore().resume;
 
   return (
     <Box sx={{ padding: 4, backgroundColor: '#f4f4f4', minHeight: '100vh' }}>
@@ -201,4 +201,4 @@ const ResumeTemplate = ({ data }) => {
   );
 };
 
-export default ResumeTemplate;
+export default Template3;

@@ -7,8 +7,10 @@ import {
   Stack,
   Divider,
 } from '@mui/material';
+import useResumeStore from '../../app/ResumeStore';
 
-const Template4 = ({ data }) => {
+
+const Template4 = () => {
   const {
     personalDetails,
     briefDescription,
@@ -20,7 +22,7 @@ const Template4 = ({ data }) => {
     certificates,
     codingProfiles,
     extracurricularActivities,
-  } = data;
+  } = useResumeStore().resume;
 
   return (
     <Box

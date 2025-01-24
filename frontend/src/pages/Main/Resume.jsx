@@ -4,6 +4,7 @@ import Image from '../../assets/favicon.png';
 import temp1 from '../../assets/template-1.svg';
 import temp2 from '../../assets/template-2.png';
 import temp3 from '../../assets/temp3.webp';
+import temp4 from '../../assets/ats-friendly-Combined-Resume-Template.png';
 function Resume() {
 
   const resume = useResumeStore().resume;
@@ -26,7 +27,7 @@ function Resume() {
     {
       id: 4,
       name: "Proffesional",
-      imageUrl:temp2    
+      imageUrl:temp4  
     },
   ]
 

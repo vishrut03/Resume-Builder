@@ -24,13 +24,14 @@ export default function BriefDescription() {
     if (description.trim() === '') {
       setErrors("Description cannot be empty");
       return;
-    } else if (description.length > 200) {
-      setErrors("Description cannot exceed 200 characters");
+    } else if (description.length > 500) {
+      setErrors("Description cannot exceed 500 characters");
       return;
     } else if (description.length < 10) {
       setErrors("Description should be at least 10 characters long");
       return;
     }
+    setErrors(undefined);
     editSimpleField('briefDescription', description);
     toast.success("Description saved!", ToastTheme);
   };

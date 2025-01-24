@@ -96,7 +96,8 @@ const Template3 = () => {
                 >
                   EDUCATION
                 </Typography>
-                {data.education && data.education.map((edu, index) => (
+                {isNonEmpty(data.education) && data.education.map((edu, index) => (
+                  isNonEmpty(edu) && (
                   <Box key={index} sx={{ mb: 2 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       {edu.degreeName}
@@ -105,10 +106,10 @@ const Template3 = () => {
                       {edu.institutionName}
                     </Typography>
                     <Typography variant="body2">
-                      {edu.yearOfGraduation} | CGPA: {edu.cgpa}
+                      {edu.startDate} - {edu.endDate?edu.endDate:'Present'} | CGPA: {edu.cgpa}
                     </Typography>
                     <Divider sx={{ my: 1 }} />
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
 
@@ -124,7 +125,8 @@ const Template3 = () => {
                 >
                   WORK EXPERIENCE
                 </Typography>
-                {data.workExperience && data.workExperience.map((exp, index) => (
+                {isNonEmpty(data.workExperience) && data.workExperience.map((exp, index) => (
+                  isNonEmpty(exp) && (
                   <Box key={index} sx={{ mb: 4 }}>
                     <Typography variant="h6" color="primary">
                       {exp.jobTitle}
@@ -134,7 +136,7 @@ const Template3 = () => {
                     </Typography>
                     <Typography variant="body1">{exp.responsibilities}</Typography>
                     <Divider sx={{ mt: 2 }} />
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
 
@@ -158,7 +160,7 @@ const Template3 = () => {
                     gap: 1,
                   }}
                 >
-                  {data.skills && data.skills.map((skill, index) => (
+                  {data.skills.length>0 && data.skills.map((skill, index) => (
                     <Box
                       key={index}
                       sx={{
@@ -186,7 +188,8 @@ const Template3 = () => {
                 >
                   PROJECTS
                 </Typography>
-                {data.projects && data.projects.map((project, index) => (
+                {isNonEmpty(data.projects) && data.projects.map((project, index) => (
+                  isNonEmpty(project) && (
                   <Box key={index} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       {project.projectName}
@@ -203,7 +206,7 @@ const Template3 = () => {
                       </Typography>
                     )}
                     <Divider sx={{ mt: 2 }} />
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
             </Box>
@@ -224,7 +227,7 @@ const Template3 = () => {
                 ACHIEVEMENTS
               </Typography>
               <Box component="ul" sx={{ pl: 2 }}>
-                {data.achievements && data.achievements.map((achievement, index) => (
+                {data.achievements.length>0 && data.achievements.map((achievement, index) => (
                   <Box component="li" key={index} sx={{ mb: 1 }}>
                     <Typography variant="body1">{achievement}</Typography>
                   </Box>
@@ -233,6 +236,7 @@ const Template3 = () => {
             </Box>
 
             {/* Certificates Section */}
+            {isNonEmpty(data.certificates) && (
             <Box sx={{ mb: 4 }}>
               <Typography
                 variant="h6"
@@ -245,7 +249,8 @@ const Template3 = () => {
               >
                 CERTIFICATES
               </Typography>
-              {data.certificates && data.certificates.map((cert, index) => (
+              {data.certificates.map((cert, index) => (
+                isNonEmpty(cert) && (
                 <Box key={index} sx={{ mb: 2 }}>
                   <Typography variant="subtitle2" fontWeight="bold">
                     {cert.certificateName}
@@ -254,9 +259,9 @@ const Template3 = () => {
                     {cert.organization} - {cert.date}
                   </Typography>
                   <Divider sx={{ my: 1 }} />
-                </Box>
+                </Box>)
               ))}
-            </Box>
+            </Box>)}
 
             {/* Custom Profile Section */}
             {data.customDetails && data.customDetails.heading && (
@@ -277,7 +282,7 @@ const Template3 = () => {
             )}
 
             {/* Coding Profiles Section */}
-            {data.codingProfiles && data.codingProfiles.length > 0 && (
+            {isNonEmpty(data.codingProfiles) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -290,6 +295,7 @@ const Template3 = () => {
                   CODING PROFILES
                 </Typography>
                 {data.codingProfiles.map((profile, index) => (
+                  isNonEmpty(profile) && (
                   <Box key={index} sx={{ mb: 2 }}>
                     <Typography variant="subtitle2" fontWeight="bold">
                       {profile.platform}
@@ -297,13 +303,13 @@ const Template3 = () => {
                     <Typography variant="body2" color="text.secondary">
                       {profile.profileLink}
                     </Typography>
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
             )}
 
             {/* Extracurricular Activities Section */}
-            {data.extracurricularActivities && data.extracurricularActivities.length > 0 && (
+            {isNonEmpty(data.extracurricularActivities) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -316,16 +322,17 @@ const Template3 = () => {
                   EXTRACURRICULAR ACTIVITIES
                 </Typography>
                 {data.extracurricularActivities.map((activity, index) => (
+                  isNonEmpty(activity) && (
                   <Box key={index} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1" fontWeight="bold">
                       {activity.activityName}
                     </Typography>
-                    <Typography variant="body2">{activity.description}</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    {activity.description && <Typography variant="body2">{activity.description}</Typography>}
+                    {activity.achievements && (<Typography variant="body2" color="text.secondary">
                       Achievements: {activity.achievements}
-                    </Typography>
+                    </Typography>)}
                     <Divider sx={{ mt: 2 }} />
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
             )}

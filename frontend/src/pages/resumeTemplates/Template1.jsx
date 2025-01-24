@@ -101,7 +101,7 @@ const Template1 = () => {
                       {exp.jobTitle} at {exp.companyName}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {exp.startDate} - {exp.endDate}
+                      {exp.startDate} - {exp.endDate?exp.endDate:"Present"}
                     </Typography>
                     <Typography variant="body2">{exp.responsibilities}</Typography>
                   </Box>

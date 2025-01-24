@@ -9,6 +9,8 @@ import {
   Button,
 } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
+import html2pdf from 'html2pdf.js';
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 
 const Template2 = () => {
   const {
@@ -27,7 +29,18 @@ const Template2 = () => {
 
   const handleDownload = () => {
       const element = document.getElementById('template2');
+      console.log('hi',element)
       html2pdf(element);
+  };
+
+  const isNonEmpty = (value) => {
+    if (Array.isArray(value)) {
+      return value.some((item) => isNonEmpty(item)); // At least one item is non-empty
+    }
+    if (typeof value === 'object' && value !== null) {
+      return Object.values(value).some((val) => isNonEmpty(val)); // At least one property is non-empty
+    }
+    return value && value.trim && value.trim().length > 0; // Non-empty string
   };
 
   return (
@@ -48,12 +61,14 @@ const Template2 = () => {
           color="primary"
           onClick={handleDownload}
           sx={{ textTransform: 'none' }}
+          endIcon={<DownloadForOfflineIcon />}
         >
-          Download Resume
+          Download
         </Button>
       </Box>
-
+      <Box id="template2" sx={{ backgroundColor: 'white', padding: 4, borderRadius: 2 }}>
       {/* Header Section */}
+      {isNonEmpty(personalDetails) && (
       <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
           {personalDetails.firstName} {personalDetails.lastName}
@@ -72,7 +87,7 @@ const Template2 = () => {
             LinkedIn
           </a>
         </Typography>
-      </Box>
+      </Box>)}
 
       {/* Two-Column Layout */}
       <Stack direction={{ xs: 'column', md: 'row' }} spacing={4}>
@@ -89,18 +104,19 @@ const Template2 = () => {
           )}
 
           {/* Work Experience */}
-          {workExperience.length > 0 && (
+          {isNonEmpty(workExperience) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Work Experience</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {workExperience.map((experience, index) => (
+                {workExperience.map((experience, index) => 
+                isNonEmpty(experience) && (
                   <Box key={index} marginBottom={2}>
                     <Typography variant="subtitle1">
                       {experience.jobTitle} at {experience.companyName}
                     </Typography>
                     <Typography variant="body2">
-                      {experience.startDate} - {experience.endDate}
+                      {experience.startDate} - {experience.endDate? experience.endDate: 'Present'}
                     </Typography>
                     <Typography variant="body2">{experience.responsibilities}</Typography>
                   </Box>
@@ -110,7 +126,7 @@ const Template2 = () => {
           )}
 
           {/* Projects */}
-          {projects.length > 0 && (
+          {isNonEmpty(projects) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Projects</Typography>
@@ -137,12 +153,13 @@ const Template2 = () => {
           )}
 
           {/* Coding Profiles */}
-          {codingProfiles.length > 0 && (
+          {isNonEmpty(codingProfiles) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Coding Profiles</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {codingProfiles.map((profile, index) => (
+                {codingProfiles.map((profile, index) => 
+                isNonEmpty(profile) && (
                   <Box key={index} marginBottom={2}>
                     <a
                       href={profile.profileLink}
@@ -162,12 +179,13 @@ const Template2 = () => {
         {/* Right Column */}
         <Stack spacing={4} flex={1}>
           {/* Education */}
-          {education.length > 0 && (
+          {isNonEmpty(education) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Education</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {education.map((edu, index) => (
+                {education.map((edu, index) => 
+                isNonEmpty(edu) && (
                   <Box key={index} marginBottom={2}>
                     <Typography variant="subtitle1">{edu.degreeName}</Typography>
                     <Typography variant="body2">{edu.institutionName}</Typography>
@@ -231,39 +249,18 @@ const Template2 = () => {
           )}
 
           {/* Certificates */}
-          {certificates.length > 0 && (
+          {isNonEmpty(certificates) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Certificates</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {certificates.map((cert, index) => (
+                {certificates.map((cert, index) => isNonEmpty(cert) && (
                   <Box key={index} marginBottom={2}>
                     <Typography variant="subtitle1">{cert.certificateName}</Typography>
                     <Typography variant="body2">{cert.organization}</Typography>
                     <Typography variant="body2">Date: {cert.date}</Typography>
                   </Box>
                 ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Extra Curricular Activities */}
-          {extracurricularActivities
-            .filter((activity) => activity.achievements.trim() !== '')
-            .length > 0 && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Extra Curricular Activities</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {extracurricularActivities
-                  .filter((activity) => activity.achievements.trim() !== '')
-                  .map((activity, index) => (
-                    <Box key={index} marginBottom={2}>
-                      <Typography variant="subtitle1">{activity.activityName}</Typography>
-                      <Typography variant="body2">{activity.description}</Typography>
-                      <Typography variant="body2">{activity.achievements}</Typography>
-                    </Box>
-                  ))}
               </CardContent>
             </Card>
           )}
@@ -282,8 +279,31 @@ const Template2 = () => {
               </CardContent>
             </Card>
           )}
+
+          {/* Extra Curricular Activities */}
+          {extracurricularActivities
+            .filter((activity) => activity.activityName.trim() !== '')
+            .length > 0 && (
+            <Card>
+              <CardContent>
+                <Typography variant="h6">Extra Curricular Activities</Typography>
+                <Divider sx={{ marginY: 2 }} />
+                {extracurricularActivities
+                  .filter((activity) => activity.activityName.trim() !== '')
+                  .map((activity, index) => (
+                    <Box key={index} marginBottom={2}>
+                      <Typography variant="subtitle1">{activity.activityName}</Typography>
+                      {activity.description && (<Typography variant="body2">{activity.description}</Typography>)}
+                      {activity.achievements && (<Typography variant="body2">{activity.achievements}</Typography>)}
+                    </Box>
+                  ))}
+              </CardContent>
+            </Card>
+          )}
+
         </Stack>
       </Stack>
+      </Box>
     </Box>
   );
 };

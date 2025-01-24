@@ -274,21 +274,29 @@ const Template1 = () => {
             </Typography>
             <Divider />
             <Box mt={2}>
-              {data.extracurricularActivities.map((activity, index) => (
-                <Box key={index} mb={2}>
-                  {activity.activityName && (<Typography variant="subtitle1" fontWeight="bold">
-                    {activity.activityName}
-                  </Typography>)}
-                  {activity.description && (<Typography variant="body2">{activity.description}</Typography>)}
-                  {activity.achievements && (
-                  <Typography variant="body2" color="text.secondary">
-                    Achievements: {activity.achievements}
-                  </Typography>)}
-                </Box>
-              ))}
+              {data.extracurricularActivities
+                .filter(activity => activity.achievements) 
+                .map((activity, index) => (
+                  <Box key={index} mb={2}>
+                    {activity.activityName && (
+                      <Typography variant="subtitle1" fontWeight="bold">
+                        {activity.activityName}
+                      </Typography>
+                    )}
+                    {activity.description && (
+                      <Typography variant="body2">{activity.description}</Typography>
+                    )}
+                    {activity.achievements && (
+                      <Typography variant="body2" color="text.secondary">
+                        Achievements: {activity.achievements}
+                      </Typography>
+                    )}
+                  </Box>
+                ))}
             </Box>
           </Box>
         )}
+
       </Paper>
     </>
   );

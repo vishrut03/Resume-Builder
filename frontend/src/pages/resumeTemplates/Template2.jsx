@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import {
   Box,
@@ -8,9 +6,9 @@ import {
   CardContent,
   Stack,
   Divider,
+  Button,
 } from '@mui/material';
 import useResumeStore from '../../app/ResumeStore';
-
 
 const Template2 = () => {
   const {
@@ -24,10 +22,17 @@ const Template2 = () => {
     certificates,
     codingProfiles,
     extracurricularActivities,
+    customDetails, 
   } = useResumeStore().resume;
+
+  const handleDownload = () => {
+      const element = document.getElementById('template2');
+      html2pdf(element);
+  };
 
   return (
     <Box
+      id="resume-content"
       sx={{
         padding: 4,
         backgroundColor: '#f4f4f4',
@@ -36,15 +41,37 @@ const Template2 = () => {
         flexDirection: 'column',
       }}
     >
+      {/* Download Button */}
+      <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleDownload}
+          sx={{ textTransform: 'none' }}
+        >
+          Download Resume
+        </Button>
+      </Box>
+
       {/* Header Section */}
-      <Box sx={{ marginBottom: 4 }}>
+      <Box sx={{ marginBottom: 4, textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
           {personalDetails.firstName} {personalDetails.lastName}
         </Typography>
-        <Typography variant="body1">{personalDetails.address}</Typography>
-        <Typography variant="body1">Phone: {personalDetails.phoneNumber}</Typography>
-        <Typography variant="body1">Email: {personalDetails.email}</Typography>
-        <Typography variant="body1">LinkedIn: {personalDetails.linkedIn}</Typography>
+        <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'center' }}>
+          <span style={{ marginRight: '16px' }}>Phone: {personalDetails.phoneNumber}</span>
+          <span style={{ marginRight: '16px' }}>
+            Email: {personalDetails.email}
+          </span>
+          <a
+            href={personalDetails.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#3b5998', textDecoration: 'none' }}
+          >
+            LinkedIn
+          </a>
+        </Typography>
       </Box>
 
       {/* Two-Column Layout */}
@@ -94,7 +121,12 @@ const Template2 = () => {
                     <Typography variant="body2">{project.description}</Typography>
                     <Typography variant="body2">Technologies: {project.technologiesUsed}</Typography>
                     <Typography variant="body2">
-                      <a href={project.link} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#3b5998', textDecoration: 'none' }}
+                      >
                         Project Link
                       </a>
                     </Typography>
@@ -112,12 +144,14 @@ const Template2 = () => {
                 <Divider sx={{ marginY: 2 }} />
                 {codingProfiles.map((profile, index) => (
                   <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{profile.platform}</Typography>
-                    <Typography variant="body2">
-                      <a href={profile.profileLink} target="_blank" rel="noopener noreferrer">
-                        {profile.profileLink}
-                      </a>
-                    </Typography>
+                    <a
+                      href={profile.profileLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#3b5998', textDecoration: 'none' }}
+                    >
+                      {profile.platform}
+                    </a>
                   </Box>
                 ))}
               </CardContent>
@@ -152,7 +186,12 @@ const Template2 = () => {
               <CardContent>
                 <Typography variant="h6">Skills</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                <Stack direction="row" spacing={1} flexWrap="wrap">
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  flexWrap="wrap"  
+                  sx={{ gap: 1, justifyContent: 'flex-start' }} 
+                >
                   {skills.map((skill, index) => (
                     <Typography
                       key={index}
@@ -161,6 +200,9 @@ const Template2 = () => {
                         backgroundColor: '#e0e0e0',
                         padding: '4px 8px',
                         borderRadius: 2,
+                        whiteSpace: 'nowrap', 
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis', 
                       }}
                     >
                       {skill}
@@ -206,18 +248,37 @@ const Template2 = () => {
           )}
 
           {/* Extra Curricular Activities */}
-          {extracurricularActivities.length > 0 && (
+          {extracurricularActivities
+            .filter((activity) => activity.achievements.trim() !== '')
+            .length > 0 && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Extra Curricular Activities</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {extracurricularActivities.map((activity, index) => (
-                  <Box key={index} marginBottom={2}>
-                    <Typography variant="subtitle1">{activity.activityName}</Typography>
-                    <Typography variant="body2">{activity.description}</Typography>
-                    <Typography variant="body2">{activity.achievements}</Typography>
-                  </Box>
-                ))}
+                {extracurricularActivities
+                  .filter((activity) => activity.achievements.trim() !== '')
+                  .map((activity, index) => (
+                    <Box key={index} marginBottom={2}>
+                      <Typography variant="subtitle1">{activity.activityName}</Typography>
+                      <Typography variant="body2">{activity.description}</Typography>
+                      <Typography variant="body2">{activity.achievements}</Typography>
+                    </Box>
+                  ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Custom Section */}
+          {customDetails.heading && customDetails.description && (
+            <Card>
+              <CardContent>
+                <Typography variant="h6">
+                  {customDetails.heading}
+                </Typography>
+                <Divider sx={{ marginY: 2 }} />
+                <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                  {customDetails.description}
+                </Typography>
               </CardContent>
             </Card>
           )}

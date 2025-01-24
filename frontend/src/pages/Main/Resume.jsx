@@ -16,8 +16,8 @@ function Resume() {
     },
     {
       id: 2,
-      name: "Modern",
-      imageUrl: temp2,
+      name: "Professional",
+      imageUrl: temp4,
     },
     {
       id: 3,
@@ -26,8 +26,8 @@ function Resume() {
     },
     {
       id: 4,
-      name: "Professional",
-      imageUrl: temp4,
+      name: "Modern",
+      imageUrl: temp2,
     },
   ];
 

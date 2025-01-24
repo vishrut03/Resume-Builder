@@ -13,11 +13,11 @@ const Template = () => {
     if (numericId === 1) {
         return <Template1 />
     } else if (numericId === 2) {
-        return <Template2 />
+        return <Template4 />
     } else if (numericId === 3) {
         return <Template3 />
     } else if (numericId === 4) {
-        return <Template4 />
+        return <Template2 />
     } else {
         return <Template1 />
     }

@@ -31,7 +31,7 @@ export default function Review({ setActiveStep, setPreviousStep }) {
   const isNotEmpty = (entry) => Object.values(entry).some((value) => value);
 
   return (
-    <Box sx={{ maxWidth: 800, mx: "auto", my: 4 }}>
+    <Box sx={{ maxWidth: 800, mx: "auto", my: 4, position: "static" }}>
       <Typography variant="h4" gutterBottom>
         Resume Review
       </Typography>

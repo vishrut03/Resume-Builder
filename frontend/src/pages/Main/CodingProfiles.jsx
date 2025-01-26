@@ -145,6 +145,14 @@ export default function CodingProfiles({ fromReview }) {
         >
           Back
         </button>
+        {fromReview && (
+          <button
+            onClick={() => setCurrentStep("Review")}
+            className="py-3 px-8 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+          >
+            Go Back to Preview
+          </button>
+        )}
         <button
           onClick={() => (fromReview ? setCurrentStep("Review") : setCurrentStep("Custom"))}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"

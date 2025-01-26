@@ -32,13 +32,15 @@ export default function WorkExperience({ fromReview }) {
       [event.target.name]: event.target.value,
     })
   }
+
   const handleNext = () => {
-    if (fromReview) {
-      setCurrentStep("Review")
-    } else {
-      setCurrentStep("Education")
-    }
+    setCurrentStep("Education")
   }
+
+  const handleGoBackToReview = () => {
+    setCurrentStep("Review")
+  }
+
   const checkOverlap = (newExperience) => {
     return workExperience.some((exp) => {
       const existingStart = new Date(exp.startDate)
@@ -101,6 +103,7 @@ export default function WorkExperience({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
+
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
@@ -210,13 +213,23 @@ export default function WorkExperience({ fromReview }) {
           ))}
       </Box>
 
-      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between items-center mt-4">
         <button
           onClick={() => setCurrentStep("BriefDescription")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
         >
           Back
         </button>
+
+        {fromReview && (
+          <button
+            onClick={handleGoBackToReview}
+            className="py-3 px-8 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+          >
+            Go Back to Review
+          </button>
+        )}
+
         <button
           onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
@@ -227,4 +240,3 @@ export default function WorkExperience({ fromReview }) {
     </>
   )
 }
-

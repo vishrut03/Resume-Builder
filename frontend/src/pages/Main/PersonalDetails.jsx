@@ -7,7 +7,7 @@ import ToastTheme from "../../utils/ToastTheme"
 import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
-import Review from "./Review" // Import the Review component
+import Review from "./Review" 
 
 export default function PersonalDetails({ fromReview }) {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails)
@@ -53,14 +53,14 @@ export default function PersonalDetails({ fromReview }) {
   const handleNext = async () => {
     const isValid = await handleSave()
     if (isValid) {
-      if (fromReview) {
-        setCurrentStep("Review")
-      } else {
-        setCurrentStep("BriefDescription")
-      }
+      setCurrentStep("BriefDescription")
     } else {
       toast.error("Please fill all required fields correctly", ToastTheme)
     }
+  }
+
+  const handleGoBackToReview = () => {
+    setCurrentStep("Review")
   }
 
   if (currentStep === "BriefDescription") {
@@ -151,6 +151,14 @@ export default function PersonalDetails({ fromReview }) {
         >
           Back
         </button>
+        {fromReview && (
+          <button
+            onClick={handleGoBackToReview}
+            className="py-3 px-6 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+          >
+            Go Back to Review
+          </button>
+        )}
         <button
           onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
@@ -161,4 +169,3 @@ export default function PersonalDetails({ fromReview }) {
     </div>
   )
 }
-

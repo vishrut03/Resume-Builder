@@ -50,10 +50,14 @@ export default function ExtraCurricular({ fromReview }) {
     toast.success("Activity deleted successfully!", ToastTheme)
   }
 
+  const handleGoBackToPreview = () => {
+    setCurrentStep("Review")
+  }
+
   if (currentStep === "Custom") {
     return <Custom />
   }
-  if(currentStep === "Review") {
+  if (currentStep === "Review") {
     return <Review />
   }
   return (
@@ -153,6 +157,14 @@ export default function ExtraCurricular({ fromReview }) {
         >
           Back
         </button>
+        {fromReview && (
+          <button
+            onClick={handleGoBackToPreview}
+            className="py-3 px-8 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+          >
+            Go Back to Preview
+          </button>
+        )}
         <button
           onClick={() => setCurrentStep("Review")}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
@@ -163,4 +175,3 @@ export default function ExtraCurricular({ fromReview }) {
     </>
   )
 }
-

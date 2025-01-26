@@ -23,19 +23,24 @@ export default function Projects({ fromReview }) {
 
   const [errors, setErrors] = useState({})
   const [currentStep, setCurrentStep] = useState("Projects")
+
   const handleChange = (event) => {
     setCurrentProject({
       ...currentProject,
       [event.target.name]: event.target.value,
     })
   }
+
   const handleNext = () => {
-    if (fromReview) {
-      setCurrentStep("Review")
-    } else {
+    if (!fromReview) {
       setCurrentStep("Skills")
     }
   }
+
+  const handleGoBackToReview = () => {
+    setCurrentStep("Review")
+  }
+
   const handleAddProject = async () => {
     try {
       await ProjectSchema.validate(currentProject, { abortEarly: false })
@@ -70,6 +75,7 @@ export default function Projects({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
+
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
@@ -131,13 +137,14 @@ export default function Projects({ fromReview }) {
       </Box>
 
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-6">
-        <h1 className="text-xl font-bold text-center mb-4">Previosuly added projects</h1>
+        <h1 className="text-xl font-bold text-center mb-4">Previously Added Projects</h1>
         {projectsStore
           .filter((project) => project.projectName && project.link)
           .map((project, index) => (
             <ProjectEntry key={`${project.projectName}-${project.link}-${index}`} project={project} index={index} />
           ))}
       </Box>
+
       <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
         <button
           onClick={() => setCurrentStep("Education")}
@@ -145,6 +152,16 @@ export default function Projects({ fromReview }) {
         >
           Back
         </button>
+
+        {fromReview && (
+          <button
+            onClick={handleGoBackToReview}
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-white hover:bg-yellow-600 hover:scale-105 shadow-md"
+          >
+            Go Back to Preview
+          </button>
+        )}
+
         <button
           onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
@@ -155,4 +172,3 @@ export default function Projects({ fromReview }) {
     </>
   )
 }
-

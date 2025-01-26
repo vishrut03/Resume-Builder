@@ -31,12 +31,12 @@ export default function WorkExperience() {
       [event.target.name]: event.target.value,
     });
   };
-  const handleNext = async () => {
-    const isValid = await handleSave()
-    if (isValid) {
-      setCurrentStep("Education");
-    } 
-  }
+  // const handleNext = async () => {
+  //   const isValid = await handleSave()
+  //   if (isValid) {
+  //     setCurrentStep("Education");
+  //   } 
+  // }
   const checkOverlap = (newExperience) => {
     return workExperience.some(exp => {
       const existingStart = new Date(exp.startDate);
@@ -213,7 +213,7 @@ export default function WorkExperience() {
           Back
         </button>
         <button
-          onClick={handleNext}
+          onClick={()=>setCurrentStep("Education")}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

@@ -29,10 +29,6 @@ export default function Projects() {
     })
   }
   const handleNext = () => {
-    // const isValid = await handleAddProject()
-    // if (isValid) {
-      
-    // } 
     setCurrentStep("Skills");
   }
   const handleAddProject = async () => {

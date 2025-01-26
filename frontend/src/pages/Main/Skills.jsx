@@ -42,10 +42,9 @@ export default function Skills() {
     toast.success("Skill deleted successfully!", ToastTheme)
   }
   const handleNext =  () => {
-    if (skillsStore.length > 0) {
       setCurrentStep("Achievements");
     } 
-  }
+  
   if(currentStep==="Projects"){
     return <Projects/>
   }

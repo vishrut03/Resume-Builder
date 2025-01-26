@@ -99,6 +99,8 @@ const WorkExperienceEntry = ({ experience, index }) => {
               fullWidth
               label="End Date"
               type="date"
+              error={errors.endDate?true:false}
+              helperText={errors.endDate}
               InputLabelProps={{ shrink: true }}
               value={localExperience.endDate}
               onChange={(e) => handleChange('endDate', e.target.value)}

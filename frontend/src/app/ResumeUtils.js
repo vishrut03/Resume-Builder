@@ -1,5 +1,8 @@
 export const addResumeField = (resume, section, newEntry) => {
     const updatedSection = [...resume[section], newEntry];
+    if(section === 'education' || section === 'workExperience') {
+      updatedSection.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+    }
     return { ...resume, [section]: updatedSection };
   };
   
@@ -20,6 +23,9 @@ export const addResumeField = (resume, section, newEntry) => {
     const updatedEntry = { ...resume[section][index], [fieldKey]: value };
     const updatedSection = [...resume[section]];
     updatedSection[index] = updatedEntry;
+    if(section === 'education' || section === 'workExperience') {
+      updatedSection.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
+    }
     return {
       ...resume,
       [section]: updatedSection,

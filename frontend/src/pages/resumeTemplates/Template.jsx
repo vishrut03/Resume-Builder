@@ -12,11 +12,11 @@ const Template = () => {
     if (tname === 'Classic') {
         return <Template1 />
     } else if (tname === 'Professional') {
-        return <Template2 />
+        return <Template4 />
     } else if (tname === 'Creative') {
         return <Template3 />
     } else  {
-        return <Template4 />
+        return <Template2 />
     } 
 }
 

@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
 import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import Achievements from "./Achievements"
+import CodingProfiles from "./CodingProfiles"
 
 export default function Certificates() {
   const [currentCertificate, setCurrentCertificate] = useState({
@@ -18,6 +20,7 @@ export default function Certificates() {
   const addCertificate = useResumeStore((state) => state.addResumeEntry)
   const deleteCertificate = useResumeStore((state) => state.deleteResumeEntry)
 
+  const [currentStep, setCurrentStep] = useState("Certificates");
   const [nameError, setNameError] = useState("")
   const [organizationError, setOrganizationError] = useState("")
   const [dateError, setDateError] = useState("")
@@ -69,6 +72,12 @@ export default function Certificates() {
     toast.success("Certificate deleted successfully!", ToastTheme)
   }
 
+  if(currentStep==="Achievements") {
+    return <Achievements />
+  }
+  if(currentStep==="CodingProfiles") {
+    return <CodingProfiles />
+  }
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
@@ -157,6 +166,20 @@ export default function Certificates() {
             ))}
         </List>
     </Box>
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("Achievements")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={()=>setCurrentStep("CodingProfiles")}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
     </>
   )
 }

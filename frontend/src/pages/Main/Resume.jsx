@@ -1,10 +1,12 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
+import { useState } from "react";
 import useResumeStore from "../../app/ResumeStore";
 import temp1 from '../../assets/template-1.svg';
 import temp2 from '../../assets/template-2.png';
 import temp3 from '../../assets/temp3.webp';
 import temp4 from '../../assets/ats-friendly-Combined-Resume-Template.png';
-
+import Review
+ from "./Review";
 function Resume() {
   const resume = useResumeStore().resume;
 
@@ -37,7 +39,11 @@ function Resume() {
     window.open(url, "_blank");
   };
 
+  const [currentStep,setCurrentStep]=useState("Resume")
+
+  if(currentStep==="Review") return <Review/>
   return (
+    <>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4, marginTop: 2 }}>
         Choose a template
@@ -151,6 +157,15 @@ function Resume() {
         ))}
       </Box>
     </Box>
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("Review")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+      </div>
+    </>
   );
 }
 

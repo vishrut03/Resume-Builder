@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Chip, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import useResumeStore from "../../app/ResumeStore";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import ExtraCurricular from "./ExtraCurricular";
+import Resume from "./Resume";
 
 export default function Review({ setActiveStep, setPreviousStep }) {
   const { resume } = useResumeStore();
-
+  const [currentStep, setCurrentStep] = useState("Review");
   useEffect(() => {
     console.log(resume);
   }, [resume]);
@@ -31,7 +33,14 @@ export default function Review({ setActiveStep, setPreviousStep }) {
 
   const isNotEmpty = (entry) => Object.values(entry).some((value) => value);
 
+  if(currentStep === "ExtraCurricular") {
+    return <ExtraCurricular/>;
+  }
+  if(currentStep === "Resume") {
+    return <Resume/>;
+  }
   return (
+    <>
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4, position: "static" }}>
       <VisibilityIcon/>
       <Typography variant="h4" gutterBottom>
@@ -182,5 +191,21 @@ export default function Review({ setActiveStep, setPreviousStep }) {
         </Section>
       )}
     </Box>
+
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("ExtraCurricular")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={()=>setCurrentStep("Resume")}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
+    </>  
   );
 }

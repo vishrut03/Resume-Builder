@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../../utils/ToastTheme"
 import { ProjectSchema } from "../../../schemas/ProjectSchema"
 import CodeIcon from "@mui/icons-material/Code";
+import Education from "../Education/Education"
+import Skills from "../Skills"
 
 export default function Projects() {
   const projectsStore = useResumeStore((state) => state.resume.projects)
@@ -19,7 +21,7 @@ export default function Projects() {
   })
 
   const [errors, setErrors] = useState({})
-
+  const [currentStep, setCurrentStep] = useState("Projects")
   const handleChange = (event) => {
     setCurrentProject({
       ...currentProject,
@@ -50,6 +52,12 @@ export default function Projects() {
     }
   }
 
+  if(currentStep==="Education"){
+    return <Education/>
+  }
+  if(currentStep==="Skills"){
+    return <Skills/>
+  }
   return (
     <>
     <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
@@ -118,6 +126,20 @@ export default function Projects() {
             <ProjectEntry key={`${project.projectName}-${project.link}-${index}`} project={project} index={index} />
           ))}
     </Box>
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("Education")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={()=>setCurrentStep("Skills")}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
     </>
   )
 }

@@ -72,7 +72,7 @@ const Form = () => {
     return (
     <>
     <Review setActiveStep={setActiveStep} setPreviousStep={setPreviousStep}/>
-    <div className="flex justify-between ml-10"> 
+    {/* <div className="flex justify-between ml-10"> 
       <button
         onClick={handleBack}
         disabled={activeStep === 0}
@@ -92,7 +92,7 @@ const Form = () => {
           Next
         </button>
       </div>
-    </div>
+    </div> */}
     </>)
   }
 
@@ -102,7 +102,7 @@ const Form = () => {
     <div className="max-w-4xl mx-auto p-8">
       <div className="bg-white rounded-lg p-6 mb-4">{getStepContent(activeStep)}</div> 
 
-    <div className="flex justify-between ml-10"> 
+    {/* <div className="flex justify-between ml-10"> 
       <button
         onClick={handleBack}
         disabled={activeStep === 0}
@@ -122,7 +122,7 @@ const Form = () => {
           Next
         </button>
       </div>
-    </div>
+    </div> */}
     </div>
   );
 };

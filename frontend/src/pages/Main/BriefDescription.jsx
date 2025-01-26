@@ -5,7 +5,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
 import DescriptionIcon from "@mui/icons-material/Description";
-
+import PersonalDetails from './PersonalDetails';
+import WorkExperience from './WorkExperience/WorkExperience'
 
 export default function BriefDescription() {
   const briefDescription = useResumeStore((state) => state.resume.briefDescription);
@@ -13,6 +14,7 @@ export default function BriefDescription() {
 
   const [description, setDescription] = useState('');
   const [errors, setErrors] = useState(undefined);
+  const [currentStep, setCurrentStep] = useState("");
 
   useEffect(() => {
     setDescription(briefDescription);
@@ -38,7 +40,14 @@ export default function BriefDescription() {
     toast.success("Description saved!", ToastTheme);
   };
 
+  if(currentStep === "PersonalDetails") {
+    return <PersonalDetails />
+  }
+  if(currentStep === "WorkExperience") {
+    return <WorkExperience />
+  }
   return (
+    <>
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
       <DescriptionIcon />
       <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4 }}>
@@ -71,5 +80,20 @@ export default function BriefDescription() {
         Ensure your description is clear and concise.
       </Typography>
     </Box>
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("PersonalDetails")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={()=>setCurrentStep("WorkExperience")}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
+    </>
   );
 }

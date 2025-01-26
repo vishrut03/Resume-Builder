@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../utils/ToastTheme';
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import Certificates from './Certificates';
+import Skills from './Skills';
 
 export default function Achievements() {
   const [currentAchievement, setCurrentAchievement] = useState('');
@@ -13,7 +15,7 @@ export default function Achievements() {
   const addResumeEntry = useResumeStore((state) => state.addResumeEntry); 
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry); 
   const [error, setError] = useState(undefined);
-
+  const [currentStep, setCurrentStep] = useState("Achievements");
   const handleAddAchievement = () => {
 
     if(currentAchievement===""){
@@ -42,7 +44,14 @@ export default function Achievements() {
     }
   };
 
+  if(currentStep==="Skills"){
+    return <Skills/>
+  }
+  if(currentStep==="Certificates"){
+    return <Certificates/>
+  }
   return (
+    <>
     <Box>
       <EmojiEventsIcon/>
       <h1 className="text-2xl font-bold text-center mb-4">Achievements</h1>
@@ -75,8 +84,21 @@ export default function Achievements() {
             </ListItem>
           ))}
       </List>
-
-
     </Box>
+    <div className="w-full max-w-xl flex justify-between mt-4">
+        <button
+          onClick={()=>setCurrentStep("Skills")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+        >
+          Back
+        </button>
+        <button
+          onClick={()=>setCurrentStep("Certificates")}
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+        >
+          Next
+        </button>
+      </div>
+    </>
   );
 }

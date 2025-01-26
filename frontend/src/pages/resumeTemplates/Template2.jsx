@@ -29,7 +29,7 @@ const Template2 = () => {
 
   const handleDownload = () => {
       const element = document.getElementById('template2');
-      console.log('hi',element)
+      // console.log('hi',element)
       html2pdf(element);
   };
 

@@ -7,8 +7,9 @@ import ToastTheme from "../../utils/ToastTheme"
 import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
+import Review from "./Review" // Import the Review component
 
-export default function PersonalDetails() {
+export default function PersonalDetails({ fromReview }) {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails)
   const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
@@ -21,7 +22,7 @@ export default function PersonalDetails() {
     address: "",
     linkedIn: "",
   })
-  const [currentStep, setCurrentStep] = useState("")
+  const [currentStep, setCurrentStep] = useState("PersonalDetails")
 
   useEffect(() => {
     setLocalPersonalDetails(personalDetails)
@@ -52,19 +53,31 @@ export default function PersonalDetails() {
   const handleNext = async () => {
     const isValid = await handleSave()
     if (isValid) {
-      setCurrentStep("BriefDescription");
-    } 
+      if (fromReview) {
+        setCurrentStep("Review")
+      } else {
+        setCurrentStep("BriefDescription")
+      }
+    } else {
+      toast.error("Please fill all required fields correctly", ToastTheme)
+    }
   }
 
   if (currentStep === "BriefDescription") {
     return <BriefDescription />
   }
 
+  if (currentStep === "Review") {
+    return <Review />
+  }
+
   return (
     <div className="flex flex-col items-center">
-      <Box className="max-w-xl w-full p-4 space-y-6 bg-white rounded-lg shadow-md mb-8">
-        <PersonIcon />
-        <h1 className="text-2xl font-bold text-center mb-4">Personal Details</h1>
+      <Box className="max-w-xl w-full p-6 space-y-6 bg-white rounded-lg shadow-md mb-6">
+        <div className="flex justify-center items-center mb-4">
+          <PersonIcon className="mr-2" />
+          <h1 className="text-2xl font-bold text-center">Personal Details</h1>
+        </div>
         <TextField
           required
           error={!!errors.firstName}
@@ -118,6 +131,7 @@ export default function PersonalDetails() {
           onChange={handleChange}
         />
         <TextField
+          required
           error={!!errors.linkedIn}
           helperText={errors.linkedIn}
           fullWidth
@@ -126,23 +140,11 @@ export default function PersonalDetails() {
           value={localPersonalDetails.linkedIn}
           onChange={handleChange}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{
-            width: "50%",
-            margin: "0 auto",
-            display: "block",
-            marginTop: 2,
-            padding: "10px 20px",
-            borderRadius: "8px",
-          }}
-          onClick={handleSave}
-        >
+        <Button variant="contained" color="primary" fullWidth onClick={handleSave}>
           Save Details
         </Button>
       </Box>
-      <div className="w-full max-w-xl flex justify-between mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
         <button
           disabled={true}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-300 text-gray-500 cursor-not-allowed shadow-md"

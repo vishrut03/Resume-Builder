@@ -1,94 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
-import useResumeStore from '../../app/ResumeStore';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import ToastTheme from '../../utils/ToastTheme';
-import DescriptionIcon from "@mui/icons-material/Description";
-import PersonalDetails from './PersonalDetails';
-import WorkExperience from './WorkExperience/WorkExperience'
+import React, { useEffect, useState } from "react"
+import { Box, TextField, Button, Typography } from "@mui/material"
+import useResumeStore from "../../app/ResumeStore"
+import { toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import ToastTheme from "../../utils/ToastTheme"
+import DescriptionIcon from "@mui/icons-material/Description"
+import PersonalDetails from "./PersonalDetails"
+import WorkExperience from "./WorkExperience/WorkExperience"
+import Review from "./Review" // Import the Review component
 
-export default function BriefDescription() {
-  const briefDescription = useResumeStore((state) => state.resume.briefDescription);
-  const editSimpleField = useResumeStore((state) => state.editSimpleField);
+export default function BriefDescription({ fromReview }) {
+  const briefDescription = useResumeStore((state) => state.resume.briefDescription)
+  const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
-  const [description, setDescription] = useState('');
-  const [errors, setErrors] = useState(undefined);
-  const [currentStep, setCurrentStep] = useState("");
+  const [description, setDescription] = useState("")
+  const [errors, setErrors] = useState(undefined)
+  const [currentStep, setCurrentStep] = useState("BriefDescription")
 
   useEffect(() => {
-    setDescription(briefDescription);
-  }, [briefDescription]);
+    setDescription(briefDescription)
+  }, [briefDescription])
 
   const handleChange = (event) => {
-    setDescription(event.target.value);
-  };
+    setDescription(event.target.value)
+  }
+
   const handleNext = async () => {
     const isValid = await handleSave()
     if (isValid) {
-      setCurrentStep("WorkExperience");
-    } 
-  }
-  const handleSave = async () => {
-    if (description.trim() === '') {
-      setErrors("Description cannot be empty");
-      return false;
-    } else if (description.length > 500) {
-      setErrors("Description cannot exceed 500 characters");
-      return false;
-    } else if (description.length < 10) {
-      setErrors("Description should be at least 10 characters long");
-      return false;
+      if (fromReview) {
+        setCurrentStep("Review")
+      } else {
+        setCurrentStep("WorkExperience")
+      }
     }
-    setErrors(undefined);
-    editSimpleField('briefDescription', description);
-    toast.success("Description saved!", ToastTheme);
-    return true;
-  };
+  }
 
-  if(currentStep === "PersonalDetails") {
+  const handleSave = async () => {
+    if (description.trim() === "") {
+      setErrors("Description cannot be empty")
+      return false
+    } else if (description.length > 500) {
+      setErrors("Description cannot exceed 500 characters")
+      return false
+    } else if (description.length < 10) {
+      setErrors("Description should be at least 10 characters long")
+      return false
+    }
+    setErrors(undefined)
+    editSimpleField("briefDescription", description)
+    toast.success("Description saved!", ToastTheme)
+    return true
+  }
+
+  if (currentStep === "PersonalDetails") {
     return <PersonalDetails />
   }
-  if(currentStep === "WorkExperience") {
+  if (currentStep === "WorkExperience") {
     return <WorkExperience />
   }
+  if (currentStep === "Review") {
+    return <Review />
+  }
+
   return (
-    <>
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-      <DescriptionIcon />
-      <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 4 }}>
-        Brief Description
-      </Typography>
+    <div className="flex flex-col items-center">
+      <Box className="max-w-xl w-full p-6 space-y-6 bg-white rounded-lg shadow-md mb-6">
+        <div className="flex justify-center items-center mb-4">
+          <DescriptionIcon className="mr-2" />
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Brief Description
+          </Typography>
+        </div>
 
-      <TextField
-        fullWidth
-        label="Brief Description"
-        error={errors !== undefined ? true : false}
-        helperText={errors}
-        multiline
-        rows={4}
-        value={description}
-        onChange={handleChange}
-        placeholder="Motivated software engineer with a passion for developing scalable solutions."
-        sx={{ marginBottom: 2, maxWidth: 600 }}
-      />
-      
-      <Button 
-        variant="contained" 
-        color="primary" 
-        onClick={handleSave} 
-        sx={{ width: 200, fontSize: '16px', textTransform: 'none' }}
-      >
-        Save Description
-      </Button>
+        <TextField
+          fullWidth
+          label="Brief Description"
+          error={errors !== undefined}
+          helperText={errors}
+          multiline
+          rows={4}
+          value={description}
+          onChange={handleChange}
+          placeholder="Motivated software engineer with a passion for developing scalable solutions."
+        />
 
-      <Typography variant="caption" color="textSecondary" sx={{ marginTop: 1 }}>
-        Ensure your description is clear and concise.
-      </Typography>
-    </Box>
-    <div className="w-full max-w-xl flex justify-between mt-4">
+        <Button variant="contained" color="primary" onClick={handleSave} fullWidth>
+          Save Description
+        </Button>
+
+        <Typography variant="caption" color="textSecondary" className="text-center block">
+          Ensure your description is clear and concise.
+        </Typography>
+      </Box>
+      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
         <button
-          onClick={()=>setCurrentStep("PersonalDetails")}
+          onClick={() => setCurrentStep("PersonalDetails")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
         >
           Back
@@ -100,6 +107,7 @@ export default function BriefDescription() {
           Next
         </button>
       </div>
-    </>
-  );
+    </div>
+  )
 }
+

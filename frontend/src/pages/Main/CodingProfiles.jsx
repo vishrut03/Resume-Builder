@@ -5,11 +5,12 @@ import useResumeStore from "../../app/ResumeStore"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
-import ComputerIcon from "@mui/icons-material/Computer";
+import ComputerIcon from "@mui/icons-material/Computer"
 import Certificates from "./Certificates"
 import Custom from "./Custom"
+import Review from "./Review" // Import the Review component
 
-export default function CodingProfiles() {
+export default function CodingProfiles({ fromReview }) {
   const [currentProfile, setCurrentProfile] = useState({
     platform: "",
     profileLink: "",
@@ -20,7 +21,7 @@ export default function CodingProfiles() {
   const deleteCodingProfile = useResumeStore((state) => state.deleteResumeEntry)
   const [platformError, setPlatformError] = useState("")
   const [linkError, setLinkError] = useState("")
-  const [currentStep, setCurrentStep] = useState("CodingProfiles");
+  const [currentStep, setCurrentStep] = useState("CodingProfiles")
 
   const handleChange = (event) => {
     setCurrentProfile({
@@ -57,16 +58,19 @@ export default function CodingProfiles() {
     toast.success("Coding Profile deleted successfully!", ToastTheme)
   }
 
-  if(currentStep ==="Certificates") {
+  if (currentStep === "Certificates") {
     return <Certificates />
   }
-  if(currentStep ==="Custom") {
+  if (currentStep === "Custom") {
     return <Custom />
+  }
+  if (currentStep === "Review") {
+    return <Review />
   }
   return (
     <>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
-        <ComputerIcon/>
+        <ComputerIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Coding Profiles</h1>
         <TextField
           fullWidth
@@ -134,15 +138,15 @@ export default function CodingProfiles() {
             ))}
         </List>
       </Box>
-      <div className="w-full max-w-xl flex justify-between mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
         <button
-          onClick={()=>setCurrentStep("Certificates")}
+          onClick={() => setCurrentStep("Certificates")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
         >
           Back
         </button>
         <button
-          onClick={()=>setCurrentStep("Custom")}
+          onClick={() => (fromReview ? setCurrentStep("Review") : setCurrentStep("Custom"))}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

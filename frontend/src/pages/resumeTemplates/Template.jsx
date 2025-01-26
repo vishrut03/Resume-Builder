@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 
 const Template = () => {
     const {tname,name} = useParams();
-    console.log(tname,name);
+    // console.log(tname,name);
     if (tname === 'Classic') {
         return <Template1 />
     } else if (tname === 'Professional') {

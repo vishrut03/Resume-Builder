@@ -30,7 +30,12 @@ export default function Education() {
       [event.target.name]: event.target.value,
     });
   };
-
+  const handleNext = async () => {
+    const isValid = await handleAdd()
+    if (isValid) {
+      setCurrentStep("Projects");
+    } 
+  }
   const checkOverlap = (newEducation) => {
     return education.some(edu => {
       const existingStart = new Date(edu.startDate);
@@ -61,6 +66,7 @@ export default function Education() {
         cgpa: '',
       });
       toast.success("Education added successfully!", { ...ToastTheme, progress: undefined });
+      return true;
     } catch (err) {
       const newErrors = {};
       if (err.inner !== undefined) {
@@ -75,6 +81,7 @@ export default function Education() {
         toast.error(err.message, { ...ToastTheme, progress: undefined });
       }
       setErrors(newErrors);
+      return false;
     }
   };
 
@@ -198,7 +205,7 @@ export default function Education() {
           Back
         </button>
         <button
-          onClick={()=>setCurrentStep("Projects")}
+          onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

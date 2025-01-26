@@ -21,7 +21,7 @@ export default function Skills() {
     // console.log(skill);
     if(skill===""){
       setError("Please enter a valid skill!")
-      return;
+      return false;
     }
     setError(undefined);
     if (skill && skill.trim() !== "" && skillsStore.length < 10) {
@@ -34,13 +34,18 @@ export default function Skills() {
     } else {
       toast.error("Please enter a valid skill!", ToastTheme)
     }
+    return true;
   }
 
   const handleDeleteSkill = (index) => {
     deleteSkillStore("skills", index)
     toast.success("Skill deleted successfully!", ToastTheme)
   }
-
+  const handleNext =  () => {
+    if (skillsStore.length > 0) {
+      setCurrentStep("Achievements");
+    } 
+  }
   if(currentStep==="Projects"){
     return <Projects/>
   }
@@ -91,7 +96,7 @@ export default function Skills() {
           Back
         </button>
         <button
-          onClick={()=>setCurrentStep("Achievements")}
+          onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

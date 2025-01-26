@@ -28,7 +28,13 @@ export default function Projects() {
       [event.target.name]: event.target.value,
     })
   }
-
+  const handleNext = () => {
+    // const isValid = await handleAddProject()
+    // if (isValid) {
+      
+    // } 
+    setCurrentStep("Skills");
+  }
   const handleAddProject = async () => {
     try {
       await ProjectSchema.validate(currentProject, { abortEarly: false })
@@ -41,6 +47,7 @@ export default function Projects() {
         technologiesUsed: "",
         link: "",
       })
+      return true;
     } catch (err) {
       const newErrors = {}
       if (err.inner !== undefined) {
@@ -49,6 +56,7 @@ export default function Projects() {
         })
       }
       setErrors(newErrors)
+      return false;
     }
   }
 
@@ -134,7 +142,7 @@ export default function Projects() {
           Back
         </button>
         <button
-          onClick={()=>setCurrentStep("Skills")}
+          onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

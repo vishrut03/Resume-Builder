@@ -37,7 +37,7 @@ export default function Achievements() {
     deleteResumeEntry("achievements", index);    
     toast.success("Achievement deleted successfully!", ToastTheme);
   };
-
+  
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       handleAddAchievement();

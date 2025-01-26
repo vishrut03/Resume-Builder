@@ -23,21 +23,27 @@ export default function BriefDescription() {
   const handleChange = (event) => {
     setDescription(event.target.value);
   };
-
+  const handleNext = async () => {
+    const isValid = await handleSave()
+    if (isValid) {
+      setCurrentStep("WorkExperience");
+    } 
+  }
   const handleSave = async () => {
     if (description.trim() === '') {
       setErrors("Description cannot be empty");
-      return;
+      return false;
     } else if (description.length > 500) {
       setErrors("Description cannot exceed 500 characters");
-      return;
+      return false;
     } else if (description.length < 10) {
       setErrors("Description should be at least 10 characters long");
-      return;
+      return false;
     }
     setErrors(undefined);
     editSimpleField('briefDescription', description);
     toast.success("Description saved!", ToastTheme);
+    return true;
   };
 
   if(currentStep === "PersonalDetails") {
@@ -88,7 +94,7 @@ export default function BriefDescription() {
           Back
         </button>
         <button
-          onClick={()=>setCurrentStep("WorkExperience")}
+          onClick={handleNext}
           className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
         >
           Next

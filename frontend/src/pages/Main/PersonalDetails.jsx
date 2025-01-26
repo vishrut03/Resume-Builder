@@ -54,9 +54,6 @@ export default function PersonalDetails() {
     if (isValid) {
       setCurrentStep("BriefDescription");
     } 
-    // else {
-    //   toast.error("Please fill all required fields correctly", ToastTheme);
-    // }
   }
 
   if (currentStep === "BriefDescription") {

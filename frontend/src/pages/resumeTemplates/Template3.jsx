@@ -69,6 +69,7 @@ const Template3 = () => {
               }}
             >
               {/* Education Section */}
+              {isNonEmpty(data.education) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -96,9 +97,10 @@ const Template3 = () => {
                     <Divider sx={{ my: 1 }} />
                   </Box>)
                 ))}
-              </Box>
+              </Box>)}
 
               {/* Work Experience Section */}
+              {isNonEmpty(data.workExperience) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -123,9 +125,10 @@ const Template3 = () => {
                     <Divider sx={{ mt: 2 }} />
                   </Box>)
                 ))}
-              </Box>
+              </Box>)}
 
               {/* Skills Section */}
+              {data.skills.length>0 && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -159,9 +162,10 @@ const Template3 = () => {
                     </Box>
                   ))}
                 </Box>
-              </Box>
+              </Box>)}
 
               {/* Projects Section */}
+              {isNonEmpty(data.projects) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -193,13 +197,14 @@ const Template3 = () => {
                     <Divider sx={{ mt: 2 }} />
                   </Box>)
                 ))}
-              </Box>
+              </Box>)}
             </Box>
           </Grid2>
 
           {/* Right Column */}
           <Grid2 item xs={12} md={8}>
             {/* Achievements Section */}
+            {data.achievements.length>0 && (
             <Box sx={{ mb: 4 }}>
               <Typography
                 variant="h6"
@@ -218,7 +223,7 @@ const Template3 = () => {
                   </Box>
                 ))}
               </Box>
-            </Box>
+            </Box>)}
 
             {/* Certificates Section */}
             {isNonEmpty(data.certificates) && (

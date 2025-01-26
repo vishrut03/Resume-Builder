@@ -6,15 +6,14 @@ import {
   Stack,
   Divider,
   Chip,
-  Button,
   List,
   ListItem,
   ListItemText,
   Link,
 } from '@mui/material';
-import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import html2pdf from 'html2pdf.js';
 import useResumeStore from '../../app/ResumeStore';
+import Download from './Download';
 
 const Template1 = () => {
   const handleDownload = () => {
@@ -36,17 +35,7 @@ const Template1 = () => {
 
   return (
     <>
-      {/* Centered Download Button */}
-      <Box textAlign="center" mb={2} mt = {3}>
-        <Button 
-          variant="contained"
-          color="primary"
-          onClick={handleDownload}
-          endIcon={<DownloadForOfflineIcon />}
-        >
-          Download
-        </Button>
-      </Box>
+      <Download handleDownload={handleDownload} />
       <Paper
         id="template1"
         elevation={3}

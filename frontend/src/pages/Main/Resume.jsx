@@ -31,9 +31,9 @@ function Resume() {
     },
   ];
 
-  const handleTemplateClick = (templateId) => {
+  const handleTemplateClick = (templateName) => {
     const fullName = resume.personalDetails.firstName + resume.personalDetails.lastName;
-    const url = `http://localhost:5173/${fullName}/template/${templateId}`;
+    const url = `http://localhost:5173/${fullName}/template/${templateName}`;
     window.open(url, "_blank");
   };
 
@@ -86,7 +86,7 @@ function Resume() {
                 opacity: 0,
                 transition: 'opacity 0.3s, transform 0.3s',
               }}
-              onClick={() => handleTemplateClick(template.id)}
+              onClick={() => handleTemplateClick(template.name)}
             >
               Use this template
             </Button>
@@ -140,7 +140,7 @@ function Resume() {
                 opacity: 0,
                 transition: 'opacity 0.3s, transform 0.3s',
               }}
-              onClick={() => handleTemplateClick(template.id)}
+              onClick={() => handleTemplateClick(template.name)}
             >
               Use this template
             </Button>

@@ -29,7 +29,7 @@ export default function App() {
           </Box>
         </>
         } />
-      <Route path="/:name/template/:id" element={<Template/>} />
+      <Route path="/:name/template/:tname" element={<Template/>} />
       
       </Routes>
       <ToastContainer /> 

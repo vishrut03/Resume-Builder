@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import html2pdf from "html2pdf.js";
 import useResumeStore from "../../app/ResumeStore";
+import Download from './Download';
 
 const Template4 = () => {
   const data = useResumeStore().resume;
@@ -27,17 +28,7 @@ const Template4 = () => {
   return (
     <>
       {/* Download Button */}
-      <Box sx={{ textAlign: "center", mb: 2 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleDownload}
-          endIcon={<DownloadForOffline />}
-          sx={{ mt: 2 }}
-        >
-          Download
-        </Button>
-      </Box>
+      <Download handleDownload={handleDownload} />
 
       {/* Resume Template */}
       <Paper id="template4" elevation={3} sx={{ maxWidth: 1200, mx: "auto" }}>

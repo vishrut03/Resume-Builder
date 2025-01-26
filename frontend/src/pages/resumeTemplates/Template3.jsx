@@ -3,6 +3,7 @@ import { Box, Typography, Paper, Grid2, Divider, Button } from "@mui/material"
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline"
 import html2pdf from "html2pdf.js"
 import useResumeStore from "../../app/ResumeStore"
+import Download from './Download'
 
 const Template3 = () => {
   const handleDownload = () => {
@@ -24,23 +25,7 @@ const Template3 = () => {
 
   return (
     <>
-      <Button
-      variant="contained"
-      color="primary"
-      onClick={handleDownload}
-      endIcon={<DownloadForOfflineIcon />}
-      sx={{
-        mb: 2,
-        mt: 2,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        mx: "auto",
-      }}
-    >
-      Download
-    </Button>
-
+      <Download handleDownload={handleDownload} />
 
       <Paper
         id="template3"

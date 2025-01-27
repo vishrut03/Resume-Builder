@@ -8,7 +8,7 @@ import {
   DownloadForOffline,
 } from "@mui/icons-material";
 import html2pdf from "html2pdf.js";
-import useResumeStore from "../../app/ResumeStore";
+import useResumeStore from "../../store/ResumeStore"
 import Download from './Download';
 
 const Template4 = () => {

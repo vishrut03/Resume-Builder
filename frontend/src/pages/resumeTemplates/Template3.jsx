@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Typography, Paper, Grid2, Divider, Button } from "@mui/material"
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline"
 import html2pdf from "html2pdf.js"
-import useResumeStore from "../../app/ResumeStore"
+import useResumeStore from "../../store/ResumeStore"
 import Download from './Download'
 
 const Template3 = () => {

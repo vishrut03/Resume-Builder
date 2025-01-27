@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Box, Typography, Paper, List, ListItem, ListItemText, Button, Chip, IconButton } from "@mui/material"
 import EditIcon from "@mui/icons-material/Edit"
-import useResumeStore from "../../app/ResumeStore"
+import useResumeStore from "../../store/ResumeStore"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import PersonalDetails from "./PersonalDetails";
 import Projects from "./Project/Projects";

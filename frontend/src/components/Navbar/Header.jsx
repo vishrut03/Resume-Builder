@@ -16,7 +16,7 @@ import {
 } from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 import { styled } from "@mui/material/styles"
-import Logo from '../Logo/Logo'
+import Logo from '../../pages/Logo/Logo'
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
@@ -40,20 +40,6 @@ export default function Header() {
     setDrawerOpen(open)
   }
 
-  const menuItems = ["Home", "Templates", "About", "Contact"]
-
-  const list = () => (
-    <DrawerList role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      {menuItems.map((text) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </DrawerList>
-  )
-
   return (
     <>
       <StyledAppBar position="static">
@@ -64,24 +50,8 @@ export default function Header() {
               ResumeBuilder
             </Typography>
           </Box>
-          {isMobile ? (
-            <IconButton size="large" edge="end" color="inherit" aria-label="menu" onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </IconButton>
-          ) : (
-            <Box>
-              {menuItems.map((item) => (
-                <Button key={item} color="inherit" className="mx-2">
-                  {item}
-                </Button>
-              ))}
-            </Box>
-          )}
         </Toolbar>
       </StyledAppBar>
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-        {list()}
-      </Drawer>
     </>
   )
 }

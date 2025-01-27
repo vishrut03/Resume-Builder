@@ -1,6 +1,6 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { useState } from "react";
-import useResumeStore from "../../app/ResumeStore";
+import useResumeStore from "../../store/ResumeStore"
 import temp1 from '../../assets/template-1.svg';
 import temp2 from '../../assets/ats-friendly-Combined-Resume-Template.png';
 import temp3 from '../../assets/temp3.webp';

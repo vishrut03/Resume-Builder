@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Box, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import useResumeStore from "../../app/ResumeStore"
+import useResumeStore from "../../store/ResumeStore"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"

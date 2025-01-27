@@ -8,7 +8,7 @@ import {
   Divider,
   Button,
 } from '@mui/material';
-import useResumeStore from '../../app/ResumeStore';
+import useResumeStore from "../../store/ResumeStore"
 import html2pdf from 'html2pdf.js';
 import Download from './Download';
 

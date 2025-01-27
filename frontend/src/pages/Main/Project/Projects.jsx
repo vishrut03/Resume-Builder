@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Box, TextField, Button, Typography } from "@mui/material"
-import useResumeStore from "../../../app/ResumeStore"
+import useResumeStore from "../../../store/ResumeStore"
 import ProjectEntry from "./ProjectEntry"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"

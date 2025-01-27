@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Link, Container, Grid2 } from "@mui/material";
-import Logo from "../Logo/Logo";
+import Logo from "../../pages/Logo/Logo";
 
 const Footer = () => {
   return (

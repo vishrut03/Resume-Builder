@@ -26,13 +26,13 @@ export default function BriefDescription({ fromReview }) {
   }
 
   const handleNext = async () => {
-    const isValid = await handleSave()
+    const isValid = await handleSave(1)
     if (isValid) {
       setCurrentStep("WorkExperience")
     }
   }
 
-  const handleSave = async () => {
+  const handleSave = async (id) => {
     if (description.trim() === "") {
       setErrors("Description cannot be empty")
       return false
@@ -45,7 +45,7 @@ export default function BriefDescription({ fromReview }) {
     }
     setErrors(undefined)
     editSimpleField("briefDescription", description)
-    toast.success("Description saved!", ToastTheme)
+    if(id!==1) toast.success("Description saved!", ToastTheme)
     return true
   }
 

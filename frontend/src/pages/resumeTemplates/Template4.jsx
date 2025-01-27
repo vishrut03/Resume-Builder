@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Paper, Button, Link, Grid } from "@mui/material";
+import { Box, Typography, Paper, Button, Link, Grid2 } from "@mui/material";
 import {
   Mail,
   Phone,
@@ -40,16 +40,16 @@ const Template4 = () => {
             p: 4,
           }}
         >
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={8}>
+          <Grid2 container spacing={2}>
+            <Grid2 item xs={12} md={8}>
               <Typography variant="h3" sx={{ mb: 1 }}>
                 {data.personalDetails.firstName} {data.personalDetails.lastName}
               </Typography>
               <Typography variant="body1" sx={{ color: "#cbd5e1" }}>
                 {data.briefDescription}
               </Typography>
-            </Grid>
-            <Grid item xs={12} md={4}>
+            </Grid2>
+            <Grid2 item xs={12} md={4}>
               <Box
                 sx={{
                   display: "flex",
@@ -78,15 +78,15 @@ const Template4 = () => {
                   </Link>
                 </Box>
               </Box>
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Box>
 
         {/* Content Section */}
         <Box sx={{ p: 4 }}>
-          <Grid container spacing={4}>
+          <Grid2 container spacing={4}>
             {/* Left Column */}
-            <Grid item xs={12} md={8}>
+            <Grid2 item xs={12} md={8}>
               {/* Education */}
               {filterEmptySections(data.education).length > 0 && (
                 <Box sx={{ mb: 6 }}>
@@ -153,7 +153,7 @@ const Template4 = () => {
 
               {/* Coding Profiles */}
               {/* Coding Profiles */}
-            {data.codingProfiles && data.codingProfiles.length > 0 && (
+            {data.codingProfiles && data.codingProfiles.length > 1 && (
               <Box sx={{ mb: 6 }}>
                 <Typography
                   variant="h5"
@@ -166,6 +166,7 @@ const Template4 = () => {
                   CODING PROFILES
                 </Typography>
                 {data.codingProfiles.map((profile, index) => (
+                  profile.profileLink && (
                   <Box key={index} sx={{ mb: 2 }}>
                     <Typography
                       variant="subtitle2"
@@ -188,15 +189,15 @@ const Template4 = () => {
                     >
                       {profile.profileLink}
                     </Link>
-                  </Box>
+                  </Box>)
                 ))}
               </Box>
             )}
 
-            </Grid>
+            </Grid2>
 
             {/* Right Column */}
-            <Grid item xs={12} md={4}>
+            <Grid2 item xs={12} md={4}>
               {/* Skills */}
               {data.skills.length > 0 && (
                 <Box sx={{ mb: 6 }}>
@@ -278,8 +279,8 @@ const Template4 = () => {
                   ))}
                 </Box>
               )}
-            </Grid>
-          </Grid>
+            </Grid2>
+          </Grid2>
         </Box>
       </Paper>
     </>

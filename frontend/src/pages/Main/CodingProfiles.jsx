@@ -69,7 +69,7 @@ export default function CodingProfiles({ fromReview }) {
   }
   return (
     <>
-      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <ComputerIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Coding Profiles</h1>
         <TextField

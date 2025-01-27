@@ -60,7 +60,7 @@ export default function BriefDescription({ fromReview }) {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8 mb-8">
       <Box className="max-w-xl w-full p-6 space-y-6 bg-white rounded-lg shadow-md mb-6">
         <div className="flex justify-center items-center mb-4">
           <DescriptionIcon className="mr-2" />

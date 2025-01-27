@@ -231,7 +231,7 @@ export default function Review({ setActiveStep, setPreviousStep }) {
         )}
       </Box>
 
-      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between mt-4 mb-4">
         <button
           onClick={() => setCurrentStep("ExtraCurricular")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"

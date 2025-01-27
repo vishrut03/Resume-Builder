@@ -106,7 +106,7 @@ function Resume() {
           </Box>
         ))}
       </Box>
-      <div className="w-full flex justify-center mt-4">
+      <div className="w-full flex justify-center mt-4 mb-4">
         <button
           onClick={() => setCurrentStep("Review")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"

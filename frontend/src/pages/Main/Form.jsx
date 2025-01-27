@@ -1,9 +1,12 @@
-import React from "react";
-import PersonalDetails from "./PersonalDetails";
-import Home from "./Home";
-
+import React from 'react'
+import Home from './Home'
 const Form = () => {
-  return <Home />;
-};
+  return (
+    <div>
+      <Home/>
+    </div>
+  )
+}
 
-export default Form;
+export default Form
+

@@ -106,7 +106,7 @@ export default function WorkExperience({ fromReview }) {
 
   return (
     <>
-      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <WorkIcon />
         <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: "center" }}>
           Work Experience
@@ -213,7 +213,7 @@ export default function WorkExperience({ fromReview }) {
           ))}
       </Box>
 
-      <div className="w-full max-w-xl mx-auto flex justify-between items-center mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between items-center mt-8 mb-8">
         <button
           onClick={() => setCurrentStep("BriefDescription")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"

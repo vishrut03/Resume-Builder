@@ -8,6 +8,7 @@ import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
 import Review from "./Review" 
+import Home from "./Home"
 
 export default function PersonalDetails({ fromReview }) {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails)
@@ -70,9 +71,11 @@ export default function PersonalDetails({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
-
+  if(currentStep === "Home") {
+    return <Home />
+  }
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center mt-8 mb-8">
       <Box className="max-w-xl w-full p-6 space-y-6 bg-white rounded-lg shadow-md mb-6">
         <div className="flex justify-center items-center mb-4">
           <PersonIcon className="mr-2" />
@@ -146,16 +149,15 @@ export default function PersonalDetails({ fromReview }) {
       </Box>
       <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
         <button
-          disabled={true}
-          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-300 text-gray-500 cursor-not-allowed shadow-md"
+          onClick={() => setCurrentStep("Home")}
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
         >
           Back
         </button>
         {fromReview && (
           <button
             onClick={handleGoBackToReview}
-            className="py-3 px-6 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
-          >
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"          >
             Go Back to Review
           </button>
         )}

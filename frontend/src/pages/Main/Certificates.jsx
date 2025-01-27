@@ -84,7 +84,7 @@ export default function Certificates({ fromReview }) {
   }
   return (
     <>
-      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <CardMembershipIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Certificates</h1>
         <TextField

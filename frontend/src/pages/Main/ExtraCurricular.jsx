@@ -62,7 +62,7 @@ export default function ExtraCurricular({ fromReview }) {
   }
   return (
     <>
-      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
+      <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <SportsEsportsIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Extra-Curricular Activities</h1>
         <TextField
@@ -150,7 +150,7 @@ export default function ExtraCurricular({ fromReview }) {
             ))}
         </List>
       </Box>
-      <div className="w-full max-w-xl mx-auto flex justify-between mt-4">
+      <div className="w-full max-w-xl mx-auto flex justify-between mt-4 mb-4">
         <button
           onClick={() => setCurrentStep("Custom")}
           className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"

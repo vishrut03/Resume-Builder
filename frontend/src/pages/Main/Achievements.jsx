@@ -54,7 +54,7 @@ export default function Achievements({ fromReview }) {
   }
   return (
     <>
-      <Box>
+      <Box className="mt-8 mb-8 max-w-4xl mx-auto">
         <EmojiEventsIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Achievements</h1>
         <TextField

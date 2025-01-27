@@ -9,7 +9,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
 import Certificates from "./Certificates"
 import Skills from "./Skills"
 import Review from "./Review"
-import ProgressBar from "../../components/progressBar"
+import ProgressBar from "../../components/ProgressBar"
 
 export default function Achievements({ fromReview }) {
   const [currentAchievement, setCurrentAchievement] = useState("")

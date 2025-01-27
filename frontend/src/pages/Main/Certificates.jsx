@@ -9,7 +9,7 @@ import CardMembershipIcon from "@mui/icons-material/CardMembership"
 import Achievements from "./Achievements"
 import CodingProfiles from "./CodingProfiles"
 import Review from "./Review"
-import ProgressBar from "../../components/progressBar"
+import ProgressBar from "../../components/ProgressBar"
 
 export default function Certificates({ fromReview }) {
   const [currentCertificate, setCurrentCertificate] = useState({

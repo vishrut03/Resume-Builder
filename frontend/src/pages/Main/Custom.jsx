@@ -8,7 +8,7 @@ import CategoryIcon from "@mui/icons-material/Category"
 import CodingProfiles from "./CodingProfiles"
 import ExtraCurricular from "./ExtraCurricular"
 import Review from "./Review" 
-import ProgressBar from "../../components/progressBar"
+import ProgressBar from "../../components/ProgressBar"
 
 const Custom = ({ fromReview }) => {
   const customDetails = useResumeStore((state) => state.resume.customDetails)

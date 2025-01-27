@@ -9,7 +9,7 @@ import BuildIcon from "@mui/icons-material/Build"
 import Projects from "./Project/Projects"
 import Achievements from "./Achievements"
 import Review from "./Review"
-import ProgressBar from "../../components/progressBar"
+import ProgressBar from "../../components/ProgressBar"
 
 export default function Skills({ fromReview }) {
   const [currentSkill, setCurrentSkill] = useState("")

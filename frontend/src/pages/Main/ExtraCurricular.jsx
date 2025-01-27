@@ -8,7 +8,7 @@ import ToastTheme from "../../utils/ToastTheme"
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
 import Custom from "./Custom"
 import Review from "./Review"
-import ProgressBar from "../../components/progressBar"
+import ProgressBar from "../../components/ProgressBar"
 
 export default function ExtraCurricular({ fromReview }) {
   const [currentActivity, setCurrentActivity] = useState({

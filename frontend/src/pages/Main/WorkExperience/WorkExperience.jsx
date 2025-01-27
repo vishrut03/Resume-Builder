@@ -10,7 +10,7 @@ import WorkIcon from "@mui/icons-material/Work"
 import BriefDescription from "../BriefDescription"
 import Education from "../Education/Education"
 import Review from "../Review"
-import ProgressBar from "../../../components/ProgressBar"
+import ProgressBar from '../../../components/ProgressBar'
 
 
 export default function WorkExperience({ fromReview }) {
@@ -107,7 +107,7 @@ export default function WorkExperience({ fromReview }) {
   }
 
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="WorkExperience" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <WorkIcon />
@@ -240,6 +240,6 @@ export default function WorkExperience({ fromReview }) {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }

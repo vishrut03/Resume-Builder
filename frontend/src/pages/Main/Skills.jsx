@@ -57,7 +57,7 @@ export default function Skills({ fromReview }) {
     return <Review />
   }
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="Skills"/>
       <Box className="mt-8 mb-8 max-w-4xl mx-auto">
         <BuildIcon />
@@ -123,7 +123,7 @@ export default function Skills({ fromReview }) {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

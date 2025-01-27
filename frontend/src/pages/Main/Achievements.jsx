@@ -54,7 +54,7 @@ export default function Achievements({ fromReview }) {
     return <Review />
   }
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="Achievements"/>
       <Box className="mt-8 mb-8 max-w-4xl mx-auto">
         <EmojiEventsIcon />
@@ -103,7 +103,7 @@ export default function Achievements({ fromReview }) {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

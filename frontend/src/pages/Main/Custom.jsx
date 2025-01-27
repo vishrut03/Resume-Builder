@@ -69,7 +69,7 @@ const Custom = ({ fromReview }) => {
     return <Review />
   }
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="CustomSection" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
         <CategoryIcon />
@@ -132,7 +132,7 @@ const Custom = ({ fromReview }) => {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }
 

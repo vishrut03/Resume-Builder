@@ -110,7 +110,7 @@ export default function Education({ fromReview }) {
   }
 
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="Education" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <SchoolIcon />
@@ -240,6 +240,6 @@ export default function Education({ fromReview }) {
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }

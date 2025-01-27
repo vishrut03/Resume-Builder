@@ -78,7 +78,7 @@ export default function Projects({ fromReview }) {
   }
 
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="Projects" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <CodeIcon />
@@ -171,6 +171,6 @@ export default function Projects({ fromReview }) {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }

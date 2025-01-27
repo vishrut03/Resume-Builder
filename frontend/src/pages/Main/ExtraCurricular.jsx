@@ -62,7 +62,7 @@ export default function ExtraCurricular({ fromReview }) {
     return <Review />
   }
   return (
-    <>
+    <div className="mt-8">
       <ProgressBar step="ExtraCurricularActivities" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <SportsEsportsIcon />
@@ -174,6 +174,6 @@ export default function ExtraCurricular({ fromReview }) {
           Next
         </button>
       </div>
-    </>
+    </div>
   )
 }

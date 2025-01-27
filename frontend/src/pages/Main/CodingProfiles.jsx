@@ -9,6 +9,7 @@ import ComputerIcon from "@mui/icons-material/Computer"
 import Certificates from "./Certificates"
 import Custom from "./Custom"
 import Review from "./Review" 
+import ProgressBar from "../../components/progressBar"
 
 export default function CodingProfiles({ fromReview }) {
   const [currentProfile, setCurrentProfile] = useState({
@@ -69,6 +70,7 @@ export default function CodingProfiles({ fromReview }) {
   }
   return (
     <>
+      <ProgressBar step="CodingProfiles"/>
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <ComputerIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Coding Profiles</h1>

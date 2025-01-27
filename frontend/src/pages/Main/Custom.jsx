@@ -7,7 +7,8 @@ import ToastTheme from "../../utils/ToastTheme"
 import CategoryIcon from "@mui/icons-material/Category"
 import CodingProfiles from "./CodingProfiles"
 import ExtraCurricular from "./ExtraCurricular"
-import Review from "./Review" // Import the Review component
+import Review from "./Review" 
+import ProgressBar from "../../components/progressBar"
 
 const Custom = ({ fromReview }) => {
   const customDetails = useResumeStore((state) => state.resume.customDetails)
@@ -69,6 +70,7 @@ const Custom = ({ fromReview }) => {
   }
   return (
     <>
+      <ProgressBar step="CustomSection" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md">
         <CategoryIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Custom Section</h1>

@@ -9,6 +9,7 @@ import CardMembershipIcon from "@mui/icons-material/CardMembership"
 import Achievements from "./Achievements"
 import CodingProfiles from "./CodingProfiles"
 import Review from "./Review"
+import ProgressBar from "../../components/progressBar"
 
 export default function Certificates({ fromReview }) {
   const [currentCertificate, setCurrentCertificate] = useState({
@@ -84,6 +85,7 @@ export default function Certificates({ fromReview }) {
   }
   return (
     <>
+      <ProgressBar step="Certificates" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <CardMembershipIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Certificates</h1>

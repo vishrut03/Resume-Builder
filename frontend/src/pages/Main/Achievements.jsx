@@ -9,6 +9,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
 import Certificates from "./Certificates"
 import Skills from "./Skills"
 import Review from "./Review"
+import ProgressBar from "../../components/progressBar"
 
 export default function Achievements({ fromReview }) {
   const [currentAchievement, setCurrentAchievement] = useState("")
@@ -54,6 +55,7 @@ export default function Achievements({ fromReview }) {
   }
   return (
     <>
+      <ProgressBar step="Achievements"/>
       <Box className="mt-8 mb-8 max-w-4xl mx-auto">
         <EmojiEventsIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Achievements</h1>

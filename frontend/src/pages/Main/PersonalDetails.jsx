@@ -9,6 +9,7 @@ import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
 import Review from "./Review" 
 import Home from "./Home"
+import ProgressBar from "../../components/ProgressBar"
 
 export default function PersonalDetails({ fromReview }) {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails)
@@ -76,6 +77,7 @@ export default function PersonalDetails({ fromReview }) {
   }
   return (
     <div className="flex flex-col items-center mt-8 mb-8">
+      <ProgressBar step="PersonalDetails" />
       <Box className="max-w-xl w-full p-6 space-y-6 bg-white rounded-lg shadow-md mb-6">
         <div className="flex justify-center items-center mb-4">
           <PersonIcon className="mr-2" />

@@ -8,6 +8,7 @@ import ToastTheme from "../../utils/ToastTheme"
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports"
 import Custom from "./Custom"
 import Review from "./Review"
+import ProgressBar from "../../components/progressBar"
 
 export default function ExtraCurricular({ fromReview }) {
   const [currentActivity, setCurrentActivity] = useState({
@@ -62,6 +63,7 @@ export default function ExtraCurricular({ fromReview }) {
   }
   return (
     <>
+      <ProgressBar step="ExtraCurricularActivities" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <SportsEsportsIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Extra-Curricular Activities</h1>

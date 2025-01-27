@@ -10,6 +10,7 @@ import CodeIcon from "@mui/icons-material/Code"
 import Education from "../Education/Education"
 import Skills from "../Skills"
 import Review from "../Review"
+import ProgressBar from "../../../components/ProgressBar"
 
 export default function Projects({ fromReview }) {
   const projectsStore = useResumeStore((state) => state.resume.projects)
@@ -78,6 +79,7 @@ export default function Projects({ fromReview }) {
 
   return (
     <>
+      <ProgressBar step="Projects" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8">
         <CodeIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Projects</h1>

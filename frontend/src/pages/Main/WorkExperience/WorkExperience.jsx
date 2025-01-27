@@ -10,6 +10,8 @@ import WorkIcon from "@mui/icons-material/Work"
 import BriefDescription from "../BriefDescription"
 import Education from "../Education/Education"
 import Review from "../Review"
+import ProgressBar from "../../../components/ProgressBar"
+
 
 export default function WorkExperience({ fromReview }) {
   const workExperience = useResumeStore((state) => state.resume.workExperience)
@@ -106,6 +108,7 @@ export default function WorkExperience({ fromReview }) {
 
   return (
     <>
+      <ProgressBar step="WorkExperience" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <WorkIcon />
         <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 2, textAlign: "center" }}>

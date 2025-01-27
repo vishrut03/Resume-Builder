@@ -159,7 +159,7 @@ export default function PersonalDetails({ fromReview }) {
         {fromReview && (
           <button
             onClick={handleGoBackToReview}
-            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"          >
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-gray-700 hover:bg-yellow-600 hover:scale-105 shadow-md"          >
             Go Back to Review
           </button>
         )}

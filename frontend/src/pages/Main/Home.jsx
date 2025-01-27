@@ -4,8 +4,6 @@ import {
   Typography,
   Box,
   Card,
-  CardContent,
-  Grid,
   Paper,
 } from "@mui/material";
 import { CheckCircleOutline, FormatListBulleted, GetApp } from "@mui/icons-material";
@@ -179,9 +177,6 @@ const Home = () => {
                   >
                     {template.name}
                   </Typography>
-                  <Button variant="contained" color="primary">
-                    Use this Template
-                  </Button>
                 </Paper>
               ))}
             </Box>

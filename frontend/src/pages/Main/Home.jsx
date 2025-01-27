@@ -3,7 +3,6 @@ import PersonalDetails from "./PersonalDetails"
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState("Home")
-  // Base64 encoded light blue gradient (replace this with your preferred background)
   const backgroundImage ="https://png.pngtree.com/background/20210711/original/pngtree-my-resume-background-material-picture-image_1117680.jpg"
 
   const styles = {
@@ -12,12 +11,12 @@ const Home = () => {
       backgroundSize: "cover",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
-      height: "calc(100vh - 120px)", // Adjust 120px based on your header and footer height
+      height: "calc(100vh - 120px)",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
-      color: "#333", // Dark text for better contrast on light background
+      color: "#333", 
       textAlign: "center",
       padding: "20px",
     },

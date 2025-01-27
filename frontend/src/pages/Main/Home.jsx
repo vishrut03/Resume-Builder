@@ -7,6 +7,7 @@ import {
   Paper,
   Fade,
   Grow,
+  Grid,
 } from "@mui/material";
 import { CheckCircleOutline, FormatListBulleted, GetApp, KeyboardArrowDown } from "@mui/icons-material";
 import PersonalDetails from "./PersonalDetails";
@@ -198,52 +199,45 @@ const Home = () => {
                   <Typography variant="body1">
                     Pick from our wide variety of visually appealing templates below:
                   </Typography>
-                  <Box
-                    sx={{
-                      marginTop: 2,
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 2,
-                      justifyContent: "center",
-                    }}
-                  >
+                  <Grid container spacing={2} sx={{ marginTop: 2 }}>
                     {templates.map((template) => (
-                      <Paper
-                        key={template.id}
-                        sx={{
-                          p: 2,
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          width: "200px",
-                          boxShadow: 3,
-                          borderRadius: "10px",
-                          transition: "all 0.3s ease-in-out",
-                          '&:hover': {
-                            transform: 'scale(1.05)',
-                            boxShadow: 6,
-                          },
-                        }}
-                      >
-                        <img
-                          src={template.imageUrl || "/placeholder.svg"}
-                          alt={template.name}
-                          style={{
-                            width: "100%",
-                            height: "auto",
-                            borderRadius: 8,
-                            marginBottom: 2,
+                      <Grid item xs={12} sm={6} key={template.id}>
+                        <Paper
+                          sx={{
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            height: "100%",
+                            boxShadow: 3,
+                            borderRadius: "10px",
+                            transition: "all 0.3s ease-in-out",
+                            '&:hover': {
+                              transform: 'scale(1.05)',
+                              boxShadow: 6,
+                            },
                           }}
-                        />
-                        <Typography
-                          variant="body1"
-                          sx={{ fontWeight: 600, marginBottom: 1 }}
                         >
-                          {template.name}
-                        </Typography>
-                      </Paper>
+                          <img
+                            src={template.imageUrl || "/placeholder.svg"}
+                            alt={template.name}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: 8,
+                              marginBottom: 2,
+                            }}
+                          />
+                          <Typography
+                            variant="body1"
+                            sx={{ fontWeight: 600, marginBottom: 1 }}
+                          >
+                            {template.name}
+                          </Typography>
+                        </Paper>
+                      </Grid>
                     ))}
-                  </Box>
+                  </Grid>
                 </Card>
               </Grow>
 

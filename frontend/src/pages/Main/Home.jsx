@@ -45,7 +45,7 @@ const Home = () => {
   };
 
   return (
-    <React.Fragment>
+    <div className="bg-[#f5f7fa]">
       {currentStep === "Step1" ? (
         <PersonalDetails />
       ) : (
@@ -79,19 +79,7 @@ const Home = () => {
         </Box>
       )}
 
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: "1200px",
-          margin: "2rem auto",
-          padding: 3,
-          backgroundColor: "#ffffff",
-          borderRadius: "10px",
-          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        {/* Content inside the Box */}
-      </Box>
+
         <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold", textAlign: "center" }}>
           Follow 3 Easy Steps:
         </Typography>
@@ -103,7 +91,8 @@ const Home = () => {
             marginBottom: 3,
             boxShadow: 3,
             borderRadius: "10px",
-            backgroundColor: "#f9f9f9",
+            width: "auto",
+            backgroundColor: "#f5f7fa"
           }}
         >
           
@@ -196,6 +185,7 @@ const Home = () => {
             boxShadow: 3,
             borderRadius: "10px",
             backgroundColor: "#f9f9f9",
+            marginBottom: 3,
           }}
         >
           <Grid2 container spacing={2} alignItems="center">
@@ -217,7 +207,7 @@ const Home = () => {
           </Grid2>
         </Card>
       </Box>
-      </React.Fragment>
+      </div>
     );
 };
 

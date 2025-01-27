@@ -8,7 +8,7 @@ import ToastTheme from "../../utils/ToastTheme"
 import ComputerIcon from "@mui/icons-material/Computer"
 import Certificates from "./Certificates"
 import Custom from "./Custom"
-import Review from "./Review" // Import the Review component
+import Review from "./Review" 
 
 export default function CodingProfiles({ fromReview }) {
   const [currentProfile, setCurrentProfile] = useState({

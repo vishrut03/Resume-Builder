@@ -15,54 +15,14 @@ const useResumeStore = create(
           linkedIn: '',
         },
         briefDescription: '',
-        workExperience: [
-          {
-            jobTitle: '',
-            companyName: '',
-            startDate: '',
-            endDate: '',
-            responsibilities: '',
-          },
-        ],
-        education: [
-          {
-            degreeName: '',
-            institutionName: '',
-            startDate: '',
-            endDate: '',
-            cgpa: '',
-          },
-        ],
-        projects: [
-          {
-            projectName: '',
-            description: '',
-            technologiesUsed: '',
-            link: '',
-          },
-        ],
+        workExperience: [],
+        education: [],
+        projects: [],
         skills: [],
         achievements: [],
-        certificates: [
-          {
-            certificateName: '',
-            organization: '',
-            date: '',
-          },
-        ],
-        codingProfiles: [
-          {
-            platform: '',
-            profileLink: '',
-          },
-        ],
-        extracurricularActivities: [
-          {
-            activityName: '',
-            description: '',
-            achievements: '',
-          },
-        ],
+        certificates: [],
+        codingProfiles: [],
+        extracurricularActivities: [],
         customDetails: {
           heading: '',
           description: '',

@@ -155,7 +155,7 @@ export default function ExtraCurricular({ fromReview }) {
       <div className="w-full max-w-xl mx-auto flex justify-between mt-4 mb-4">
         <button
           onClick={() => setCurrentStep("Custom")}
-          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md mb-4"
         >
           Back
         </button>
@@ -169,7 +169,7 @@ export default function ExtraCurricular({ fromReview }) {
         )}
         <button
           onClick={() => setCurrentStep("Review")}
-          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu"
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu mb-4"
         >
           Next
         </button>

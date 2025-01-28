@@ -36,7 +36,7 @@ function Resume() {
 
   const handleTemplateClick = (templateName) => {
     const fullName = resume.personalDetails.firstName + resume.personalDetails.lastName;
-    const url = `http://localhost:5173/${fullName}/template/${templateName}`;
+    const url = `https://resume-builder-eagleview.vercel.app/${fullName}/template/${templateName}`;
     window.open(url, "_blank");
   };
 

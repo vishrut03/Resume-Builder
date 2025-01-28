@@ -1,20 +1,11 @@
-import React, { useState } from "react"
+import React from "react"
 import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
-  IconButton,
   Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-  useMediaQuery,
   useTheme,
 } from "@mui/material"
-import MenuIcon from "@mui/icons-material/Menu"
 import { styled } from "@mui/material/styles"
 import Logo from '../../pages/Logo/Logo'
 
@@ -24,21 +15,10 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   borderBottom: `1px solid ${theme.palette.divider}`,
 }))
 
-const DrawerList = styled(List)({
-  width: 250,
-})
 
 export default function Header() {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
 
-  const toggleDrawer = (open) => (event) => {
-    if (event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
-      return
-    }
-    setDrawerOpen(open)
-  }
+  const theme = useTheme()
 
   return (
     <>

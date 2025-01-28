@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import useResumeStore from "../../store/ResumeStore"
@@ -12,12 +12,14 @@ import Review from "./Review"
 import ProgressBar from "../../components/ProgressBar"
 
 export default function Achievements({ fromReview }) {
+  
   const [currentAchievement, setCurrentAchievement] = useState("")
   const achievementsStore = useResumeStore((state) => state.resume.achievements) || []
   const addResumeEntry = useResumeStore((state) => state.addResumeEntry)
   const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry)
   const [error, setError] = useState(undefined)
   const [currentStep, setCurrentStep] = useState("Achievements")
+
   const handleAddAchievement = () => {
     if (currentAchievement === "") {
       setError("Please enter a valid skill!")

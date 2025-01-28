@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Box, Button, TextField, Typography } from "@mui/material"
 import useResumeStore from "../../../store/ResumeStore"
-import WorkExperienceEntry from "./WorkExperienceEntry";
+import WorkExperienceEntry from "./WorkExperienceEntry"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../../utils/ToastTheme"

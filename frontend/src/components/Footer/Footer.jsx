@@ -9,7 +9,7 @@ const Footer = () => {
       sx={{
         backgroundColor: (theme) => theme.palette.grey[100],
         py: 2, // Further reduced vertical padding
-        mt: "auto",
+        mt: 0,
       }}
     >
       <Container maxWidth="lg">

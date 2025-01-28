@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Button, Typography, Box, Fade, Grow } from "@mui/material"
-import { CheckCircleOutline, FormatListBulleted, GetApp, KeyboardArrowDown } from "@mui/icons-material"
+import {FormatListBulleted, KeyboardArrowDown } from "@mui/icons-material"
 import PersonalDetails from "./PersonalDetails"
 import temp1 from "../../assets/template-1.svg"
 import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png"
@@ -74,7 +74,7 @@ const Home = () => {
                 Stand out from the crowd with a beautifully crafted resume
               </Typography>
             </Fade>
-            <Grow in={true} timeout={2000}>
+            <Grow in={true} timeout={2200}>
               <Button
                 variant="contained"
                 size="large"
@@ -158,7 +158,8 @@ const Home = () => {
                       "Education",
                       "Projects",
                       "Skills",
-                      "Achievements & Certificates",
+                      "Achievements",
+                      "Certificates",
                       "Extra-Curricular Activities",
                     ].map((item, index) => (
                       <Box

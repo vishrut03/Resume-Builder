@@ -4,7 +4,7 @@ import useResumeStore from "../../../store/ResumeStore"
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
-import { WorkExperienceSchema } from '../../../schemas/WorkExperienceSchema';
+import { WorkExperienceSchema } from '../../../schemas/WorkExperienceSchema'; //workexperience schema for validation
 
 const WorkExperienceEntry = ({ experience, index }) => {
   const [isEditing, setIsEditing] = useState(false);

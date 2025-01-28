@@ -73,6 +73,7 @@ export default function BriefDescription({ fromReview }) {
 
         <TextField
           fullWidth
+          required
           label="Brief Description"
           error={errors !== undefined}
           helperText={errors}

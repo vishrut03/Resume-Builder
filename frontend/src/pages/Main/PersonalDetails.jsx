@@ -136,7 +136,6 @@ export default function PersonalDetails({ fromReview }) {
           onChange={handleChange}
         />
         <TextField
-          required
           error={!!errors.linkedIn}
           helperText={errors.linkedIn}
           fullWidth

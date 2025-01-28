@@ -33,10 +33,11 @@ function Resume() {
       imageUrl: temp4,
     },
   ];
-
+  const host1="https://resume-builder-eagleview.vercel.app/";
+  const host2="http://localhost:5173/";
   const handleTemplateClick = (templateName) => {
     const fullName = resume.personalDetails.firstName + resume.personalDetails.lastName;
-    const url = `https://resume-builder-eagleview.vercel.app/${fullName}/template/${templateName}`;
+    const url = `${host1}${fullName}/template/${templateName}`;
     window.open(url, "_blank");
   };
 

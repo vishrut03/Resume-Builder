@@ -14,15 +14,14 @@ const Download = ({ handleDownload }) => {
   };
 
   return (
-    <Box display="flex" justifyContent="flex-end" alignItems="center" mt={3} mb={2}>
+    <Box display="flex" justifyContent="flex-end" alignItems="center" mt={1} mb={2}>
       <Button 
         variant="contained" 
         color="secondary" 
         onClick={handleCopyToClipboard} 
-        endIcon={<ContentCopyIcon />}
-        style={{ marginRight: '10px' }}
+        style={{ marginRight: '10px'}}
       >
-        Copy URL to Clipboard
+      <ContentCopyIcon />
       </Button>
 
       <Button 
@@ -30,9 +29,9 @@ const Download = ({ handleDownload }) => {
         color="primary" 
         onClick={handleDownload} 
         style={{ marginRight: '10px' }}
-        endIcon={<DownloadForOfflineIcon />}
+        
       >
-        Download
+      <DownloadForOfflineIcon />
       </Button>
     </Box>
   );

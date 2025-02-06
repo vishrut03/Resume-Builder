@@ -1,32 +1,26 @@
-import { IsEmail, IsOptional, IsString, IsArray } from "class-validator";
+import { IsOptional, IsString, IsArray } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class ResumeDTO {
-  @ApiProperty({ example: "John", description: "First name of the user" })
-  @IsOptional()
-  @IsString()
-  firstName?: string;
-
-  @ApiProperty({ example: "Doe", description: "Last name of the user" })
-  @IsOptional()
-  @IsString()
-  lastName?: string;
-
-  @ApiProperty({ example: "user@example.com", description: "Email address" })
-  @IsOptional()
-  @IsEmail()
-  email?: string;
-
-  @ApiProperty({ example: "1234567890", description: "Phone number" })
-  @IsOptional()
-  @IsString()
-  phoneNumber?: string;
-
-  @ApiProperty({ example: "https://linkedin.com/in/example", description: "LinkedIn profile" })
-  @IsOptional()
-  @IsString()
-  linkedIn?: string;
-
+    @ApiProperty({ 
+        example: { 
+          firstName: "John", 
+          lastName: "Doe", 
+          email: "user@example.com", 
+          phoneNumber: "1234567890", 
+          linkedIn: "https://linkedin.com/in/example" 
+        }, 
+        description: "Personal details of the user" 
+      })
+    @IsOptional()
+        personalDetails?: { 
+        firstName?: string; 
+        lastName?: string; 
+        email?: string; 
+        phoneNumber?: string; 
+        linkedIn?: string; 
+        };
+      
   @ApiProperty({ example: "Software Engineer at XYZ", description: "Brief description" })
   @IsOptional()
   @IsString()

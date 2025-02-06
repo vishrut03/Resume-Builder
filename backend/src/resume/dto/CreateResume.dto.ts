@@ -67,6 +67,14 @@ export class ResumeDTO {
   @IsArray()
   codingProfiles?: Array<{ platform: string; profileLink: string }>;
 
+  @ApiProperty({ 
+    example: { heading: "Volunteer Work", description: "Taught underprivileged kids every weekend." }, 
+    description: "Custom section added by the user" 
+  })
+  @IsOptional()
+  customSection?: { heading: string; description: string };
+  
+
   @ApiProperty({ example: [{ activityName: "Football", achievements: "Won college tournament" }], description: "Extra curricular activities" })
   @IsOptional()
   @IsArray()

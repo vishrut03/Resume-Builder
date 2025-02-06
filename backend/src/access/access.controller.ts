@@ -1,17 +1,20 @@
 import { Body, Controller, Post } from "@nestjs/common";
-
+import { CreateUser } from '../dto/CreateUser.dto';
+import { ApiBody, ApiOperation } from "@nestjs/swagger";
 @Controller()
 
 export class AccessController {
     constructor() {}
 
+    @ApiOperation({summary: 'Sign in',description: 'Sign in a user'})
     @Post('signin')
-    signIn(@Body('email') email: string, @Body('password') password: string) {
-        return {email,password};
+    signIn(@Body() user: CreateUser) {
+        return {user};
     }
 
+    @ApiOperation({summary: 'Sign up',description: 'Sign up a user'})
     @Post('signup')
-    signUp(@Body('email') email: string, @Body('password') password: string) {
-        return {email,password};
+    signUp(@Body() user: CreateUser) {
+        return {user};
     }
 }

@@ -42,7 +42,9 @@ export class AuthService {
         }
 
 
-        //verify user email will come here 
+        //verify user email will come here
+
+        
 
         // Hash the password
         const saltOrRounds = 10;

@@ -9,7 +9,6 @@ async function bootstrap() {
     .setTitle("Resume-Builder")
     .setDescription("The Resume-Builder API description")
     .setVersion("1.0")
-    .addTag("Authentication")
     .build()
 
   const document = SwaggerModule.createDocument(app, config)

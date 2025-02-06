@@ -26,11 +26,6 @@ export class AuthController {
     signUp(@Body() user: CreateUser) {
         return this.authService.signUp(user);
     }
-
-    @Get()
-    findAll() {
-        return this.authService.findAll();
-    }
     
 }
 

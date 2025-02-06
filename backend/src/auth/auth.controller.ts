@@ -1,21 +1,22 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { CreateUser } from '../dto/CreateUser.dto';
-import { ApiBody, ApiOperation } from "@nestjs/swagger";
+import { ApiOperation } from "@nestjs/swagger";
+import { AuthService } from "./auth.service";
 
 @Controller('auth')
 
 export class AuthController {
-    constructor() {}
+    constructor(private authService: AuthService) {}
 
     @ApiOperation({summary: 'Sign in',description: 'Sign in a user'})
     @Post('signin')
     signIn(@Body() user: CreateUser) {
-        return {user};
+        return this.authService.signIn(user);
     }
 
     @ApiOperation({summary: 'Sign up',description: 'Sign up a user'})
     @Post('signup')
     signUp(@Body() user: CreateUser) {
-        return {user};
+        return this.authService.signUp(user);
     }
 }

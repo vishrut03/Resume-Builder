@@ -26,15 +26,15 @@ export class ResumeDTO {
   @IsString()
   briefDescription?: string;
 
-  @ApiProperty({ example: [{ jobTitle: "Developer", companyName: "XYZ", startDate: "2020", endDate: "2022", responsibilities: "Developed features" }], description: "Work experience" })
+  @ApiProperty({ example: [{ jobTitle: "Developer", companyName: "XYZ", startDate: "2021-02-01", endDate: "2025-02-26", responsibilities: "Developed features" }], description: "Work experience" })
   @IsOptional()
   @IsArray()
   workExperience?: Array<{ jobTitle: string; companyName: string; startDate: string; endDate: string; responsibilities: string }>;
 
-  @ApiProperty({ example: [{ degreeName: "B.Tech", institutionName: "LNMIIT", yearOfGraduation: "2024", cgpa: "8.5" }], description: "Education details" })
+  @ApiProperty({ example: [{ degreeName: "B.Tech", institutionName: "LNMIIT", startDate: "2021-02-01", endDate: "2025-02-26", cgpa: "8.5" }], description: "Education details" })
   @IsOptional()
   @IsArray()
-  education?: Array<{ degreeName: string; institutionName: string; yearOfGraduation: string; cgpa: string }>;
+  education?: Array<{ degreeName: string; institutionName: string; startDate: string; endDate: string; cgpa: string }>;
 
   @ApiProperty({ example: [{ projectName: "Resume Builder", description: "A full-stack project", technologiesUsed: "React, NestJS", link: "https://github.com" }], description: "Projects" })
   @IsOptional()
@@ -51,7 +51,7 @@ export class ResumeDTO {
   @IsArray()
   achievements?: string[];
 
-  @ApiProperty({ example: [{ certificateName: "AWS Certified", organisation: "Amazon", date: "2023" }], description: "Certificates" })
+  @ApiProperty({ example: [{ certificateName: "AWS Certified", organisation: "Amazon", date: "2025-02-26" }], description: "Certificates" })
   @IsOptional()
   @IsArray()
   certificates?: Array<{ certificateName: string; organisation: string; date: string }>;

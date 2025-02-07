@@ -1,313 +1,182 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { Button, Typography, Box, Fade, Grow, Modal } from "@mui/material"
-import { FormatListBulleted, KeyboardArrowDown } from "@mui/icons-material"
-import PersonalDetails from "./PersonalDetails"
-import Signin from "./Signin"
-import Signup from './Signup'
-import temp1 from "../../assets/template-1.svg"
-import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png"
-import temp3 from "../../assets/temp3.webp"
-import temp4 from "../../assets/template-2.png"
+import { useState, useEffect } from "react";
+import { ArrowDown, List } from "lucide-react";
+import PersonalDetails from "./PersonalDetails";
+import Signin from "./Signin";
+import Signup from './Signup';
+import temp1 from "../../assets/template-1.svg";
+import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png";
+import temp3 from "../../assets/temp3.webp";
+import temp4 from "../../assets/template-2.png";
 
 const Home = () => {
-  const [currentStep, setCurrentStep] = useState("Home")
-  const [scrolled, setScrolled] = useState(false)
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
-  const [authMode, setAuthMode] = useState("signin")
+  const [currentStep, setCurrentStep] = useState("Home");
+  const [scrolled, setScrolled] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authMode, setAuthMode] = useState("signin");
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+      setScrolled(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const templates = [
     { id: 1, name: "Classic", imageUrl: temp1 },
     { id: 2, name: "Professional", imageUrl: temp2 },
     { id: 3, name: "Creative", imageUrl: temp3 },
     { id: 4, name: "Modern", imageUrl: temp4 },
-  ]
+  ];
 
-  const handleCreateResume = () => {
-    setIsAuthModalOpen(true)
-  }
-
-  const handleCloseAuthModal = () => {
-    setIsAuthModalOpen(false)
-  }
-
-  const handleSuccessfulAuth = () => {
-    setIsAuthModalOpen(false)
-    setCurrentStep("Step1")
-  }
-
-  const toggleAuthMode = () => {
-    setAuthMode(authMode === "signin" ? "signup" : "signin")
-  }
+  const detailsList = [
+    "Personal Details",
+    "Brief Description",
+    "Work Experience",
+    "Education",
+    "Projects",
+    "Skills",
+    "Achievements",
+    "Certificates",
+    "Extra-Curricular Activities",
+  ];
 
   const scrollToSteps = () => {
-    const stepsSection = document.getElementById("steps-section")
-    if (stepsSection) {
-      stepsSection.scrollIntoView({ behavior: "smooth" })
-    }
-  }
+    const stepsSection = document.getElementById("steps-section");
+    stepsSection?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <Box
-      sx={{
-        backgroundColor: "#f0f4f8",
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {currentStep === "Step1" ? (
         <PersonalDetails />
       ) : (
         <>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "100vh",
-              textAlign: "center",
-              backgroundColor: "#f0f4f8",
-              color: "#1976D2",
-              padding: 4,
-            }}
-          >
-            <Fade in={true} timeout={1000}>
-              <Typography variant="h2" fontWeight="bold" mb={3}>
+          {/* Hero Section */}
+          <div className="relative min-h-screen flex items-center justify-center px-4">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 pointer-events-none" />
+            <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
+              <h1 className="text-5xl md:text-6xl font-bold text-blue-600">
                 Create Your Professional Resume
-              </Typography>
-            </Fade>
-            <Fade in={true} timeout={1500}>
-              <Typography variant="h5" mb={5} color="#37474f">
+              </h1>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Stand out from the crowd with a beautifully crafted resume
-              </Typography>
-            </Fade>
-            <Grow in={true} timeout={2200}>
-              <Button
-                variant="contained"
-                size="large"
-                onClick={handleCreateResume}
-                sx={{
-                  paddingX: 6,
-                  paddingY: 2,
-                  fontSize: "1.2rem",
-                  borderRadius: "50px",
-                  backgroundColor: "#1976D2",
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                  "&:hover": {
-                    backgroundColor: "#1565C0",
-                    transform: "translateY(-3px)",
-                    boxShadow: "0 6px 8px rgba(0, 0, 0, 0.2)",
-                    transition: "all 0.3s ease-in-out",
-                  },
-                }}
+              </p>
+              <button
+                onClick={() => setIsAuthModalOpen(true)}
+                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-semibold 
+                          transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
               >
                 Create Resume Now
-              </Button>
-            </Grow>
-            <Box sx={{ mt: 6, cursor: "pointer" }} onClick={scrollToSteps}>
-              <Typography variant="body1" mb={2} color="#37474f">
-                Discover Our 3-Step Process
-              </Typography>
-              <KeyboardArrowDown
-                sx={{
-                  fontSize: 40,
-                  color: "#1976D2",
-                  animation: "bounce 2s infinite",
-                  "@keyframes bounce": {
-                    "0%, 20%, 50%, 80%, 100%": {
-                      transform: "translateY(0)",
-                    },
-                    "40%": {
-                      transform: "translateY(-20px)",
-                    },
-                    "60%": {
-                      transform: "translateY(-10px)",
-                    },
-                  },
-                }}
-              />
-            </Box>
-          </Box>
+              </button>
 
-          <Box
-            id="steps-section"
-            sx={{
-              width: "100%",
-              maxWidth: "1200px",
-              margin: "4rem auto 0",
-              padding: 4,
-              flexGrow: 1,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <Fade in={scrolled} timeout={1000}>
-              <Typography variant="h3" sx={{ mb: 6, fontWeight: "bold", textAlign: "center", color: "#1976D2" }}>
+              <div className="mt-16 flex flex-col items-center">
+                <p className="text-gray-600 mb-2">Discover Our 3-Step Process</p>
+                <ArrowDown 
+                  className="w-8 h-8 text-blue-600 cursor-pointer animate-bounce"
+                  onClick={scrollToSteps}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 3-Step Process Section */}
+          <div id="steps-section" className="py-20 bg-white">
+            <div className="max-w-6xl mx-auto px-4">
+              <h2 className="text-4xl font-bold text-center mb-16 text-blue-600">
                 Follow 3 Easy Steps:
-              </Typography>
-            </Fade>
+              </h2>
 
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 4, flexGrow: 1 }}>
-              <Grow in={scrolled} timeout={1500}>
-                <Box>
-                  <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
-                    Step 1: Provide Details
-                  </Typography>
-                  <Typography variant="body1" color="#37474f">
-                    Fill in your information to create your resume:
-                  </Typography>
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
-                    {[
-                      "Personal Details",
-                      "Brief Description",
-                      "Work Experience",
-                      "Education",
-                      "Projects",
-                      "Skills",
-                      "Achievements",
-                      "Certificates",
-                      "Extra-Curricular Activities",
-                    ].map((item, index) => (
-                      <Box
-                        key={index}
-                        sx={{
-                          bgcolor: "#E3F2FD",
-                          color: "#1976D2",
-                          px: 2,
-                          py: 1,
-                          borderRadius: 2,
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                        }}
-                      >
-                        <FormatListBulleted fontSize="small" />
-                        <Typography variant="body2">{item}</Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                </Box>
-              </Grow>
+              {/* Step 1 */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-blue-600 mb-4">
+                  Step 1: Provide Details
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Fill in your information to create your resume:
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {detailsList.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg"
+                    >
+                      <List className="w-4 h-4" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-              <Grow in={scrolled} timeout={2000}>
-                <Box>
-                  <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
-                    Step 2: Choose Template
-                  </Typography>
-                  <Typography variant="body1" color="#37474f" mb={2}>
-                    Pick from our wide variety of visually appealing templates:
-                  </Typography>
-                  <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <Box sx={{ display: "flex", gap: 2 }}>
-                      {templates.slice(0, 2).map((template) => (
-                        <Box
-                          key={template.id}
-                          sx={{
-                            flex: 1,
-                            p: 2,
-                            bgcolor: "white",
-                            borderRadius: 2,
-                            boxShadow: 1,
-                            transition: "all 0.3s ease-in-out",
-                            "&:hover": { transform: "scale(1.03)", boxShadow: 3 },
-                          }}
-                        >
-                          <img
-                            src={template.imageUrl || "/placeholder.svg"}
-                            alt={template.name}
-                            style={{ width: "100%", height: "auto", borderRadius: 8, marginBottom: 8 }}
-                          />
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: "#37474f", textAlign: "center" }}>
-                            {template.name}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                    <Box sx={{ display: "flex", gap: 2 }}>
-                      {templates.slice(2, 4).map((template) => (
-                        <Box
-                          key={template.id}
-                          sx={{
-                            flex: 1,
-                            p: 2,
-                            bgcolor: "white",
-                            borderRadius: 2,
-                            boxShadow: 1,
-                            transition: "all 0.3s ease-in-out",
-                            "&:hover": { transform: "scale(1.03)", boxShadow: 3 },
-                          }}
-                        >
-                          <img
-                            src={template.imageUrl || "/placeholder.svg"}
-                            alt={template.name}
-                            style={{ width: "100%", height: "auto", borderRadius: 8, marginBottom: 8 }}
-                          />
-                          <Typography variant="body2" sx={{ fontWeight: 600, color: "#37474f", textAlign: "center" }}>
-                            {template.name}
-                          </Typography>
-                        </Box>
-                      ))}
-                    </Box>
-                  </Box>
-                </Box>
-              </Grow>
+              {/* Step 2 */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold text-blue-600 mb-4">
+                  Step 2: Choose Template
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Pick from our wide variety of visually appealing templates:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {templates.map((template) => (
+                    <div
+                      key={template.id}
+                      className="group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl"
+                    >
+                      <img
+                        src={template.imageUrl}
+                        alt={template.name}
+                        className="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <h3 className="text-white text-xl font-semibold">{template.name}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-              <Grow in={scrolled} timeout={2500}>
-                <Box sx={{ mb: 4 }}>
-                  <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
-                    Step 3: Download & Share
-                  </Typography>
-                  <Typography variant="body1" color="#37474f">
-                    Once your resume is ready, download it as a PDF or share a direct link with employers or friends.
-                  </Typography>
-                </Box>
-              </Grow>
-            </Box>
-          </Box>
+              {/* Step 3 */}
+              <div>
+                <h3 className="text-2xl font-bold text-blue-600 mb-4">
+                  Step 3: Download & Share
+                </h3>
+                <p className="text-gray-600">
+                  Once your resume is ready, download it as a PDF or share a direct link with employers or friends.
+                </p>
+              </div>
+            </div>
+          </div>
 
-          <Modal
-            open={isAuthModalOpen}
-            onClose={handleCloseAuthModal}
-            aria-labelledby="auth-modal-title"
-            aria-describedby="auth-modal-description"
-          >
-            <Box
-              sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                width: 400,
-                bgcolor: "background.paper",
-                boxShadow: 24,
-                p: 4,
-                borderRadius: 2,
-              }}
-            >
-              {authMode === "signin" ? (
-                <Signin onSignUp={toggleAuthMode} onSuccessfulSignIn={handleSuccessfulAuth} />
-              ) : (
-                <Signup onSignIn={toggleAuthMode} onSuccessfulSignUp={handleSuccessfulAuth} />
-              )}
-            </Box>
-          </Modal>
+          {/* Auth Modal */}
+          {isAuthModalOpen && (
+            <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+              <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
+                {authMode === "signin" ? (
+                  <Signin 
+                    onSignUp={() => setAuthMode("signup")}
+                    onSuccessfulSignIn={() => {
+                      setIsAuthModalOpen(false);
+                      setCurrentStep("Step1");
+                    }}
+                  />
+                ) : (
+                  <Signup
+                    onSignIn={() => setAuthMode("signin")}
+                    onSuccessfulSignUp={() => {
+                      setIsAuthModalOpen(false);
+                      setCurrentStep("Step1");
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          )}
         </>
       )}
-    </Box>
-  )
-}
+    </div>
+  );
+};
 
-export default Home
-
+export default Home;

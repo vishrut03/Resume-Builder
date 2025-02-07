@@ -79,4 +79,46 @@ export class ResumeService {
       throw new BadRequestException('Resume not found');
     }
   }
+
+  async updateResumeEntry(request: AuthenticatedRequest, field: string, id: number, data: any) {
+    const allowedFields = ["workExperience", "education", "projects"];
+    if (!allowedFields.includes(field)) {
+      throw new BadRequestException(`Invalid field: ${field}`);
+    }
+
+    const userId = request.user?.id;
+    if (!userId) {
+      throw new BadRequestException('User ID is required');
+    }
+
+    const resume = await this.resumeModel.findOne({ userId });
+
+    if (resume && resume[field] && Array.isArray(resume[field])) {
+      resume[field][id] = { ...resume[field][id], ...data };
+      return resume.save();
+    } else {
+      throw new BadRequestException('Resume or field not found');
+    }
+  }
+
+  async deleteResumeEntry(request: AuthenticatedRequest, field: string, id: number) {
+    const allowedFields = ["workExperience", "education", "projects"];
+    if (!allowedFields.includes(field)) {
+      throw new BadRequestException(`Invalid field: ${field}`);
+    }
+
+    const userId = request.user?.id;
+    if (!userId) {
+      throw new BadRequestException('User ID is required');
+    }
+
+    const resume = await this.resumeModel.findOne({ userId });
+
+    if (resume && resume[field] && Array.isArray(resume[field])) {
+      resume[field].splice(id, 1);
+      return resume.save();
+    } else {
+      throw new BadRequestException('Resume or field not found');
+    }
+  }
 }

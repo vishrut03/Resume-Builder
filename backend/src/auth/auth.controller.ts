@@ -3,7 +3,7 @@ import { CreateUser } from "./dto/CreateUser.dto"
 import { ApiOperation, ApiBody, ApiTags, ApiResponse, ApiOkResponse, ApiNotFoundResponse, ApiCreatedResponse, ApiBadRequestResponse } from "@nestjs/swagger"
 import { AuthService } from "./auth.service"
 
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller("auth")
 export class AuthController {
     

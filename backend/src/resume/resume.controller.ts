@@ -1,6 +1,7 @@
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiSecurity } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
+
 @Controller('resume')
 export class ResumeController {
 

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post, Query, Request, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ResumeService } from './resume.service';
@@ -21,5 +21,16 @@ export class ResumeController {
     }
     const userEmail = request.user.email; // Extract email from JWT token
     return this.resumeService.updateResume(request, userEmail, field, data);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get(':field')
+  @ApiBearerAuth('JWT-auth')
+  async getResumeField(@Request() request, @Query('field') field: string) {
+    if (!field) {
+      throw new BadRequestException('Field name is required');
+    }
+    const userEmail = request.user.email; // Extract email from JWT token
+    return this.resumeService.getResumeField(request, field);
   }
 }

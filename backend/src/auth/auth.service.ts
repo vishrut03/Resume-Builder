@@ -34,6 +34,9 @@ export class AuthService {
 
         const accessToken = await this.jwtService.signAsync({ email: existingUser.email, sub: existingUser._id });
 
+        //res ki cookie mai token set krna hai
+        // res.cookie('token', accessToken, { httpOnly: true });
+        
         return {userWithoutPassword,accessToken};
     }
 

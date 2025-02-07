@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { Button, Typography, Box, Fade, Grow } from "@mui/material"
-import {FormatListBulleted, KeyboardArrowDown } from "@mui/icons-material"
+"use client"
+
+import { useState, useEffect } from "react"
+import { Button, Typography, Box, Fade, Grow, Modal } from "@mui/material"
+import { FormatListBulleted, KeyboardArrowDown } from "@mui/icons-material"
 import PersonalDetails from "./PersonalDetails"
+import Signin from "./Signin"
+import Signup from './Signup'
 import temp1 from "../../assets/template-1.svg"
 import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png"
 import temp3 from "../../assets/temp3.webp"
@@ -10,6 +14,8 @@ import temp4 from "../../assets/template-2.png"
 const Home = () => {
   const [currentStep, setCurrentStep] = useState("Home")
   const [scrolled, setScrolled] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const [authMode, setAuthMode] = useState("signin")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +34,20 @@ const Home = () => {
   ]
 
   const handleCreateResume = () => {
+    setIsAuthModalOpen(true)
+  }
+
+  const handleCloseAuthModal = () => {
+    setIsAuthModalOpen(false)
+  }
+
+  const handleSuccessfulAuth = () => {
+    setIsAuthModalOpen(false)
     setCurrentStep("Step1")
+  }
+
+  const toggleAuthMode = () => {
+    setAuthMode(authMode === "signin" ? "signup" : "signin")
   }
 
   const scrollToSteps = () => {
@@ -141,7 +160,6 @@ const Home = () => {
             </Fade>
 
             <Box sx={{ display: "flex", flexDirection: "column", gap: 4, flexGrow: 1 }}>
-              {/* Step 1 */}
               <Grow in={scrolled} timeout={1500}>
                 <Box>
                   <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
@@ -183,7 +201,6 @@ const Home = () => {
                 </Box>
               </Grow>
 
-              {/* Step 2 */}
               <Grow in={scrolled} timeout={2000}>
                 <Box>
                   <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
@@ -247,7 +264,6 @@ const Home = () => {
                 </Box>
               </Grow>
 
-              {/* Step 3 */}
               <Grow in={scrolled} timeout={2500}>
                 <Box sx={{ mb: 4 }}>
                   <Typography variant="h5" fontWeight="bold" color="#1976D2" mb={2}>
@@ -260,6 +276,33 @@ const Home = () => {
               </Grow>
             </Box>
           </Box>
+
+          <Modal
+            open={isAuthModalOpen}
+            onClose={handleCloseAuthModal}
+            aria-labelledby="auth-modal-title"
+            aria-describedby="auth-modal-description"
+          >
+            <Box
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+                borderRadius: 2,
+              }}
+            >
+              {authMode === "signin" ? (
+                <Signin onSignUp={toggleAuthMode} onSuccessfulSignIn={handleSuccessfulAuth} />
+              ) : (
+                <Signup onSignIn={toggleAuthMode} onSuccessfulSignUp={handleSuccessfulAuth} />
+              )}
+            </Box>
+          </Modal>
         </>
       )}
     </Box>

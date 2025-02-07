@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react"
+"use client"
+
+import { useEffect, useState } from "react"
 import { Box, TextField, Button } from "@mui/material"
 import useResumeStore from "../../store/ResumeStore"
 import { toast } from "react-toastify"
@@ -7,7 +9,7 @@ import ToastTheme from "../../utils/ToastTheme"
 import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
-import Review from "./Review" 
+import Review from "./Review"
 import Home from "./Home"
 import ProgressBar from "../../components/ProgressBar"
 
@@ -40,7 +42,7 @@ export default function PersonalDetails({ fromReview }) {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
       editSimpleField("personalDetails", localPersonalDetails)
-      if(id!==1) toast.success("Details saved successfully", ToastTheme)
+      if (id !== 1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
       const newErrors = {}
@@ -72,7 +74,7 @@ export default function PersonalDetails({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
-  if(currentStep === "Home") {
+  if (currentStep === "Home") {
     return <Home />
   }
   return (
@@ -158,7 +160,8 @@ export default function PersonalDetails({ fromReview }) {
         {fromReview && (
           <button
             onClick={handleGoBackToReview}
-            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-white hover:bg-yellow-600 hover:scale-105 shadow-md"          >
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-white hover:bg-yellow-600 hover:scale-105 shadow-md"
+          >
             Go Back to Review
           </button>
         )}
@@ -172,3 +175,4 @@ export default function PersonalDetails({ fromReview }) {
     </div>
   )
 }
+

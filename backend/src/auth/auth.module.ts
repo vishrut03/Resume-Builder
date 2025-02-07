@@ -4,9 +4,9 @@ import { AuthService } from "./auth.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { UserSchema } from "./schemas/user.schema";
 import { JwtModule } from "@nestjs/jwt";
-import * as dotenv from 'dotenv';
+// import * as dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 @Module({
     imports: [

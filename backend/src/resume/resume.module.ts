@@ -11,4 +11,4 @@ import { ResumeSchema } from './schemas/resume.schema';
   controllers: [ResumeController],
   providers: [ResumeService],
 })
-export class CatsModule {}
+export class ResumeModule {}

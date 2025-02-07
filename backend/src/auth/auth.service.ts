@@ -31,7 +31,10 @@ export class AuthService {
 
         // Remove password before returning user data
         const { password, ...userWithoutPassword } = existingUser.toObject();
-        return userWithoutPassword;
+
+        const accessToken = await this.jwtService.signAsync({ email: existingUser.email, sub: existingUser._id });
+
+        return {userWithoutPassword,accessToken};
     }
 
     async signUp(user: CreateUser) {

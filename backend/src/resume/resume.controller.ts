@@ -4,6 +4,7 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('resume')
 export class ResumeController {
 
+  //'resume/check' ko authenticate krra hai 
   @UseGuards(AuthGuard)
   @Get('check')
 

@@ -8,6 +8,7 @@ import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
+
     constructor(
         @InjectModel(User.name)
         private userModel: mongoose.Model<User>,
@@ -15,9 +16,8 @@ export class AuthService {
     ) {}
 
     async signIn(user: CreateUser) {
-        // Check if the user exists
 
-        // console.log(process.env.JWT_SECRET);
+        // Check if user exists
         const existingUser = await this.userModel.findOne({ email: user.email });
         if (!existingUser) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -41,12 +41,12 @@ export class AuthService {
     }
 
     async signUp(user: CreateUser) {
+
         // Check if user already exists
         const existingUser = await this.userModel.findOne({ email: user.email });
         if (existingUser) {
             throw new HttpException('User already exists', HttpStatus.CONFLICT);
         }
-
 
         //verify user email will come here
 

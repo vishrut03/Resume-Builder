@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button, Typography, Link, Box, Container, InputAdornment, IconButton } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import Signup from './Signup';
@@ -15,6 +15,32 @@ const Signin = () => {
   const [current, setCurrent] = useState('signin');
   const [errors, setErrors] = useState({});
 
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      const token = Cookies.get('token');
+      if (!token) return;
+
+      try {
+        const response = await axios.get('http://localhost:3001/auth/verify', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.data.message === 'Token is valid') {
+          setCurrent('personaldetails');
+        } else {
+          Cookies.remove('token'); // Remove invalid token
+        }
+      } catch (error) {
+        console.error('Token verification failed:', error);
+        Cookies.remove('token'); // Remove expired or invalid token
+      }
+    };
+
+    verifyToken();
+  }, []);
+
+  
   const validateForm = () => {
     const newErrors = {};
     if (!email) newErrors.email = 'Email is required';
@@ -46,7 +72,6 @@ const Signin = () => {
   if (current === 'signup') {
     return <Signup />;
   }
-
   if (current === 'personaldetails') {
     return <PersonalDetails />;
   }

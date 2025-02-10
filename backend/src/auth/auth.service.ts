@@ -72,10 +72,10 @@ export class AuthService {
         // Remove password before returning response
         const dbUser = newUser.toObject();
 
-        res.cookie('token', accessToken, {
-            httpOnly: true, 
-            sameSite: 'strict'
-        });
+        // res.cookie('token', accessToken, {
+        //     httpOnly: true, 
+        //     sameSite: 'strict'
+        // });
 
         return res.json({ message: "Signup successful", user: dbUser });
     }

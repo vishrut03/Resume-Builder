@@ -5,6 +5,7 @@ import { Box, Button, TextField, Typography, Link, Divider } from '@mui/material
 import { Google as GoogleIcon } from '@mui/icons-material';
 import PersonalDetails from './PersonalDetails';
 import Signin from './Signin';
+import axios from 'axios';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -12,12 +13,13 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [current, setCurrent] = useState('signup');
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     console.log('Sign up with:', email, password);
 
     // Add your signup logic here
-    setCurrent('personaldetails');
+    const response = await axios.post('http://localhost:3001/auth/signup', { email, password });
+    if(response.data.message === 'Signup successful') setCurrent('personaldetails');
   };
 
   const handleGoogleSignUp = () => {

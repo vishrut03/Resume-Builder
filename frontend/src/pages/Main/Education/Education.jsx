@@ -1,112 +1,140 @@
-import React, { useState } from "react"
-import { Box, Button, TextField, Typography } from "@mui/material"
-import useResumeStore from "../../../store/ResumeStore"
-import EducationEntry from "./EducationEntry"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import ToastTheme from "../../../utils/ToastTheme"
-import { EducationSchema } from "../../../schemas/EducationSchema"
-import SchoolIcon from "@mui/icons-material/School"
-import WorkExperience from "../WorkExperience/WorkExperience"
-import Projects from "../Project/Projects"
-import Review from "../Review"
-import ProgressBar from "../../../components/ProgressBar"
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import EducationEntry from "./EducationEntry";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../../utils/ToastTheme";
+import { EducationSchema } from "../../../schemas/EducationSchema";
+import SchoolIcon from "@mui/icons-material/School";
+import WorkExperience from "../WorkExperience/WorkExperience";
+import Projects from "../Project/Projects";
+import Review from "../Review";
+import ProgressBar from "../../../components/ProgressBar";
+import axios from "axios";
+import { getToken } from "../../../utils/Axios/BackendRequest";
 
 export default function Education({ fromReview }) {
-  const education = useResumeStore((state) => state.resume.education)
-  const addResumeEntry = useResumeStore((state) => state.addResumeEntry)
-
+  // Use local state for the education list instead of zustand.
+  const [education, setEducation] = useState([]);
   const [currentEducation, setCurrentEducation] = useState({
     degreeName: "",
     institutionName: "",
     startDate: "",
     endDate: "",
     cgpa: "",
-  })
+  });
+  const [errors, setErrors] = useState({});
+  const [currentStep, setCurrentStep] = useState("Education");
 
-  const [errors, setErrors] = useState({})
-  const [currentStep, setCurrentStep] = useState("Education")
+  // Fetch education entries on mount.
+  useEffect(() => {
+    const fetchEducation = async () => {
+      try {
+        const token = getToken();
+        const res = await axios.get("http://localhost:3001/resume/education", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // Expect the GET endpoint to return an array
+        setEducation(res.data || []);
+      } catch (error) {
+        console.error("Error fetching education details:", error.response?.data || error.message);
+        toast.error("Failed to fetch education details", ToastTheme);
+      }
+    };
+    fetchEducation();
+  }, []);
 
   const handleChange = (event) => {
     setCurrentEducation({
       ...currentEducation,
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
+  // Next/Back buttons are preserved as in your original component.
   const handleNext = async () => {
     if (education.length >= 1) {
-      setCurrentStep("Projects")
+      setCurrentStep("Projects");
     } else {
-      toast.error("Please add at least 1 education entry", { ...ToastTheme, progress: undefined })
+      toast.error("Please add at least 1 education entry", { ...ToastTheme, progress: undefined });
     }
-  }
+  };
 
   const handleGoToReview = () => {
-    setCurrentStep("Review")
-  }
+    setCurrentStep("Review");
+  };
 
   const checkOverlap = (newEducation) => {
     return education.some((edu) => {
-      const existingStart = new Date(edu.startDate)
-      const existingEnd = edu.endDate ? new Date(edu.endDate) : new Date()
-      const newStart = new Date(newEducation.startDate)
-      const newEnd = newEducation.endDate ? new Date(newEducation.endDate) : new Date()
-
-      return newStart <= existingEnd && newEnd >= existingStart
-    })
-  }
+      const existingStart = new Date(edu.startDate);
+      const existingEnd = edu.endDate ? new Date(edu.endDate) : new Date();
+      const newStart = new Date(newEducation.startDate);
+      const newEnd = newEducation.endDate ? new Date(newEducation.endDate) : new Date();
+      return newStart <= existingEnd && newEnd >= existingStart;
+    });
+  };
 
   const handleAdd = async () => {
     try {
-      await EducationSchema.validate(currentEducation, { abortEarly: false })
+      await EducationSchema.validate(currentEducation, { abortEarly: false });
       if (currentEducation.endDate && currentEducation.startDate > currentEducation.endDate) {
-        throw new Error("End date cannot be before start date")
+        throw new Error("End date cannot be before start date");
       }
       if (checkOverlap(currentEducation)) {
-        throw new Error("Education duration overlaps with an existing entry")
+        throw new Error("Education duration overlaps with an existing entry");
       }
-      setErrors({})
-      addResumeEntry("education", currentEducation)
+      setErrors({});
+      const token = getToken();
+      // Append the new entry locally.
+      const updatedEducation = [...education, currentEducation];
+      // POST the updated education array to update the resume.
+      await axios.post("http://localhost:3001/resume/education", updatedEducation, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setEducation(updatedEducation);
       setCurrentEducation({
         degreeName: "",
         institutionName: "",
         startDate: "",
         endDate: "",
         cgpa: "",
-      })
-      toast.success("Education added successfully!", { ...ToastTheme, progress: undefined })
-      return true
+      });
+      toast.success("Education added successfully!", { ...ToastTheme, progress: undefined });
+      return true;
     } catch (err) {
-      const newErrors = {}
-      if (err.inner !== undefined) {
+      const newErrors = {};
+      if (err.inner) {
         err.inner.forEach((e) => {
-          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message
-        })
+          if (!newErrors[e.path]) newErrors[e.path] = e.message;
+        });
       }
       if (
         currentEducation.startDate &&
         currentEducation.endDate &&
         currentEducation.startDate > currentEducation.endDate
       ) {
-        newErrors.endDate = "End date cannot be before start date"
+        newErrors.endDate = "End date cannot be before start date";
       }
       if (err.message === "Education duration overlaps with an existing entry") {
-        toast.error(err.message, { ...ToastTheme, progress: undefined })
+        toast.error(err.message, { ...ToastTheme, progress: undefined });
       }
-      setErrors(newErrors)
-      return false
+      setErrors(newErrors);
+      return false;
     }
-  }
+  };
 
+  // Preserve navigation by conditionally rendering other components.
   if (currentStep === "WorkExperience") {
-    return <WorkExperience />
+    return <WorkExperience />;
   }
   if (currentStep === "Projects") {
-    return <Projects />
+    return <Projects />;
   }
   if (currentStep === "Review") {
-    return <Review />
+    return <Review />;
   }
 
   return (
@@ -211,8 +239,24 @@ export default function Education({ fromReview }) {
         <Box className="mt-8 space-y-6">
           {education
             .filter((edu) => edu.degreeName && edu.institutionName && edu.startDate && edu.endDate && edu.cgpa)
-            .map((edu, index) => (
-              <EducationEntry key={`${edu.degreeName}-${edu.institutionName}-${index}`} index={index} education={edu} />
+            .map((edu, idx) => (
+              <EducationEntry
+                key={`${edu.degreeName}-${edu.institutionName}-${idx}`}
+                index={idx}
+                education={edu}
+                refreshEducation={async () => {
+                  try {
+                    const token = getToken();
+                    const res = await axios.get("http://localhost:3001/resume/education", {
+                      headers: { Authorization: `Bearer ${token}` },
+                    });
+                    setEducation(res.data || []);
+                  } catch (error) {
+                    console.error("Error refreshing education details:", error.response?.data || error.message);
+                    toast.error("Failed to refresh education details", ToastTheme);
+                  }
+                }}
+              />
             ))}
         </Box>
       </Box>
@@ -226,7 +270,7 @@ export default function Education({ fromReview }) {
         <div className="flex gap-4">
           {fromReview && (
             <button
-              onClick={handleGoToReview}
+              onClick={() => setCurrentStep("Review")}
               className="py-3 px-8 mr-16 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
             >
               Go Back to Review
@@ -241,5 +285,5 @@ export default function Education({ fromReview }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

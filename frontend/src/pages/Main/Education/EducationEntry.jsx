@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
-import useResumeStore from "../../../store/ResumeStore"
+import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
 import { EducationSchema } from '../../../schemas/EducationSchema';
+import { getToken } from '../../../utils/Axios/BackendRequest';
 
-function EducationEntry({ education, index }) {
-  const editArrayField = useResumeStore((state) => state.editArrayField);
-  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry);
+function EducationEntry({ education, index, refreshEducation }) {
   const [localEducation, setLocalEducation] = useState(education);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
@@ -24,25 +23,42 @@ function EducationEntry({ education, index }) {
     try {
       await EducationSchema.validate(localEducation, { abortEarly: false });
       setErrors({});
-      Object.entries(localEducation).forEach(([fieldKey, value]) => {
-        editArrayField("education", index, fieldKey, value);
+      const token = getToken();
+      await axios.put(`http://localhost:3001/resume/education/${index}`, localEducation, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
-      toast.success("Education details updated successfully!", ToastTheme);
+      toast.success("Education details updated successfully!", { ...ToastTheme, progress: undefined });
       setIsEditing(false);
+      if (refreshEducation) refreshEducation();
     } catch (err) {
       const newErrors = {};
-      if (err.inner !== undefined) {
+      if (err.inner) {
         err.inner.forEach((e) => {
-          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message;
+          if (!newErrors[e.path]) newErrors[e.path] = e.message;
         });
       }
       setErrors(newErrors);
+      toast.error("Failed to update education details", ToastTheme);
     }
   };
 
-  const handleDelete = () => {
-    deleteResumeEntry("education", index);
-    toast.success("Education details deleted successfully!", ToastTheme);
+  const handleDelete = async () => {
+    try {
+      const token = getToken();
+      await axios.delete(`http://localhost:3001/resume/education/${index}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Education details deleted successfully!", { ...ToastTheme, progress: undefined });
+      if (refreshEducation) refreshEducation();
+    } catch (error) {
+      console.error("Error deleting education details:", error.response?.data || error.message);
+      toast.error("Failed to delete education details", ToastTheme);
+    }
   };
 
   return (

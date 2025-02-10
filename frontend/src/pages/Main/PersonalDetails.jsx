@@ -12,9 +12,12 @@ import BriefDescription from "./BriefDescription"
 import Review from "./Review"
 import Home from "./Home"
 import ProgressBar from "../../components/ProgressBar"
+import { addDetails, getDetails } from "../../utils/Axios/BackendRequest"
 
 export default function PersonalDetails({ fromReview }) {
   const personalDetails = useResumeStore((state) => state.resume.personalDetails)
+  // const personalDetails = getDetails("personalDetails");
+  // console.log(personalDetails);
   const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [errors, setErrors] = useState({})
@@ -41,6 +44,7 @@ export default function PersonalDetails({ fromReview }) {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
+      // addDetails("personalDetails", localPersonalDetails);
       editSimpleField("personalDetails", localPersonalDetails)
       if (id !== 1) toast.success("Details saved successfully", ToastTheme)
       return true

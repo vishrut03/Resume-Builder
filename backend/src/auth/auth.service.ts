@@ -1,4 +1,5 @@
-import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
+import { Injectable, HttpException, HttpStatus, Res } from "@nestjs/common";
+import { Response } from 'express'; 
 import { CreateUser } from './dto/CreateUser.dto';
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./schemas/user.schema";
@@ -15,7 +16,7 @@ export class AuthService {
         private jwtService: JwtService
     ) {}
 
-    async signIn(user: CreateUser) {
+    async signIn(user: CreateUser, @Res() res:Response) {
 
         // Check if user exists
         const existingUser = await this.userModel.findOne({ email: user.email });
@@ -34,13 +35,15 @@ export class AuthService {
 
         const accessToken = await this.jwtService.signAsync({ email: existingUser.email, sub: existingUser._id });
 
-        //res ki cookie mai token set krna hai
-        // res.cookie('token', accessToken, { httpOnly: true });
-        
-        return {userWithoutPassword,accessToken};
+        res.cookie('token', accessToken, {
+            httpOnly: true, 
+            sameSite: 'strict'
+        });
+        return res.json({ message: "Login successful", user: userWithoutPassword });
+
     }
 
-    async signUp(user: CreateUser) {
+    async signUp(user: CreateUser, @Res() res:Response) {
 
         // Check if user already exists
         const existingUser = await this.userModel.findOne({ email: user.email });
@@ -67,6 +70,12 @@ export class AuthService {
 
         // Remove password before returning response
         const dbUser = newUser.toObject();
-        return {dbUser, accessToken};
+
+        res.cookie('token', accessToken, {
+            httpOnly: true, 
+            sameSite: 'strict'
+        });
+
+        return res.json({ message: "Signup successful", user: dbUser });
     }
 }

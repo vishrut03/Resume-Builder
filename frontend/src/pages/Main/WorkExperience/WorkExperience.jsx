@@ -1,109 +1,141 @@
-import React, { useState } from "react"
-import { Box, Button, TextField, Typography } from "@mui/material"
-import useResumeStore from "../../../store/ResumeStore"
-import WorkExperienceEntry from "./WorkExperienceEntry"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import ToastTheme from "../../../utils/ToastTheme"
-import { WorkExperienceSchema } from "../../../schemas/WorkExperienceSchema"
-import WorkIcon from "@mui/icons-material/Work"
-import BriefDescription from "../BriefDescription"
-import Education from "../Education/Education"
-import Review from "../Review"
-import ProgressBar from '../../../components/ProgressBar'
-
+import React, { useState, useEffect } from "react";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../../utils/ToastTheme";
+import { WorkExperienceSchema } from "../../../schemas/WorkExperienceSchema";
+import WorkIcon from "@mui/icons-material/Work";
+import BriefDescription from "../BriefDescription";
+import Education from "../Education/Education";
+import Review from "../Review";
+import ProgressBar from "../../../components/ProgressBar";
+import WorkExperienceEntry from "./WorkExperienceEntry";
+// import useResumeStore from "../../../store/ResumeStore"; // (Commented out zustand logic)
+import { getToken}  from "../../../utils/Axios/BackendRequest"; // Ensure you have this utility
 
 export default function WorkExperience({ fromReview }) {
-  const workExperience = useResumeStore((state) => state.resume.workExperience)
-  const addResumeEntry = useResumeStore((state) => state.addResumeEntry)
 
+  const [workExperience, setWorkExperience] = useState([]);
   const [currentExperience, setCurrentExperience] = useState({
     jobTitle: "",
     companyName: "",
     startDate: "",
     endDate: "",
     responsibilities: "",
-  })
+  });
+  const [errors, setErrors] = useState({});
+  const [currentStep, setCurrentStep] = useState("WorkExperience");
 
-  const [errors, setErrors] = useState({})
-  const [currentStep, setCurrentStep] = useState("WorkExperience")
+  useEffect(() => {
+    const fetchWorkExp = async () => {
+      try {
+        const token = getToken();
+        const res = await axios.get("http://localhost:3001/resume/workExperience", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // Assuming the backend returns an array for workExperience.
+        setWorkExperience(res.data || []);
+      } catch (error) {
+        console.error("Error fetching work experience:", error.response?.data || error.message);
+        toast.error("Failed to fetch work experience", ToastTheme);
+      }
+    };
+    fetchWorkExp();
+  }, []);
 
   const handleChange = (event) => {
     setCurrentExperience({
       ...currentExperience,
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
   const handleNext = () => {
-    setCurrentStep("Education")
-  }
+    setCurrentStep("Education");
+  };
 
   const handleGoBackToReview = () => {
-    setCurrentStep("Review")
-  }
+    setCurrentStep("Review");
+  };
 
   const checkOverlap = (newExperience) => {
     return workExperience.some((exp) => {
-      const existingStart = new Date(exp.startDate)
-      const existingEnd = exp.endDate ? new Date(exp.endDate) : new Date()
-      const newStart = new Date(newExperience.startDate)
-      const newEnd = newExperience.endDate ? new Date(newExperience.endDate) : new Date()
-
-      return newStart <= existingEnd && newEnd >= existingStart
-    })
-  }
+      const existingStart = new Date(exp.startDate);
+      const existingEnd = exp.endDate ? new Date(exp.endDate) : new Date();
+      const newStart = new Date(newExperience.startDate);
+      const newEnd = newExperience.endDate ? new Date(newExperience.endDate) : new Date();
+      return newStart <= existingEnd && newEnd >= existingStart;
+    });
+  };
 
   const handleSave = async () => {
     try {
-      await WorkExperienceSchema.validate(currentExperience, { abortEarly: false })
+      // Validate using the schema.
+      await WorkExperienceSchema.validate(currentExperience, { abortEarly: false });
       if (currentExperience.endDate && currentExperience.startDate > currentExperience.endDate) {
-        throw new Error("End date cannot be before start date")
+        throw new Error("End date cannot be before start date");
       }
       if (checkOverlap(currentExperience)) {
-        throw new Error("Work experience duration overlaps with an existing entry")
+        throw new Error("Work experience duration overlaps with an existing entry");
       }
-      setErrors({})
-      addResumeEntry("workExperience", currentExperience)
+      setErrors({});
+
+      const updatedWorkExp = [...workExperience, currentExperience];
+      const token = getToken();
+      const response = await axios.post(
+        "http://localhost:3001/resume/workExperience",
+        updatedWorkExp,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // Assume backend returns the updated resume document with workExperience field.
+      setWorkExperience(response.data.workExperience || updatedWorkExp);
       setCurrentExperience({
         jobTitle: "",
         companyName: "",
         startDate: "",
         endDate: "",
         responsibilities: "",
-      })
-      toast.success("Experience added successfully!", { ...ToastTheme, progress: undefined })
-      return true
+      });
+      toast.success("Experience added successfully!", { ...ToastTheme, progress: undefined });
+      return true;
     } catch (err) {
-      const newErrors = {}
+      const newErrors = {};
       if (err.inner !== undefined) {
         err.inner.forEach((e) => {
-          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message
-        })
+          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message;
+        });
       }
       if (
         currentExperience.startDate &&
         currentExperience.endDate &&
         currentExperience.startDate > currentExperience.endDate
       ) {
-        newErrors.endDate = "End date cannot be before start date"
+        newErrors.endDate = "End date cannot be before start date";
       }
       if (err.message === "Work experience duration overlaps with an existing entry") {
-        toast.error(err.message, { ...ToastTheme, progress: undefined })
+        toast.error(err.message, { ...ToastTheme, progress: undefined });
       }
-      setErrors(newErrors)
-      return false
+      setErrors(newErrors);
+      return false;
     }
-  }
+  };
 
   if (currentStep === "BriefDescription") {
-    return <BriefDescription />
+    return <BriefDescription />;
   }
   if (currentStep === "Education") {
-    return <Education />
+    return <Education />;
   }
   if (currentStep === "Review") {
-    return <Review />
+    return <Review />;
   }
 
   return (
@@ -212,7 +244,24 @@ export default function WorkExperience({ fromReview }) {
         {workExperience
           .filter((exp) => exp.jobTitle.trim() !== "" && exp.companyName.trim() !== "")
           .map((exp, index) => (
-            <WorkExperienceEntry key={`${exp.jobTitle}-${exp.companyName}-${index}`} experience={exp} index={index} />
+            <WorkExperienceEntry
+              key={`${exp.jobTitle}-${exp.companyName}-${index}`}
+              experience={exp}
+              index={index}
+              // Pass a callback to refresh the work experience list after deletion/update.
+              refreshWorkExperience={async () => {
+                try {
+                  const token = getToken();
+                  const res = await axios.get("http://localhost:3001/resume/workExperience", {
+                    headers: { Authorization: `Bearer ${token}` },
+                  });
+                  setWorkExperience(res.data || []);
+                } catch (error) {
+                  console.error("Error refreshing work experience:", error.response?.data || error.message);
+                  toast.error("Failed to refresh work experience", ToastTheme);
+                }
+              }}
+            />
           ))}
       </Box>
 
@@ -241,5 +290,5 @@ export default function WorkExperience({ fromReview }) {
         </button>
       </div>
     </div>
-  )
+  );
 }

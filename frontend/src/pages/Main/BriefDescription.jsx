@@ -21,6 +21,7 @@ export default function BriefDescription({ fromReview }) {
   const [currentStep, setCurrentStep] = useState("BriefDescription")
 
   useEffect(() => {
+
     const fetchBriefDesc = async () => {
       try {
         const token = getToken(); // Assuming token is stored in localStorage
@@ -36,7 +37,6 @@ export default function BriefDescription({ fromReview }) {
         toast.error("Failed to fetch brief description", ToastTheme);
       }
     };
-  
     fetchBriefDesc();
   }, []);
   

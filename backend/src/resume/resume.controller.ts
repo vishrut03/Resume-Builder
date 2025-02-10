@@ -57,4 +57,20 @@ export class ResumeController {
     }
     return this.resumeService.deleteResumeEntry(request, field, id);
   }
+
+  //api to fetch resume data by id
+  @ApiBody({
+    schema: {
+        type: "object",
+        properties: {
+            userId: { type: "string", example: "1234567890" }
+        }
+    }
+})
+  @Post("my-resume")
+    @UseGuards(AuthGuard)
+    async getUserResume(@Request() req) {
+        const userId = req.user.id; // Extract user ID from AuthGuard
+        return this.resumeService.getUserResume(userId);
+    }
 }

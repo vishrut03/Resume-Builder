@@ -10,6 +10,8 @@ export class User {
 
     @Prop({ required: true, type: String, minlength: 8 }) // Ensures minimum 8 characters
     password: string;
+
+    
 } 
 
 export const UserSchema = SchemaFactory.createForClass(User);

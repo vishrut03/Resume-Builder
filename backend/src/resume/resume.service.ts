@@ -1,9 +1,9 @@
-import { Injectable, BadRequestException, Res } from '@nestjs/common';
+import { Injectable, BadRequestException, Res ,NotFoundException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Resume } from './schemas/resume.schema';
 import { Request } from 'express';
-
+import { ApiBody } from '@nestjs/swagger';
 interface AuthenticatedRequest extends Request {
   user?: { id: string; email: string };
 }
@@ -140,5 +140,17 @@ export class ResumeService {
       throw new BadRequestException('Resume or field not found');
     }
   }
+
+
+  //Get resume data using id 
+  async getUserResume(userId: string): Promise<Resume> {
+    const resume = await this.resumeModel.findOne({ userId });
+
+    if (!resume) {
+        throw new NotFoundException("Resume not found for this user");
+    }
+
+    return resume;
+}
   
 }

@@ -6,13 +6,13 @@ import { User } from "./schemas/user.schema";
 import * as mongoose from "mongoose";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
-
 @Injectable()
 export class AuthService {
 
     constructor(
         @InjectModel(User.name)
         private userModel: mongoose.Model<User>,
+       
         private jwtService: JwtService
     ) {}
 
@@ -79,4 +79,6 @@ export class AuthService {
 
         return res.json({ message: "Signup successful", user: dbUser });
     }
+
+
 }

@@ -10,10 +10,13 @@ import BriefDescription from "./BriefDescription"
 import Review from "./Review" 
 import Home from "./Home"
 import ProgressBar from "../../components/ProgressBar"
+import Cookies from "js-cookie"
+// import useResumeStore from "../../store/ResumeStore"
+// import { addDetails, getDetails } from "../../utils/Axios/BackendRequest"
 
 export default function PersonalDetails({ fromReview }) {
-  const personalDetails = useResumeStore((state) => state.resume.personalDetails)
-  const editSimpleField = useResumeStore((state) => state.editSimpleField)
+  // const personalDetails = useResumeStore((state) => state.resume.personalDetails)
+  // const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [errors, setErrors] = useState({})
   const [localPersonalDetails, setLocalPersonalDetails] = useState({
@@ -27,8 +30,31 @@ export default function PersonalDetails({ fromReview }) {
   const [currentStep, setCurrentStep] = useState("PersonalDetails")
 
   useEffect(() => {
-    setLocalPersonalDetails(personalDetails)
-  }, [personalDetails])
+    const fetchPersonalDetails = async () => {
+      try {
+        const token = Cookies.get('token');
+        const response = await fetch('http://localhost:3001/resume/personalDetails', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error('Failed to fetch personal details');
+        }
+        const data = await response.json();
+        setLocalPersonalDetails(data);
+      } catch (error) {
+        console.error('Error fetching personal details:', error);
+        toast.error('Failed to fetch personal details', ToastTheme);
+      }
+    };
+  
+    fetchPersonalDetails();
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -39,8 +65,9 @@ export default function PersonalDetails({ fromReview }) {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
-      editSimpleField("personalDetails", localPersonalDetails)
-      if(id!==1) toast.success("Details saved successfully", ToastTheme)
+      // addDetails("personalDetails", localPersonalDetails);
+      // editSimpleField("personalDetails", localPersonalDetails)
+      if (id !== 1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
       const newErrors = {}

@@ -36,10 +36,11 @@ export class AuthService {
         const accessToken = await this.jwtService.signAsync({ email: existingUser.email, sub: existingUser._id });
 
         res.cookie('token', accessToken, {
-            httpOnly: true, 
             sameSite: 'strict'
         });
-        return res.json({ message: "Login successful", user: userWithoutPassword });
+
+        console.log('token', accessToken);
+        return res.json({ message: "Login successful", user: userWithoutPassword, token: accessToken });
 
     }
 

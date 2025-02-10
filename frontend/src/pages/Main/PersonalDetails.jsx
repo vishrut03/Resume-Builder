@@ -27,13 +27,15 @@ export default function PersonalDetails({ fromReview }) {
 
   useEffect(() => {
     const fetchPersonalDetails = async () => {
-      try {
+      // try {
+        console.log('hello front');
         const data = await getDetails('personalDetails');
-        setLocalPersonalDetails(data);
-      } catch (error) {
-        console.error('Error fetching personal details:', error);
-        toast.error('Failed to fetch personal details', ToastTheme);
-      }
+        if(data) setLocalPersonalDetails(data);
+      // } 
+      // catch (error) {
+      //   console.error('Error fetching personal details:', error);
+      //   toast.error('Failed to fetch personal details', ToastTheme);
+      // }
     };
 
     fetchPersonalDetails();

@@ -15,6 +15,8 @@ export async function getDetails(field) {
       'Content-Type': 'application/json'
     }
   });
+  console.log('hello');
+  console.log(response);
   if (!response.ok) {
     const errorText = await response.text();
     console.error('Error response:', errorText);

@@ -75,9 +75,7 @@ export class ResumeService {
 
     if (resume) {
       return resume[field];
-    } else {
-      throw new BadRequestException('Resume not found');
-    }
+    } 
   }
 
   async updateResumeEntry(request: AuthenticatedRequest, field: string, id: number, data: any) {

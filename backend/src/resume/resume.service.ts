@@ -121,18 +121,18 @@ export class ResumeService {
   }
 
   async deleteResumeEntry(request: AuthenticatedRequest, field: string, id: number) {
-    const allowedFields = ["workExperience", "education", "projects"];
+    // Include "achievements" (and any other fields you want to support deletion for)
+    const allowedFields = ["workExperience", "education", "projects", "achievements"];
     if (!allowedFields.includes(field)) {
       throw new BadRequestException(`Invalid field: ${field}`);
     }
-
+  
     const userId = request.user?.id;
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }
-
+  
     const resume = await this.resumeModel.findOne({ userId });
-
     if (resume && resume[field] && Array.isArray(resume[field])) {
       resume[field].splice(id, 1);
       return resume.save();
@@ -140,4 +140,5 @@ export class ResumeService {
       throw new BadRequestException('Resume or field not found');
     }
   }
+  
 }

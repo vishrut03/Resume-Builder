@@ -3,6 +3,7 @@ import { TextField, Button, Typography, Link, Box, Container } from '@mui/materi
 import Signup from './Signup';
 import PersonalDetails from './PersonalDetails';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -13,6 +14,9 @@ const Signin = () => {
     e.preventDefault();
     const response = await axios.post('http://localhost:3001/auth/signin', { email, password });
     console.log('Signin attempt with:', { email, password });
+    console.log(response.data.token);
+
+    Cookies.set('token', response.data.token, { expires: 1, secure: true});
     if(response.data.message === 'Login successful') {
       setCurrent('personaldetails');
     }  

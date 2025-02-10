@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Box, Button, TextField, Typography, Link, Divider, InputAdornment, IconButton } from "@mui/material"
-import { Google as GoogleIcon, Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material"
+import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material"
 import PersonalDetails from "./PersonalDetails"
 import Signin from "./Signin"
 import axios from "axios"
@@ -18,9 +18,13 @@ const Signup = () => {
 
   const validateForm = () => {
     const newErrors = {}
-    if (!email) newErrors.email = "Email is required"
+    if (!email) {
+      newErrors.email = "Email is required"
+    } else if (!email.includes("@")) {
+      newErrors.email = "Email must be a valid email address"
+    }
     if (!password) newErrors.password = "Password is required"
-    if (password.length < 8) newErrors.password = "Password must be at least 8 characters long"
+    if (password && password.length < 8) newErrors.password = "Password must be at least 8 characters long"
     if (password !== confirmPassword) newErrors.confirmPassword = "Passwords do not match"
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -37,11 +41,6 @@ const Signup = () => {
         setErrors({ submit: "Failed to sign up. Please try again." })
       }
     }
-  }
-
-  const handleGoogleSignUp = () => {
-    console.log("Sign up with Google")
-    // Implement Google sign-up logic here
   }
 
   if (current === "signin") {
@@ -164,16 +163,6 @@ const Signup = () => {
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1.5 }}>
           Sign Up
         </Button>
-        <Divider sx={{ my: 2 }}>or</Divider>
-        <Button
-          fullWidth
-          variant="outlined"
-          startIcon={<GoogleIcon />}
-          onClick={handleGoogleSignUp}
-          sx={{ mb: 2, py: 1.5 }}
-        >
-          Sign up with Google
-        </Button>
         <Box sx={{ textAlign: "center" }}>
           <Link onClick={() => setCurrent("signin")} variant="body2" sx={{ cursor: "pointer" }}>
             Already have an account? Sign In
@@ -184,5 +173,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
-
+export default Signup;

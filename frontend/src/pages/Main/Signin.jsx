@@ -15,7 +15,6 @@ const Signin = () => {
   const [current, setCurrent] = useState('signin');
   const [errors, setErrors] = useState({});
 
-
   useEffect(() => {
     const verifyToken = async () => {
       const token = Cookies.get('token');
@@ -40,12 +39,15 @@ const Signin = () => {
     verifyToken();
   }, []);
 
-  
   const validateForm = () => {
     const newErrors = {};
-    if (!email) newErrors.email = 'Email is required';
+    if (!email) {
+      newErrors.email = 'Email is required';
+    } else if (!email.includes('@')) {
+      newErrors.email = 'Email must be a valid email address';
+    }
     if (!password) newErrors.password = 'Password is required';
-    if (password.length < 8) newErrors.password = 'Password must be at least 8 characters long';
+    if (password && password.length < 8) newErrors.password = 'Password must be at least 8 characters long';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };

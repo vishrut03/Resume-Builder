@@ -122,7 +122,7 @@ export class ResumeService {
 
   async deleteResumeEntry(request: AuthenticatedRequest, field: string, id: number) {
     // Include "achievements" (and any other fields you want to support deletion for)
-    const allowedFields = ["workExperience", "education", "projects", "achievements"];
+    const allowedFields = ["workExperience", "education", "projects", "achievements","certificates","codingProfiles","extraCurricularActivities"];
     if (!allowedFields.includes(field)) {
       throw new BadRequestException(`Invalid field: ${field}`);
     }

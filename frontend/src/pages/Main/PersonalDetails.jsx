@@ -1,20 +1,18 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, TextField, Button } from "@mui/material"
-import useResumeStore from "../../store/ResumeStore"
+import useResumeStore from '../../store/ResumeStore'
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
 import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
-import Review from "./Review"
+import Review from "./Review" 
 import Home from "./Home"
 import ProgressBar from "../../components/ProgressBar"
-import { addDetails, getDetails } from "../../utils/Axios/BackendRequest"
 
 export default function PersonalDetails({ fromReview }) {
+  const personalDetails = useResumeStore((state) => state.resume.personalDetails)
   const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [errors, setErrors] = useState({})
@@ -29,19 +27,8 @@ export default function PersonalDetails({ fromReview }) {
   const [currentStep, setCurrentStep] = useState("PersonalDetails")
 
   useEffect(() => {
-    const fetchPersonalDetails = async () => {
-      try {
-        const details = await getDetails("personalDetails")
-        if (details) {
-          setLocalPersonalDetails(details)
-        }
-      } catch (error) {
-        console.error("Error fetching personal details:", error)
-      }
-    }
-
-    fetchPersonalDetails()
-  }, [])
+    setLocalPersonalDetails(personalDetails)
+  }, [personalDetails])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -52,8 +39,8 @@ export default function PersonalDetails({ fromReview }) {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
-      await addDetails("personalDetails", localPersonalDetails)
-      if (id !== 1) toast.success("Details saved successfully", ToastTheme)
+      editSimpleField("personalDetails", localPersonalDetails)
+      if(id!==1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
       const newErrors = {}
@@ -85,10 +72,9 @@ export default function PersonalDetails({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
-  if (currentStep === "Home") {
+  if(currentStep === "Home") {
     return <Home />
   }
-  
   return (
     <div className="flex flex-col items-center mt-8 mb-8">
       <ProgressBar step="PersonalDetails" />
@@ -150,6 +136,7 @@ export default function PersonalDetails({ fromReview }) {
           onChange={handleChange}
         />
         <TextField
+          required
           error={!!errors.linkedIn}
           helperText={errors.linkedIn}
           fullWidth
@@ -172,8 +159,8 @@ export default function PersonalDetails({ fromReview }) {
         {fromReview && (
           <button
             onClick={handleGoBackToReview}
-            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-white hover:bg-yellow-600 hover:scale-105 shadow-md"
-          >
+            // className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"          >
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-gray-700 hover:bg-yellow-600 hover:scale-105 shadow-md"          >
             Go Back to Review
           </button>
         )}

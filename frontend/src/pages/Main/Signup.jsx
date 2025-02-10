@@ -6,7 +6,7 @@ import { Google as GoogleIcon } from '@mui/icons-material';
 import PersonalDetails from './PersonalDetails';
 import Signin from './Signin';
 
-const Signup = ({ onSignIn, onSuccessfulSignUp }) => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -14,16 +14,14 @@ const Signup = ({ onSignIn, onSuccessfulSignUp }) => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Implement sign-up logic here
     console.log('Sign up with:', email, password);
-    // If sign-up is successful, call onSuccessfulSignUp
+
+    // Add your signup logic here
     setCurrent('personaldetails');
   };
 
   const handleGoogleSignUp = () => {
-    // Implement Google sign-up logic here
     console.log('Sign up with Google');
-    // If sign-up is successful, call onSuccessfulSignUp
     onSuccessfulSignUp();
   };
 

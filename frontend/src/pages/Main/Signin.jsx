@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Link, Box, Container } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import Signup from './Signup';
 import PersonalDetails from './PersonalDetails';
-import { Style } from '@mui/icons-material';
+import axios from 'axios';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [current, setCurrent] = useState('signin');
-  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your signin logic here
+    const response = await axios.post('http://localhost:3001/auth/signin', { email, password });
     console.log('Signin attempt with:', { email, password });
-    // On successful signin, navigate to personal details page
-    setCurrent('personaldetails');
+    if(response.data.message === 'Login successful') {
+      setCurrent('personaldetails');
+    }  
   };
 
   if(current === 'signup') {

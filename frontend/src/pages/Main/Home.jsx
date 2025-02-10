@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { ArrowDown, List } from "lucide-react";
 import PersonalDetails from "./PersonalDetails";
 import Signin from "./Signin";
-import Signup from './Signup';
 import temp1 from "../../assets/template-1.svg";
 import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png";
 import temp3 from "../../assets/temp3.webp";
@@ -46,6 +45,9 @@ const Home = () => {
     stepsSection?.scrollIntoView({ behavior: "smooth" });
   };
 
+  if(currentStep === "signin") {
+    return <Signin/>
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {currentStep === "Step1" ? (
@@ -63,7 +65,7 @@ const Home = () => {
                 Stand out from the crowd with a beautifully crafted resume
               </p>
               <button
-                onClick={() => setIsAuthModalOpen(true)}
+                onClick={() => setCurrentStep("signin")}
                 className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-full text-lg font-semibold 
                           transform hover:scale-105 transition-all duration-300 hover:shadow-xl"
               >
@@ -150,29 +152,27 @@ const Home = () => {
           </div>
 
           {/* Auth Modal */}
-          {isAuthModalOpen && (
+          {/* {isAuthModalOpen && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
               <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4">
                 {authMode === "signin" ? (
                   <Signin 
-                    onSignUp={() => setAuthMode("signup")}
+                    // onSignUp={() => setAuthMode("signup")}
                     onSuccessfulSignIn={() => {
                       setIsAuthModalOpen(false);
-                      setCurrentStep("Step1");
                     }}
                   />
                 ) : (
                   <Signup
-                    onSignIn={() => setAuthMode("signin")}
+                    // onSignIn={() => setAuthMode("signin")}
                     onSuccessfulSignUp={() => {
                       setIsAuthModalOpen(false);
-                      setCurrentStep("Step1");
                     }}
                   />
                 )}
               </div>
             </div>
-          )}
+          )} */}
         </>
       )}
     </div>

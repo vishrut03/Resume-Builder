@@ -20,9 +20,7 @@ const Signup = () => {
 
     // Add your signup logic here
     const response = await axios.post('http://localhost:3001/auth/signup', { email, password });
-    Cookies.set('token', response.data.token, { expires: 1, secure: true});
-    
-    if(response.data.message === 'Signup successful') setCurrent('personaldetails');
+    if(response.data.message === 'Signup successful') setCurrent('signin');
   };
 
   const handleGoogleSignUp = () => {

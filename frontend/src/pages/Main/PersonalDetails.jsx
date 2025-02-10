@@ -1,21 +1,22 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, TextField, Button } from "@mui/material"
-import useResumeStore from "../../store/ResumeStore"
+import useResumeStore from '../../store/ResumeStore'
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import ToastTheme from "../../utils/ToastTheme"
 import { PersonalDetailsSchema } from "../../schemas/PersonalDetailsSchema"
 import PersonIcon from "@mui/icons-material/Person"
 import BriefDescription from "./BriefDescription"
-import Review from "./Review"
+import Review from "./Review" 
 import Home from "./Home"
 import ProgressBar from "../../components/ProgressBar"
+import Cookies from "js-cookie"
+// import useResumeStore from "../../store/ResumeStore"
+// import { addDetails, getDetails } from "../../utils/Axios/BackendRequest"
 
 export default function PersonalDetails({ fromReview }) {
-  const personalDetails = useResumeStore((state) => state.resume.personalDetails)
-  const editSimpleField = useResumeStore((state) => state.editSimpleField)
+  // const personalDetails = useResumeStore((state) => state.resume.personalDetails)
+  // const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [errors, setErrors] = useState({})
   const [localPersonalDetails, setLocalPersonalDetails] = useState({
@@ -29,8 +30,31 @@ export default function PersonalDetails({ fromReview }) {
   const [currentStep, setCurrentStep] = useState("PersonalDetails")
 
   useEffect(() => {
-    setLocalPersonalDetails(personalDetails)
-  }, [personalDetails])
+    const fetchPersonalDetails = async () => {
+      try {
+        const token = Cookies.get('token');
+        const response = await fetch('http://localhost:3001/resume/personalDetails', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error response:', errorText);
+          throw new Error('Failed to fetch personal details');
+        }
+        const data = await response.json();
+        setLocalPersonalDetails(data);
+      } catch (error) {
+        console.error('Error fetching personal details:', error);
+        toast.error('Failed to fetch personal details', ToastTheme);
+      }
+    };
+  
+    fetchPersonalDetails();
+  }, []);
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -41,7 +65,8 @@ export default function PersonalDetails({ fromReview }) {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
-      editSimpleField("personalDetails", localPersonalDetails)
+      // addDetails("personalDetails", localPersonalDetails);
+      // editSimpleField("personalDetails", localPersonalDetails)
       if (id !== 1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
@@ -74,7 +99,7 @@ export default function PersonalDetails({ fromReview }) {
   if (currentStep === "Review") {
     return <Review />
   }
-  if (currentStep === "Home") {
+  if(currentStep === "Home") {
     return <Home />
   }
   return (
@@ -138,6 +163,7 @@ export default function PersonalDetails({ fromReview }) {
           onChange={handleChange}
         />
         <TextField
+          required
           error={!!errors.linkedIn}
           helperText={errors.linkedIn}
           fullWidth
@@ -160,8 +186,8 @@ export default function PersonalDetails({ fromReview }) {
         {fromReview && (
           <button
             onClick={handleGoBackToReview}
-            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-white hover:bg-yellow-600 hover:scale-105 shadow-md"
-          >
+            // className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md"          >
+            className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-yellow-500 text-gray-700 hover:bg-yellow-600 hover:scale-105 shadow-md"          >
             Go Back to Review
           </button>
         )}
@@ -175,4 +201,3 @@ export default function PersonalDetails({ fromReview }) {
     </div>
   )
 }
-

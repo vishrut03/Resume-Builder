@@ -3,18 +3,21 @@
 import React, { useState } from 'react';
 import { Box, Button, TextField, Typography, Link, Divider } from '@mui/material';
 import { Google as GoogleIcon } from '@mui/icons-material';
+import PersonalDetails from './PersonalDetails';
+import Signin from './Signin';
 
 const Signup = ({ onSignIn, onSuccessfulSignUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [current, setCurrent] = useState('signup');
 
   const handleSignUp = (e) => {
     e.preventDefault();
     // Implement sign-up logic here
     console.log('Sign up with:', email, password);
     // If sign-up is successful, call onSuccessfulSignUp
-    onSuccessfulSignUp();
+    setCurrent('personaldetails');
   };
 
   const handleGoogleSignUp = () => {
@@ -24,6 +27,13 @@ const Signup = ({ onSignIn, onSuccessfulSignUp }) => {
     onSuccessfulSignUp();
   };
 
+  if(current === 'signin') {
+    return <Signin/>
+  }
+
+  if(current === 'personaldetails') {
+    return <PersonalDetails/>
+  }
   return (
     <Box
       sx={{
@@ -97,7 +107,7 @@ const Signup = ({ onSignIn, onSuccessfulSignUp }) => {
           Sign up with Google
         </Button>
         <Box sx={{ textAlign: 'center' }}>
-          <Link href="#" variant="body2" onClick={onSignIn}>
+        <Link onClick={() => setCurrent('signin')} variant="body2" sx={{ cursor: "pointer" }}> 
             Already have an account? Sign In
           </Link>
         </Box>

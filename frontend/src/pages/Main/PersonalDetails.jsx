@@ -15,9 +15,6 @@ import ProgressBar from "../../components/ProgressBar"
 import { addDetails, getDetails } from "../../utils/Axios/BackendRequest"
 
 export default function PersonalDetails({ fromReview }) {
-  const personalDetails = useResumeStore((state) => state.resume.personalDetails)
-  // const personalDetails = getDetails("personalDetails");
-  // console.log(personalDetails);
   const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [errors, setErrors] = useState({})
@@ -32,8 +29,19 @@ export default function PersonalDetails({ fromReview }) {
   const [currentStep, setCurrentStep] = useState("PersonalDetails")
 
   useEffect(() => {
-    setLocalPersonalDetails(personalDetails)
-  }, [personalDetails])
+    const fetchPersonalDetails = async () => {
+      try {
+        const details = await getDetails("personalDetails")
+        if (details) {
+          setLocalPersonalDetails(details)
+        }
+      } catch (error) {
+        console.error("Error fetching personal details:", error)
+      }
+    }
+
+    fetchPersonalDetails()
+  }, [])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -44,8 +52,7 @@ export default function PersonalDetails({ fromReview }) {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
-      // addDetails("personalDetails", localPersonalDetails);
-      editSimpleField("personalDetails", localPersonalDetails)
+      await addDetails("personalDetails", localPersonalDetails)
       if (id !== 1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
@@ -81,6 +88,7 @@ export default function PersonalDetails({ fromReview }) {
   if (currentStep === "Home") {
     return <Home />
   }
+  
   return (
     <div className="flex flex-col items-center mt-8 mb-8">
       <ProgressBar step="PersonalDetails" />
@@ -179,4 +187,3 @@ export default function PersonalDetails({ fromReview }) {
     </div>
   )
 }
-

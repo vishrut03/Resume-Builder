@@ -1,76 +1,113 @@
-import React, { useState } from "react"
-import { Box, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
-import useResumeStore from "../../store/ResumeStore"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import ToastTheme from "../../utils/ToastTheme"
-import ComputerIcon from "@mui/icons-material/Computer"
-import Certificates from "./Certificates"
-import Custom from "./Custom"
-import Review from "./Review" 
-import ProgressBar from "../../components/ProgressBar"
+import React, { useState, useEffect } from "react";
+import { Box, TextField, Button, Typography, List, ListItem, ListItemText, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../utils/ToastTheme";
+import ComputerIcon from "@mui/icons-material/Computer";
+import Certificates from "./Certificates";
+import Custom from "./Custom";
+import Review from "./Review";
+import ProgressBar from "../../components/ProgressBar";
+import axios from "axios";
+import { getToken } from "../../utils/Axios/BackendRequest";
 
 export default function CodingProfiles({ fromReview }) {
   const [currentProfile, setCurrentProfile] = useState({
     platform: "",
     profileLink: "",
-  })
+  });
+  const [codingProfiles, setCodingProfiles] = useState([]);
+  const [platformError, setPlatformError] = useState("");
+  const [linkError, setLinkError] = useState("");
+  const [currentStep, setCurrentStep] = useState("CodingProfiles");
 
-  const codingProfiles = useResumeStore((state) => state.resume.codingProfiles)
-  const addCodingProfile = useResumeStore((state) => state.addResumeEntry)
-  const deleteCodingProfile = useResumeStore((state) => state.deleteResumeEntry)
-  const [platformError, setPlatformError] = useState("")
-  const [linkError, setLinkError] = useState("")
-  const [currentStep, setCurrentStep] = useState("CodingProfiles")
+  // Fetch coding profiles on mount.
+  useEffect(() => {
+    const fetchCodingProfiles = async () => {
+      try {
+        const token = getToken();
+        const res = await axios.get("http://localhost:3001/resume/codingProfiles", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCodingProfiles(res.data || []);
+      } catch (error) {
+        console.error("Error fetching coding profiles:", error.response?.data || error.message);
+        toast.error("Failed to fetch coding profiles", ToastTheme);
+      }
+    };
+    fetchCodingProfiles();
+  }, []);
 
   const handleChange = (event) => {
     setCurrentProfile({
       ...currentProfile,
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
-  const handleAddProfile = () => {
+  const handleAddProfile = async () => {
     if (currentProfile.platform.trim() === "") {
-      if (currentProfile.profileLink.trim() !== "") setLinkError("")
-      setPlatformError("Platform cannot be empty")
-      return
+      setPlatformError("Platform cannot be empty");
+      return;
+    } else {
+      setPlatformError("");
     }
     if (currentProfile.profileLink.trim() === "") {
-      if (currentProfile.platform.trim() !== "") setPlatformError("")
-      setLinkError("Profile link cannot be empty")
-      return
+      setLinkError("Profile link cannot be empty");
+      return;
+    } else {
+      setLinkError("");
     }
-    if (currentProfile.platform.trim() !== "" && currentProfile.profileLink.trim() !== "") {
-      setLinkError("")
-      setPlatformError("")
-      addCodingProfile("codingProfiles", currentProfile)
-      toast.success("Coding Profile added successfully!", ToastTheme)
+    try {
+      const token = getToken();
+      const updatedProfiles = [...codingProfiles, currentProfile];
+      await axios.post("http://localhost:3001/resume/codingProfiles", updatedProfiles, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setCodingProfiles(updatedProfiles);
+      toast.success("Coding Profile added successfully!", ToastTheme);
       setCurrentProfile({
         platform: "",
         profileLink: "",
-      })
+      });
+    } catch (error) {
+      console.error("Error adding coding profile:", error.response?.data || error.message);
+      toast.error("Failed to add coding profile", ToastTheme);
     }
-  }
+  };
 
-  const handleDeleteProfile = (index) => {
-    deleteCodingProfile("codingProfiles", index)
-    toast.success("Coding Profile deleted successfully!", ToastTheme)
-  }
+  const handleDeleteProfile = async (index) => {
+    try {
+      const token = getToken();
+      await axios.delete(`http://localhost:3001/resume/codingProfiles/${index}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const updatedProfiles = codingProfiles.filter((_, i) => i !== index);
+      setCodingProfiles(updatedProfiles);
+      toast.success("Coding Profile deleted successfully!", ToastTheme);
+    } catch (error) {
+      console.error("Error deleting coding profile:", error.response?.data || error.message);
+      toast.error("Failed to delete coding profile", ToastTheme);
+    }
+  };
 
   if (currentStep === "Certificates") {
-    return <Certificates />
+    return <Certificates />;
   }
   if (currentStep === "Custom") {
-    return <Custom />
+    return <Custom />;
   }
   if (currentStep === "Review") {
-    return <Review />
+    return <Review />;
   }
+
   return (
     <div className="mt-8">
-      <ProgressBar step="CodingProfiles"/>
+      <ProgressBar step="CodingProfiles" />
       <Box className="max-w-xl mx-auto p-4 space-y-6 bg-white rounded-lg shadow-md mt-8 mb-8">
         <ComputerIcon />
         <h1 className="text-2xl font-bold text-center mb-4">Coding Profiles</h1>
@@ -163,6 +200,5 @@ export default function CodingProfiles({ fromReview }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
-

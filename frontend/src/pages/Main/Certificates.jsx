@@ -1,87 +1,134 @@
-import React, { useState } from "react"
-import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from "@mui/material"
-import DeleteIcon from "@mui/icons-material/Delete"
-import useResumeStore from "../../store/ResumeStore"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import ToastTheme from "../../utils/ToastTheme"
-import CardMembershipIcon from "@mui/icons-material/CardMembership"
-import Achievements from "./Achievements"
-import CodingProfiles from "./CodingProfiles"
-import Review from "./Review"
-import ProgressBar from "../../components/ProgressBar"
+import React, { useState, useEffect } from "react";
+import { Box, TextField, Button, List, ListItem, ListItemText, IconButton, Typography } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../utils/ToastTheme";
+import CardMembershipIcon from "@mui/icons-material/CardMembership";
+import Achievements from "./Achievements";
+import CodingProfiles from "./CodingProfiles";
+import Review from "./Review";
+import ProgressBar from "../../components/ProgressBar";
+import axios from "axios";
+import { getToken } from "../../utils/Axios/BackendRequest";
 
 export default function Certificates({ fromReview }) {
   const [currentCertificate, setCurrentCertificate] = useState({
     certificateName: "",
     organization: "",
     date: "",
-  })
+  });
+  const [certificates, setCertificates] = useState([]);
+  const [currentStep, setCurrentStep] = useState("Certificates");
+  const [nameError, setNameError] = useState("");
+  const [organizationError, setOrganizationError] = useState("");
+  const [dateError, setDateError] = useState("");
 
-  const certificates = useResumeStore((state) => state.resume.certificates)
-  const addCertificate = useResumeStore((state) => state.addResumeEntry)
-  const deleteCertificate = useResumeStore((state) => state.deleteResumeEntry)
-
-  const [currentStep, setCurrentStep] = useState("Certificates")
-  const [nameError, setNameError] = useState("")
-  const [organizationError, setOrganizationError] = useState("")
-  const [dateError, setDateError] = useState("")
+  // Fetch certificates on component mount.
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const token = getToken();
+        const res = await axios.get("http://localhost:3001/resume/certificates", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCertificates(res.data || []);
+      } catch (err) {
+        console.error("Error fetching certificates:", err.response?.data || err.message);
+        toast.error("Failed to fetch certificates", ToastTheme);
+      }
+    };
+    fetchCertificates();
+  }, []);
 
   const handleChange = (event) => {
     setCurrentCertificate({
       ...currentCertificate,
       [event.target.name]: event.target.value,
-    })
-  }
+    });
+  };
 
-  const handleAddCertificate = () => {
-    let hasError = false
+  const handleAddCertificate = async () => {
+    let hasError = false;
 
     if (currentCertificate.certificateName.trim() === "") {
-      setNameError("Certificate Name is required")
-      hasError = true
+      setNameError("Certificate Name is required");
+      hasError = true;
     } else {
-      setNameError("")
+      setNameError("");
     }
 
     if (currentCertificate.organization.trim() === "") {
-      setOrganizationError("Organization is required")
-      hasError = true
+      setOrganizationError("Organization is required");
+      hasError = true;
     } else {
-      setOrganizationError("")
+      setOrganizationError("");
     }
+
     if (currentCertificate.date.trim() === "" || new Date(currentCertificate.date) > new Date()) {
-      setDateError("Date is required")
-      hasError = true
+      setDateError("Date is required");
+      hasError = true;
     } else {
-      setDateError("")
+      setDateError("");
     }
 
-    if (hasError) return
+    if (hasError) return;
 
-    addCertificate("certificates", currentCertificate)
-    toast.success("Certificate added successfully!", ToastTheme)
+    try {
+      const token = getToken();
+      // Map the UI field "organization" to the backend's expected "organisation"
+      const certificateToAdd = {
+        certificateName: currentCertificate.certificateName,
+        organisation: currentCertificate.organization,
+        date: currentCertificate.date,
+      };
 
-    setCurrentCertificate({
-      certificateName: "",
-      organization: "",
-      date: "",
-    })
-  }
+      // Append new certificate to the current array.
+      const updatedCertificates = [...certificates, certificateToAdd];
 
-  const handleDeleteCertificate = (index) => {
-    deleteCertificate("certificates", index)
-    toast.success("Certificate deleted successfully!", ToastTheme)
-  }
+      // POST the updated certificates array to the resume.
+      await axios.post("http://localhost:3001/resume/certificates", updatedCertificates, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setCertificates(updatedCertificates);
+      toast.success("Certificate added successfully!", ToastTheme);
+      setCurrentCertificate({
+        certificateName: "",
+        organization: "",
+        date: "",
+      });
+    } catch (err) {
+      console.error("Error adding certificate:", err.response?.data || err.message);
+      toast.error("Failed to add certificate", ToastTheme);
+    }
+  };
+
+  const handleDeleteCertificate = async (index) => {
+    try {
+      const token = getToken();
+      await axios.delete(`http://localhost:3001/resume/certificates/${index}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const updatedCertificates = certificates.filter((_, i) => i !== index);
+      setCertificates(updatedCertificates);
+      toast.success("Certificate deleted successfully!", ToastTheme);
+    } catch (err) {
+      console.error("Error deleting certificate:", err.response?.data || err.message);
+      toast.error("Failed to delete certificate", ToastTheme);
+    }
+  };
 
   if (currentStep === "Achievements") {
-    return <Achievements />
+    return <Achievements />;
   }
   if (currentStep === "CodingProfiles") {
-    return <CodingProfiles />
+    return <CodingProfiles />;
   }
   if (currentStep === "Review") {
-    return <Review />
+    return <Review />;
   }
   return (
     <div className="mt-8">
@@ -139,7 +186,7 @@ export default function Certificates({ fromReview }) {
         <h1 className="text-xl font-bold text-center mb-4 mt-6">Previously added certificates</h1>
         <List className="mt-8 space-y-4">
           {certificates
-            .filter((cert) => cert.certificateName.trim() !== "" && cert.organization.trim() !== "")
+            .filter((cert) => cert.certificateName.trim() !== "" && cert.organisation.trim() !== "")
             .map((cert, index) => (
               <ListItem
                 key={index}
@@ -159,7 +206,7 @@ export default function Certificates({ fromReview }) {
                   secondary={
                     <>
                       <Typography component="span" variant="body2" color="text.primary">
-                        Organization: {cert.organization}
+                        Organization: {cert.organisation}
                       </Typography>
                       <br />
                       <Typography component="span" variant="body2" color="text.secondary">
@@ -195,5 +242,5 @@ export default function Certificates({ fromReview }) {
         </button>
       </div>
     </div>
-  )
+  );
 }

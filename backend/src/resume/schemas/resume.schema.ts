@@ -81,7 +81,7 @@ export class Resume {
     type: [
       {
         certificateName: { type: String, required: true },
-        organisation: { type: String, required: true },
+        organisation: { type: String , required: true },
         date: { type: String, required: true },
       },
     ],
@@ -110,7 +110,8 @@ export class Resume {
     type: [
       {
         activityName: { type: String, required: true },
-        achievements: { type: String, required: true },
+        achievements: { type: String, required: false },
+        description: { type: String, required: false },
       },
     ],
     required: false,

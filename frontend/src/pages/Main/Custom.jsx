@@ -1,73 +1,94 @@
-import React, { useState, useEffect } from "react"
-import { TextField, Button, Box, Typography } from "@mui/material"
-import useResumeStore from "../../store/ResumeStore"
-import { toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
-import ToastTheme from "../../utils/ToastTheme"
-import CategoryIcon from "@mui/icons-material/Category"
-import CodingProfiles from "./CodingProfiles"
-import ExtraCurricular from "./ExtraCurricular"
-import Review from "./Review" 
-import ProgressBar from "../../components/ProgressBar"
+import React, { useState, useEffect } from "react";
+import { TextField, Button, Box, Typography } from "@mui/material";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ToastTheme from "../../utils/ToastTheme";
+import CategoryIcon from "@mui/icons-material/Category";
+import CodingProfiles from "./CodingProfiles";
+import ExtraCurricular from "./ExtraCurricular";
+import Review from "./Review"; 
+import ProgressBar from "../../components/ProgressBar";
+import { getToken } from "../../utils/Axios/BackendRequest";
 
 const Custom = ({ fromReview }) => {
-  const customDetails = useResumeStore((state) => state.resume.customDetails)
-  const editObjectField = useResumeStore((state) => state.editObjectField)
-  const [headingError, setHeadingError] = useState("")
-  const [descError, setDescError] = useState("")
-  const [currentStep, setCurrentStep] = useState("Custom")
-  const customFields = {
+  const [customSection, setCustomSection] = useState({
     heading: "",
     description: "",
-  }
+  });
+  const [headingError, setHeadingError] = useState("");
+  const [descError, setDescError] = useState("");
+  const [currentStep, setCurrentStep] = useState("Custom");
 
-  const [customSection, setCustomSection] = useState(customFields)
-
+  // On mount, fetch the current custom section details.
   useEffect(() => {
-    setCustomSection(customDetails)
-  }, [customDetails])
+    const fetchCustomSection = async () => {
+      try {
+        const token = getToken();
+        const res = await axios.get("http://localhost:3001/resume/customSection", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        // If no custom section exists, use default values.
+        setCustomSection(res.data || { heading: "", description: "" });
+      } catch (err) {
+        console.error("Error fetching custom section:", err.response?.data || err.message);
+      }
+    };
+    fetchCustomSection();
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setCustomSection({ ...customSection, [name]: value })
-  }
+    const { name, value } = e.target;
+    setCustomSection({ ...customSection, [name]: value });
+  };
 
-  const handleSave = () => {
-    const { heading, description } = customSection
-    let hasError = false
-
+  const handleSave = async () => {
+    const { heading, description } = customSection;
+    let hasError = false;
     if (heading.trim() === "") {
-      setHeadingError("Heading cannot be empty")
-      hasError = true
+      setHeadingError("Heading cannot be empty");
+      hasError = true;
     } else {
-      setHeadingError("")
+      setHeadingError("");
     }
-
     if (description.trim() === "") {
-      setDescError("Description cannot be empty")
-      hasError = true
+      setDescError("Description cannot be empty");
+      hasError = true;
     } else {
-      setDescError("")
+      setDescError("");
     }
+    if (hasError) return;
 
-    if (hasError) return
+    try {
+      const token = getToken();
+      await axios.post(
+        "http://localhost:3001/resume/customSection",
+        customSection,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      toast.success("Custom section details saved successfully!", ToastTheme);
+    } catch (err) {
+      console.error("Error saving custom section:", err.response?.data || err.message);
+      toast.error("Failed to save custom section details", ToastTheme);
+    }
+  };
 
-    setDescError("")
-    setHeadingError("")
-    const modifiedObject = { heading, description }
-    editObjectField("customDetails", modifiedObject)
-    toast.success("Custom section details saved successfully!", ToastTheme)
-  }
-
+  // Navigation: render alternate components when currentStep changes.
   if (currentStep === "CodingProfiles") {
-    return <CodingProfiles />
+    return <CodingProfiles />;
   }
   if (currentStep === "ExtraCurricular") {
-    return <ExtraCurricular />
+    return <ExtraCurricular />;
   }
   if (currentStep === "Review") {
-    return <Review />
+    return <Review />;
   }
+  
   return (
     <div className="mt-8">
       <ProgressBar step="CustomSection" />
@@ -119,7 +140,7 @@ const Custom = ({ fromReview }) => {
         </button>
         {fromReview && (
           <button
-            onClick={handleGoBackToPreview}
+            onClick={() => setCurrentStep("Review")}
             className="py-3 px-8 bg-yellow-500 text-white rounded-lg text-sm font-medium hover:bg-yellow-600 hover:scale-105 shadow-md transition-transform transform-gpu"
           >
             Go Back to Preview
@@ -133,8 +154,7 @@ const Custom = ({ fromReview }) => {
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Custom
-
+export default Custom;

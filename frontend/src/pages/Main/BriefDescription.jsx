@@ -30,7 +30,6 @@ export default function BriefDescription({ fromReview }) {
             Authorization: `Bearer ${token}`, // Include token in the request
           },
         });
-  
         setDescription(res.data)
       } catch (error) {
         console.error("Error fetching brief description:", error);

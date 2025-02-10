@@ -37,7 +37,7 @@ export class ResumeService {
   
     // For simple fields, unwrap expected property:
     if (field === 'briefDescription') {
-      value = value.briefDescription;
+      value = value.description;
     }
   
     if (field === 'skills') {

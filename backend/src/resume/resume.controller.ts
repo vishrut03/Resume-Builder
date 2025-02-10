@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Get, Post, Put, Delete, Param, Request, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Put, Delete, Param, Request, UseGuards, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { ResumeService } from './resume.service';
@@ -30,7 +30,11 @@ export class ResumeController {
     if (!field) {
       throw new BadRequestException('Field name is required');
     }
-    return this.resumeService.getResumeField(request, field);
+    const response = this.resumeService.getResumeField(request, field);
+    if(typeof response === 'string'){
+      return {description: response};
+    }
+    return response;
   }
 
   @UseGuards(AuthGuard)

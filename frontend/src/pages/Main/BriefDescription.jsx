@@ -9,18 +9,37 @@ import PersonalDetails from "./PersonalDetails"
 import WorkExperience from "./WorkExperience/WorkExperience"
 import Review from "./Review" 
 import ProgressBar from "../../components/ProgressBar"
+import { getDetails, addDetails, getToken } from "../../utils/Axios/BackendRequest"
+import axios from "axios"
 
 export default function BriefDescription({ fromReview }) {
-  const briefDescription = useResumeStore((state) => state.resume.briefDescription)
-  const editSimpleField = useResumeStore((state) => state.editSimpleField)
+  // const briefDescription = useResumeStore((state) => state.resume.briefDescription)
+  // const editSimpleField = useResumeStore((state) => state.editSimpleField)
 
   const [description, setDescription] = useState("")
   const [errors, setErrors] = useState(undefined)
   const [currentStep, setCurrentStep] = useState("BriefDescription")
 
   useEffect(() => {
-    setDescription(briefDescription)
-  }, [briefDescription])
+    const fetchBriefDesc = async () => {
+      try {
+        const token = getToken(); // Assuming token is stored in localStorage
+        const res = await axios.get("http://localhost:3001/resume/briefDescription", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in the request
+          },
+        });
+  
+        setDescription(res.data)
+      } catch (error) {
+        console.error("Error fetching brief description:", error);
+        toast.error("Failed to fetch brief description", ToastTheme);
+      }
+    };
+  
+    fetchBriefDesc();
+  }, []);
+  
 
   const handleChange = (event) => {
     setDescription(event.target.value)
@@ -34,6 +53,7 @@ export default function BriefDescription({ fromReview }) {
   }
 
   const handleSave = async (id) => {
+    console.log(description)
     if (description.trim() === "") {
       setErrors("Description cannot be empty")
       return false
@@ -45,7 +65,8 @@ export default function BriefDescription({ fromReview }) {
       return false
     }
     setErrors(undefined)
-    editSimpleField("briefDescription", description)
+    addDetails("briefDescription", {description:description});
+    // editSimpleField("briefDescription", description)
     if(id!==1) toast.success("Description saved!", ToastTheme)
     return true
   }

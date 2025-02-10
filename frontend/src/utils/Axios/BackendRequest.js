@@ -1,13 +1,14 @@
 import Cookies from 'js-cookie'; // Import js-cookie
 
 // Function to get token from cookies
-function getToken() {
+export function getToken() {
   return Cookies.get('token'); // Fetch the token stored in cookies
 }
 
 // Function to make GET requests
 export async function getDetails(field) {
   const token = getToken();
+  console.log('hello');
   const response = await fetch(`http://localhost:3001/resume/${field}`, {
     method: 'GET',
     headers: {
@@ -16,7 +17,7 @@ export async function getDetails(field) {
     }
   });
   console.log('hello');
-  console.log(response);
+  // console.log(await response.json());
   if (!response.ok) {
     const errorText = await response.text();
     console.error('Error response:', errorText);

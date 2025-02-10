@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Res } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Resume } from './schemas/resume.schema';
@@ -36,7 +36,9 @@ export class ResumeService {
     }
 
     let resume = await this.resumeModel.findOne({ userId });
+    console.log(value,field);
 
+    if(field==='briefDescription') value = value.description;
     if (resume) {
       resume[field] = value;
       return resume.save();

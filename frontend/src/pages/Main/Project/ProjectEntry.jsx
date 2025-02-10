@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, TextField } from '@mui/material';
-import useResumeStore from "../../../store/ResumeStore"
+import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastTheme from '../../../utils/ToastTheme';
-import {ProjectSchema} from '../../../schemas/ProjectSchema';
+import { ProjectSchema } from '../../../schemas/ProjectSchema';
+import { getToken } from '../../../utils/Axios/BackendRequest';
 
-const ProjectEntry = ({ project, index }) => {
+const ProjectEntry = ({ project, index, refreshProjects }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [localProject, setLocalProject] = useState(project);
-  const editArrayField = useResumeStore((state) => state.editArrayField);
-  const deleteResumeEntry = useResumeStore((state) => state.deleteResumeEntry);
   const [errors, setErrors] = useState({});
-  
+
   const handleChange = (field, value) => {
     setLocalProject({
       ...localProject,
@@ -20,32 +19,46 @@ const ProjectEntry = ({ project, index }) => {
     });
   };
 
-  const handleSave = async() => {
-
+  const handleSave = async () => {
     try {
-      await ProjectSchema.validate(localProject,{abortEarly:false});
+      await ProjectSchema.validate(localProject, { abortEarly: false });
       setErrors({});
-      Object.entries(localProject).forEach(([fieldKey, value]) => {
-        editArrayField("projects", index, fieldKey, value);
+      const token = getToken();
+      await axios.put(`http://localhost:3001/resume/projects/${index}`, localProject, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
       toast.success("Project updated successfully!", ToastTheme);
       setIsEditing(false);
-    }
-    catch (err) {
-      const newErrors={};
-      if(err.inner!==undefined){
-        err.inner.forEach((e)=>{
-          if(newErrors[e.path]===undefined) newErrors[e.path]=e.message;
-        })
-      }  
+      if (refreshProjects) refreshProjects();
+    } catch (err) {
+      const newErrors = {};
+      if (err.inner !== undefined) {
+        err.inner.forEach((e) => {
+          if (newErrors[e.path] === undefined) newErrors[e.path] = e.message;
+        });
+      }
       setErrors(newErrors);
+      toast.error("Failed to update project", ToastTheme);
     }
-    
   };
 
-  const handleDelete = () => {
-    deleteResumeEntry("projects", index);
-    toast.success("Project deleted successfully!", ToastTheme);
+  const handleDelete = async () => {
+    try {
+      const token = getToken();
+      await axios.delete(`http://localhost:3001/resume/projects/${index}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Project deleted successfully!", ToastTheme);
+      if (refreshProjects) refreshProjects();
+    } catch (error) {
+      console.error("Error deleting project:", error.response?.data || error.message);
+      toast.error("Failed to delete project", ToastTheme);
+    }
   };
 
   return (
@@ -54,7 +67,7 @@ const ProjectEntry = ({ project, index }) => {
         <>
           <TextField
             fullWidth
-            error={errors.projectName?true:false}
+            error={!!errors.projectName}
             helperText={errors.projectName}
             label="Project Name"
             value={localProject.projectName}
@@ -63,7 +76,7 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
-            error={errors.description?true:false}
+            error={!!errors.description}
             helperText={errors.description}
             label="Description"
             multiline
@@ -74,7 +87,7 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
-            error = {errors.technologiesUsed?true:false}
+            error={!!errors.technologiesUsed}
             helperText={errors.technologiesUsed}
             label="Technologies"
             value={localProject.technologiesUsed}
@@ -83,7 +96,7 @@ const ProjectEntry = ({ project, index }) => {
           />
           <TextField
             fullWidth
-            error={errors.link?true:false}
+            error={!!errors.link}
             helperText={errors.link}
             label="Link"
             value={localProject.link}

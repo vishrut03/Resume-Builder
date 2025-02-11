@@ -46,12 +46,12 @@ export default function PersonalDetails({ fromReview }) {
     setLocalPersonalDetails((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSave = async () => {
+  const handleSave = async (id) => {
     try {
       await PersonalDetailsSchema.validate(localPersonalDetails, { abortEarly: false })
       setErrors({})
       await addDetails("personalDetails", localPersonalDetails);
-      toast.success("Details saved successfully", ToastTheme)
+      if(id!==1) toast.success("Details saved successfully", ToastTheme)
       return true
     } catch (err) {
       const newErrors = {}
@@ -64,7 +64,7 @@ export default function PersonalDetails({ fromReview }) {
   }
 
   const handleNext = async () => {
-    const isValid = await handleSave()
+    const isValid = await handleSave(1)
     if (isValid) {
       setCurrentStep("BriefDescription")
     } else {

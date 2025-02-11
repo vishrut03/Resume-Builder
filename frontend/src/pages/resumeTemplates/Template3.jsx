@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Typography, Paper, Grid, Divider, Button } from "@mui/material"
+import { Box, Typography, Paper, Grid, Button } from "@mui/material"
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline"
 import html2pdf from "html2pdf.js"
 import useResumeStore from "../../store/ResumeStore"
@@ -94,7 +94,7 @@ const Template3 = ({data}) => {
                     <Typography variant="body2">
                       {edu.startDate} - {edu.endDate?edu.endDate:'Present'} | CGPA: {edu.cgpa}
                     </Typography>
-                    <Divider sx={{ my: 1 }} />
+                    {/* <Divider sx={{ my: 1 }} /> */}
                   </Box>)
                 ))}
               </Box>)}
@@ -122,7 +122,7 @@ const Template3 = ({data}) => {
                       {exp.companyName} | {exp.startDate} - {exp.endDate}
                     </Typography>
                     <Typography variant="body1">{exp.responsibilities}</Typography>
-                    <Divider sx={{ mt: 2 }} />
+                    {/* <Divider sx={{ mt: 2 }} /> */}
                   </Box>)
                 ))}
               </Box>)}
@@ -194,7 +194,7 @@ const Template3 = ({data}) => {
                         Link: {project.link}
                       </Typography>
                     )}
-                    <Divider sx={{ mt: 2 }} />
+                    {/* <Divider sx={{ mt: 2 }} /> */}
                   </Box>)
                 ))}
               </Box>)}
@@ -248,7 +248,7 @@ const Template3 = ({data}) => {
                   <Typography variant="body2" color="text.secondary">
                     {cert.organization} - {cert.date}
                   </Typography>
-                  <Divider sx={{ my: 1 }} />
+                  {/* <Divider sx={{ my: 1 }} /> */}
                 </Box>)
               ))}
             </Box>)}

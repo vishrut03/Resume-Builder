@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Typography, Paper, Grid2, Divider, Button } from "@mui/material"
+import { Box, Typography, Paper, Grid, Divider, Button } from "@mui/material"
 import DownloadForOfflineIcon from "@mui/icons-material/DownloadForOffline"
 import html2pdf from "html2pdf.js"
 import useResumeStore from "../../store/ResumeStore"
@@ -59,9 +59,9 @@ const Template3 = ({data}) => {
           </Box>
         </Box>
 
-        <Grid2 container spacing={4} sx={{ px: 4, pb: 4 }}>
+        <Grid container spacing={4} sx={{ px: 4, pb: 4 }}>
           {/* Left Column */}
-          <Grid2 item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 borderRight: { md: "2px solid #e0e0e0" },
@@ -199,10 +199,10 @@ const Template3 = ({data}) => {
                 ))}
               </Box>)}
             </Box>
-          </Grid2>
+          </Grid>
 
           {/* Right Column */}
-          <Grid2 item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             {/* Achievements Section */}
             {data.achievements.length>0 && (
             <Box sx={{ mb: 4 }}>
@@ -326,8 +326,8 @@ const Template3 = ({data}) => {
                 ))}
               </Box>
             )}
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Paper>
     </>
   )

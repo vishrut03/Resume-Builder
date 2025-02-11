@@ -141,32 +141,6 @@ const Template2 = ({data}) => {
             </Card>
           )}
 
-          {/* Coding Profiles */}
-          {isNonEmpty(codingProfiles) && (
-            <Card>
-              <CardContent>
-                <Typography variant="h6">Coding Profiles</Typography>
-                <Divider sx={{ marginY: 2 }} />
-                {codingProfiles.map((profile, index) => 
-                isNonEmpty(profile) && (
-                  <Box key={index} marginBottom={2}>
-                    <a
-                      href={profile.profileLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#3b5998', textDecoration: 'none' }}
-                    >
-                      {profile.platform}
-                    </a>
-                  </Box>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-        </Stack>
-
-        {/* Right Column */}
-        <Stack spacing={4} flex={1}>
           {/* Education */}
           {isNonEmpty(education) && (
             <Card>
@@ -187,6 +161,33 @@ const Template2 = ({data}) => {
             </Card>
           )}
 
+                {/* Coding Profiles */}
+                {isNonEmpty(codingProfiles) && (
+            <Card>
+              <CardContent>
+                <Typography variant="h6">Coding Profiles</Typography>
+                <Divider sx={{ marginY: 2 }} />
+                {codingProfiles.map((profile, index) => 
+                isNonEmpty(profile) && (
+                  <Box key={index} marginBottom={2}>
+                    <a
+                      href={profile.profileLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#3b5998', textDecoration: 'none' }}
+                    >
+                      {profile.platform}
+                    </a>
+                  </Box>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+     
+        </Stack>
+
+        {/* Right Column */}
+        <Stack spacing={4} flex={1}>
           {/* Skills */}
           {skills.length > 0 && (
             <Card>

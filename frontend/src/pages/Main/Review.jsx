@@ -8,7 +8,6 @@ import {
   Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import PersonalDetails from "./PersonalDetails";
 import Projects from "./Project/Projects";
 import Skills from "./Skills";
@@ -99,7 +98,6 @@ export default function Review({ setActiveStep, setPreviousStep }) {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4, position: "static" }}>
-      <VisibilityIcon />
       <Typography variant="h4" gutterBottom>
         Resume Review
       </Typography>

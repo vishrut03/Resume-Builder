@@ -10,6 +10,7 @@ import {
 import html2pdf from "html2pdf.js";
 import useResumeStore from "../../store/ResumeStore"
 import Download from './Download';
+import { Divider, List, ListItem, ListItemText } from "@mui/material";
 
 const Template4 = ({data}) => {
   // const data = useResumeStore().resume;
@@ -151,7 +152,7 @@ const Template4 = ({data}) => {
 
               {/* Coding Profiles */}
               {/* Coding Profiles */}
-            {data.codingProfiles && data.codingProfiles.length > 1 && (
+            {data.codingProfiles && data.codingProfiles.length > 0 && (
               <Box sx={{ mb: 6 }}>
                 <Typography
                   variant="h5"
@@ -250,6 +251,27 @@ const Template4 = ({data}) => {
                   ))}
                 </Box>
               )}
+
+              {/* Achievements */}
+{data.achievements.filter((ach) => ach).length > 0 && (
+  <Box sx={{ mb: 6 }}>
+    <Typography variant="h5" sx={{ mb: 3, pb: 1, borderBottom: "2px solid #1e2a3a" }}>
+      ACHIEVEMENTS
+    </Typography>
+    <Divider />
+    <List>
+      {data.achievements
+        .filter((ach) => ach)
+        .map((achievement, index) => (
+          <ListItem key={index}>
+            <ListItemText primary={achievement} />
+          </ListItem>
+        ))}
+    </List>
+  </Box>
+)}
+
+
 
               {/* Certificates */}
               {filterEmptySections(data.certificates).length > 0 && (

@@ -15,14 +15,14 @@ const Template = () => {
     const fetchResume = async () => {
       try {
         const token = Cookies.get("token");
-        console.log('hello upar');
+        // console.log('hello upar');
         const response = await axios.get("http://localhost:3001/resume/my-resume", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response);
-        console.log('hello');
+        // console.log(response);
+        // console.log('hello');
         setResume(response.data);
       } catch (error) {
         console.error("Error fetching resume:", error);

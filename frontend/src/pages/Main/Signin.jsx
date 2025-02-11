@@ -57,8 +57,8 @@ const Signin = () => {
     if (validateForm()) {
       try {
         const response = await axios.post('http://localhost:3001/auth/signin', { email, password });
-        console.log('Signin attempt with:', { email, password });
-        console.log(response.data.token);
+        // console.log('Signin attempt with:', { email, password });
+        // console.log(response.data.token);
 
         Cookies.set('token', response.data.token, { expires: 1, secure: true });
         if (response.data.message === 'Login successful') {

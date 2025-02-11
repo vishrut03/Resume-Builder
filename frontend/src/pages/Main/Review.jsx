@@ -32,7 +32,7 @@ export default function Review({ setActiveStep, setPreviousStep }) {
     const fetchResume = async () => {
       try {
         const token = Cookies.get("token");
-        console.log("Token:", token);
+        // console.log("Token:", token);
         const response = await axios.get("http://localhost:3001/resume/my-resume", {
           headers: {
             Authorization: `Bearer ${token}`,

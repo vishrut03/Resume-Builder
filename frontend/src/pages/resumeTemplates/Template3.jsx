@@ -5,13 +5,13 @@ import html2pdf from "html2pdf.js"
 import useResumeStore from "../../store/ResumeStore"
 import Download from './Download'
 
-const Template3 = () => {
+const Template3 = ({data}) => {
   const handleDownload = () => {
     const element = document.getElementById("template3")
     html2pdf(element)
   }
 
-  const data = useResumeStore().resume
+  // const data = useResumeStore().resume
 
   const isNonEmpty = (value) => {
     if (Array.isArray(value)) {
@@ -254,7 +254,7 @@ const Template3 = () => {
             </Box>)}
 
             {/* Custom Profile Section */}
-            {data.customDetails && data.customDetails.heading && (
+            {data.customSection && data.customSection.heading && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"
@@ -265,9 +265,9 @@ const Template3 = () => {
                     mb: 2,
                   }}
                 >
-                  {data.customDetails.heading}
+                  {data.customSection.heading}
                 </Typography>
-                <Typography variant="body2">{data.customDetails.description}</Typography>
+                <Typography variant="body2">{data.customSection.description}</Typography>
               </Box>
             )}
 
@@ -311,7 +311,7 @@ const Template3 = () => {
                 >
                   EXTRACURRICULAR ACTIVITIES
                 </Typography>
-                {data.extracurricularActivities.map((activity, index) => (
+                {data.extraCurricularActivities.map((activity, index) => (
                   isNonEmpty(activity) && (
                   <Box key={index} sx={{ mb: 3 }}>
                     <Typography variant="subtitle1" fontWeight="bold">

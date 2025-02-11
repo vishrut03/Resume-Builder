@@ -9,7 +9,7 @@ export function getToken() {
 // Function to make GET requests
 export async function getDetails(field) {
   const token = getToken();
-  console.log('hello');
+  // console.log('hello');
 
   try {
     const response = await axios.get(`http://localhost:3001/resume/${field}`, {
@@ -17,7 +17,7 @@ export async function getDetails(field) {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('hello');
+    // console.log('hello');
     return response.data;
   } catch (error) {
     console.error('Error fetching details:', error.response?.data || error.message);

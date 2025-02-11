@@ -144,7 +144,7 @@ export class ResumeService {
 
   //Get resume data using id 
   async getUserResume(userId: string): Promise<Resume> {
-    console.log("very very sad")
+    // console.log("very very sad")
     const resume = await this.resumeModel.findOne({ userId });
 
     if (!resume) {

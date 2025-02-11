@@ -28,7 +28,7 @@ export default function PersonalDetails({ fromReview }) {
   useEffect(() => {
     const fetchPersonalDetails = async () => {
       // try {
-        console.log('hello front');
+        // console.log('hello front');
         const data = await getDetails('personalDetails');
         if(data) setLocalPersonalDetails(data);
       // } 

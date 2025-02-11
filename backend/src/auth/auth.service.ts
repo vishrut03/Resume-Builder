@@ -39,7 +39,7 @@ export class AuthService {
             sameSite: 'strict'
         });
 
-        console.log('token', accessToken);
+        // console.log('token', accessToken);
         return res.json({ message: "Login successful", user: userWithoutPassword, token: accessToken });
 
     }

@@ -52,7 +52,7 @@ export default function BriefDescription({ fromReview }) {
   }
 
   const handleSave = async (id) => {
-    console.log(description)
+    // console.log(description)
     if (description.trim() === "") {
       setErrors("Description cannot be empty")
       return false

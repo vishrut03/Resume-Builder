@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema({ timestamps: true })
+
 export class Resume {
+  
   @Prop({ required: true, type: String })
   userId: string;
 

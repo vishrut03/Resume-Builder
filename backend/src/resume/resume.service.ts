@@ -3,13 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Resume } from './schemas/resume.schema';
 import { Request } from 'express';
-import { ApiBody } from '@nestjs/swagger';
+
 interface AuthenticatedRequest extends Request {
   user?: { id: string; email: string };
 }
 
 @Injectable()
 export class ResumeService {
+
   constructor(@InjectModel(Resume.name) private resumeModel: Model<Resume>) {}
 
   async updateResume(request: AuthenticatedRequest, userEmail: string, field: string, value: any) {
@@ -50,16 +51,14 @@ export class ResumeService {
         throw new BadRequestException("Invalid format for skills.");
       }
     }
-  
-    console.log("Updating field:", field, "with value:", value);
-  
+    
     let resume = await this.resumeModel.findOne({ userId });
   
     if (resume) {
-      // Update only the specified field.
       resume[field] = value;
       return resume.save();
-    } else {
+    } 
+    else {
       return this.resumeModel.create({
         userId,
         personalDetails: { email: userEmail },
@@ -70,6 +69,7 @@ export class ResumeService {
   
 
   async getResumeField(request: AuthenticatedRequest, field: string) {
+
     const allowedFields = [
       "personalDetails",
       "briefDescription",
@@ -83,6 +83,7 @@ export class ResumeService {
       "customSection",
       "extraCurricularActivities"
     ];
+
     if (!allowedFields.includes(field)) {
       throw new BadRequestException(`Invalid field: ${field}`);
     }
@@ -100,12 +101,15 @@ export class ResumeService {
   }
 
   async updateResumeEntry(request: AuthenticatedRequest, field: string, id: number, data: any) {
+
     const allowedFields = ["workExperience", "education", "projects"];
+
     if (!allowedFields.includes(field)) {
       throw new BadRequestException(`Invalid field: ${field}`);
     }
 
     const userId = request.user?.id;
+    
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }
@@ -121,7 +125,7 @@ export class ResumeService {
   }
 
   async deleteResumeEntry(request: AuthenticatedRequest, field: string, id: number) {
-    // Include "achievements" (and any other fields you want to support deletion for)
+
     const allowedFields = ["workExperience", "education", "projects", "achievements","certificates","codingProfiles","extraCurricularActivities"];
     if (!allowedFields.includes(field)) {
       throw new BadRequestException(`Invalid field: ${field}`);

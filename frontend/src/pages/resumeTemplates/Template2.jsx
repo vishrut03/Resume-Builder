@@ -161,8 +161,14 @@ const Template2 = ({data}) => {
             </Card>
           )}
 
-                {/* Coding Profiles */}
-                {isNonEmpty(codingProfiles) && (
+                
+     
+        </Stack>
+
+        {/* Right Column */}
+        <Stack spacing={4} flex={1}>
+          {/* Coding Profiles */}
+          {isNonEmpty(codingProfiles) && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Coding Profiles</Typography>
@@ -183,11 +189,8 @@ const Template2 = ({data}) => {
               </CardContent>
             </Card>
           )}
-     
-        </Stack>
 
-        {/* Right Column */}
-        <Stack spacing={4} flex={1}>
+
           {/* Skills */}
           {skills.length > 0 && (
             <Card>

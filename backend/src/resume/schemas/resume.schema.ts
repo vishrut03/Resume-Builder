@@ -26,7 +26,7 @@ export class Resume {
         jobTitle: { type: String, required: true },
         companyName: { type: String, required: true },
         startDate: { type: String, required: true },
-        endDate: { type: String, required: true },
+        endDate: { type: String, required: false },
         responsibilities: { type: String, required: true },
       },
     ],

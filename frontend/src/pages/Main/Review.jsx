@@ -329,19 +329,18 @@ export default function Review({ setActiveStep, setPreviousStep }) {
 
       {/* Navigation Buttons */}
       <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
-        <Button
-          variant="contained"
+        <button
+          className="py-3 px-8 rounded-lg text-sm font-medium transition-transform transform-gpu bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 shadow-md mb-4"
           onClick={() => setCurrentStep("ExtraCurricular")}
         >
           Back
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
+        </button>
+        <button
+          className="py-3 px-8 bg-blue-500 text-white rounded-lg text-sm font-medium hover:bg-blue-600 hover:scale-105 shadow-md transition-transform transform-gpu mb-4"
           onClick={() => setCurrentStep("Resume")}
         >
           Next
-        </Button>
+        </button>
       </Box>
     </Box>
   );

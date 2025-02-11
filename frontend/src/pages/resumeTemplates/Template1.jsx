@@ -255,14 +255,14 @@ const Template1 = ({data}) => {
         )}
 
         {/* Extra Curricular Activities */}
-        {isNonEmpty(data.extracurricularActivities) && (
+        {isNonEmpty(data.extraCurricularActivities) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
               Extra Curricular Activities
             </Typography>
             <Divider />
             <Box mt={2}>
-              {data.extracurricularActivities
+              {data.extraCurricularActivities
                 .map((activity, index) => (
                   isNonEmpty(activity) && (
                   <Box key={index} mb={2}>

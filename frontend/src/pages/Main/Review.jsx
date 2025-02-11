@@ -5,6 +5,7 @@ import {
   Typography,
   Paper,
   IconButton,
+  Button,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -34,7 +35,7 @@ export default function Review({ setActiveStep, setPreviousStep }) {
         console.log("Token:", token);
         const response = await axios.get("http://localhost:3001/resume/my-resume", {
           headers: {
-            Authorization: `Bearer ${token}`,  
+            Authorization: `Bearer ${token}`,
           },
         });
         setResume(response.data);
@@ -79,12 +80,16 @@ export default function Review({ setActiveStep, setPreviousStep }) {
     <Paper elevation={3} sx={{ p: 2, mb: 2, position: "relative" }}>
       <Typography variant="h6" gutterBottom>{title}</Typography>
       {children}
-      <IconButton sx={{ position: "absolute", top: 8, right: 8 }} onClick={() => setIndex(editIndex)}>
+      <IconButton
+        sx={{ position: "absolute", top: 8, right: 8 }}
+        onClick={() => setIndex(editIndex)}
+      >
         <EditIcon />
       </IconButton>
     </Paper>
   );
 
+  // Returns true if at least one property of the entry has a value
   const isNotEmpty = (entry) => Object.values(entry).some((value) => value);
 
   if (currentStep === "ExtraCurricular") return <ExtraCurricular />;
@@ -95,8 +100,11 @@ export default function Review({ setActiveStep, setPreviousStep }) {
   return (
     <Box sx={{ maxWidth: 800, mx: "auto", my: 4, position: "static" }}>
       <VisibilityIcon />
-      <Typography variant="h4" gutterBottom>Resume Review</Typography>
+      <Typography variant="h4" gutterBottom>
+        Resume Review
+      </Typography>
 
+      {/* Personal Details */}
       {resume.personalDetails && (
         <Section title="Personal Details" editIndex={0}>
           {resume.personalDetails.firstName && resume.personalDetails.lastName && (
@@ -104,14 +112,19 @@ export default function Review({ setActiveStep, setPreviousStep }) {
               <strong>Name:</strong> {`${resume.personalDetails.firstName} ${resume.personalDetails.lastName}`}
             </Typography>
           )}
+          {resume.personalDetails.email && (
+            <Typography>
+              <strong>Email:</strong> {resume.personalDetails.email}
+            </Typography>
+          )}
           {resume.personalDetails.phoneNumber && (
             <Typography>
               <strong>Phone:</strong> {resume.personalDetails.phoneNumber}
             </Typography>
           )}
-          {resume.personalDetails.email && (
+          {resume.personalDetails.address && (
             <Typography>
-              <strong>Email:</strong> {resume.personalDetails.email}
+              <strong>Address:</strong> {resume.personalDetails.address}
             </Typography>
           )}
           {resume.personalDetails.linkedIn && (
@@ -122,46 +135,214 @@ export default function Review({ setActiveStep, setPreviousStep }) {
         </Section>
       )}
 
+      {/* Brief Description */}
       {resume.briefDescription && (
         <Section title="Brief Description" editIndex={1}>
           <Typography>{resume.briefDescription}</Typography>
         </Section>
       )}
 
+      {/* Work Experience */}
       {resume.workExperience?.filter(isNotEmpty).length > 0 && (
         <Section title="Work Experience" editIndex={2}>
           {resume.workExperience.filter(isNotEmpty).map((exp, index) => (
             <Box key={index} mb={2}>
               {exp.jobTitle && exp.companyName && (
-                <Typography variant="subtitle1">{exp.jobTitle} at {exp.companyName}</Typography>
+                <Typography variant="subtitle1">
+                  {exp.jobTitle} at {exp.companyName}
+                </Typography>
               )}
               {exp.startDate && exp.endDate && (
-                <Typography variant="body2">{exp.startDate} - {exp.endDate}</Typography>
+                <Typography variant="body2">
+                  {exp.startDate} - {exp.endDate}
+                </Typography>
               )}
               {exp.responsibilities && (
-                <Typography variant="body2">{exp.responsibilities}</Typography>
+                <Typography variant="body2">
+                  {exp.responsibilities}
+                </Typography>
               )}
             </Box>
           ))}
         </Section>
       )}
 
+      {/* Education */}
       {resume.education?.filter(isNotEmpty).length > 0 && (
         <Section title="Education" editIndex={3}>
           {resume.education.filter(isNotEmpty).map((edu, index) => (
             <Box key={index} mb={2}>
               {edu.degreeName && edu.institutionName && (
-                <Typography variant="subtitle1">{edu.degreeName} from {edu.institutionName}</Typography>
+                <Typography variant="subtitle1">
+                  {edu.degreeName} from {edu.institutionName}
+                </Typography>
               )}
-              {edu.yearOfGraduation && (
-                <Typography variant="body2">Graduation Year: {edu.yearOfGraduation}</Typography>
+              {edu.startDate && edu.endDate && (
+                <Typography variant="body2">
+                  {edu.startDate} - {edu.endDate}
+                </Typography>
+              )}
+              {edu.cgpa && (
+                <Typography variant="body2">
+                  <strong>CGPA:</strong> {edu.cgpa}
+                </Typography>
               )}
             </Box>
           ))}
         </Section>
       )}
 
-      {/* Additional sections can be added here similarly */}
+      {/* Projects */}
+      {resume.projects?.filter(isNotEmpty).length > 0 && (
+        <Section title="Projects" editIndex={4}>
+          {resume.projects.filter(isNotEmpty).map((proj, index) => (
+            <Box key={index} mb={2}>
+              {proj.projectName && (
+                <Typography variant="subtitle1">
+                  <strong>Project Name:</strong> {proj.projectName}
+                </Typography>
+              )}
+              {proj.description && (
+                <Typography variant="body2">
+                  {proj.description}
+                </Typography>
+              )}
+              {proj.technologiesUsed && (
+                <Typography variant="body2">
+                  <strong>Technologies Used:</strong> {proj.technologiesUsed}
+                </Typography>
+              )}
+              {proj.link && (
+                <Typography variant="body2">
+                  <strong>Link:</strong> {proj.link}
+                </Typography>
+              )}
+            </Box>
+          ))}
+        </Section>
+      )}
+
+      {/* Skills */}
+      {resume.skills?.length > 0 && (
+        <Section title="Skills" editIndex={5}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            {resume.skills.map((skill, index) => (
+              <Typography key={index} variant="body2">
+                {skill}
+              </Typography>
+            ))}
+          </Box>
+        </Section>
+      )}
+
+      {/* Achievements */}
+      {resume.achievements?.length > 0 && (
+        <Section title="Achievements" editIndex={6}>
+          {resume.achievements.map((ach, index) => (
+            <Box key={index} mb={2}>
+              <Typography variant="body2">{ach}</Typography>
+            </Box>
+          ))}
+        </Section>
+      )}
+
+      {/* Certificates */}
+      {resume.certificates?.filter(isNotEmpty).length > 0 && (
+        <Section title="Certificates" editIndex={7}>
+          {resume.certificates.filter(isNotEmpty).map((cert, index) => (
+            <Box key={index} mb={2}>
+              {cert.certificateName && (
+                <Typography variant="subtitle1">
+                  <strong>Certificate Name:</strong> {cert.certificateName}
+                </Typography>
+              )}
+              {cert.organisation && (
+                <Typography variant="body2">
+                  <strong>Organisation:</strong> {cert.organisation}
+                </Typography>
+              )}
+              {cert.date && (
+                <Typography variant="body2">
+                  <strong>Date:</strong> {cert.date}
+                </Typography>
+              )}
+            </Box>
+          ))}
+        </Section>
+      )}
+
+      {/* Coding Profiles */}
+      {resume.codingProfiles?.filter(isNotEmpty).length > 0 && (
+        <Section title="Coding Profiles" editIndex={8}>
+          {resume.codingProfiles.filter(isNotEmpty).map((profile, index) => (
+            <Box key={index} mb={2}>
+              {profile.platform && (
+                <Typography variant="subtitle1">
+                  <strong>Platform:</strong> {profile.platform}
+                </Typography>
+              )}
+              {profile.profileLink && (
+                <Typography variant="body2">
+                  <strong>Profile Link:</strong> {profile.profileLink}
+                </Typography>
+              )}
+            </Box>
+          ))}
+        </Section>
+      )}
+
+      {/* Custom Section */}
+      {resume.customSection && (
+        <Section title={resume.customSection.heading || "Custom Section"} editIndex={9}>
+          {resume.customSection.description && (
+            <Typography variant="body2">
+              {resume.customSection.description}
+            </Typography>
+          )}
+        </Section>
+      )}
+
+      {/* Extra Curricular Activities */}
+      {resume.extraCurricularActivities?.filter(isNotEmpty).length > 0 && (
+        <Section title="Extra Curricular Activities" editIndex={10}>
+          {resume.extraCurricularActivities.filter(isNotEmpty).map((activity, index) => (
+            <Box key={index} mb={2}>
+              {activity.activityName && (
+                <Typography variant="subtitle1">
+                  <strong>Activity Name:</strong> {activity.activityName}
+                </Typography>
+              )}
+              {activity.achievements && (
+                <Typography variant="body2">
+                  <strong>Achievements:</strong> {activity.achievements}
+                </Typography>
+              )}
+              {activity.description && (
+                <Typography variant="body2">
+                  <strong>Description:</strong> {activity.description}
+                </Typography>
+              )}
+            </Box>
+          ))}
+        </Section>
+      )}
+
+      {/* Navigation Buttons */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 4 }}>
+        <Button
+          variant="contained"
+          onClick={() => setCurrentStep("ExtraCurricular")}
+        >
+          Back
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => setCurrentStep("Resume")}
+        >
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 }

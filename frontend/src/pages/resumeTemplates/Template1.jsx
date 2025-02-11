@@ -12,16 +12,15 @@ import {
   Link,
 } from '@mui/material';
 import html2pdf from 'html2pdf.js';
-import useResumeStore from "../../store/ResumeStore"
 import Download from './Download';
 
-const Template1 = () => {
+const Template1 = ({data}) => {
   const handleDownload = () => {
     const element = document.getElementById('template1');
     html2pdf(element);
   };
-
-  const data = useResumeStore().resume;
+  console.log(data);
+  // const data = useResumeStore().resume;
 
   const isNonEmpty = (value) => {
     if (Array.isArray(value)) {
@@ -241,15 +240,15 @@ const Template1 = () => {
         )}
 
         {/* Custom Details */}
-        {data.customDetails.heading && data.customDetails.description && (
+        {data.customSection && data.customSection.heading && data.customSection.description && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">
-              {data.customDetails.heading}
+              {data.customSection.heading}
             </Typography>
             <Divider />
             <Box mt={2}>
               <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                {data.customDetails.description}
+                {data.customSection.description}
               </Typography>
             </Box>
           </Box>

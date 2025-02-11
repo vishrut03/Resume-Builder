@@ -12,7 +12,7 @@ import useResumeStore from "../../store/ResumeStore"
 import html2pdf from 'html2pdf.js';
 import Download from './Download';
 
-const Template2 = () => {
+const Template2 = ({data}) => {
   const {
     personalDetails,
     briefDescription,
@@ -23,9 +23,9 @@ const Template2 = () => {
     achievements,
     certificates,
     codingProfiles,
-    extracurricularActivities,
-    customDetails, 
-  } = useResumeStore().resume;
+    extraCurricularActivities,
+    customSection: customDetails, 
+  } = data;
 
   const handleDownload = () => {
       const element = document.getElementById('template2');
@@ -270,14 +270,14 @@ const Template2 = () => {
           )}
 
           {/* Extra Curricular Activities */}
-          {extracurricularActivities
+          {extraCurricularActivities
             .filter((activity) => activity.activityName.trim() !== '')
             .length > 0 && (
             <Card>
               <CardContent>
                 <Typography variant="h6">Extra Curricular Activities</Typography>
                 <Divider sx={{ marginY: 2 }} />
-                {extracurricularActivities
+                {extraCurricularActivities
                   .filter((activity) => activity.activityName.trim() !== '')
                   .map((activity, index) => (
                     <Box key={index} marginBottom={2}>

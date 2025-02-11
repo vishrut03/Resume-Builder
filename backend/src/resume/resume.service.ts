@@ -52,19 +52,29 @@ export class ResumeService {
       }
     }
     
-    let resume = await this.resumeModel.findOne({ userId });
+    return this.resumeModel.findOneAndUpdate(
+      { userId }, 
+      { 
+        $set: { [field]: value }, 
+      }, 
+      { 
+        new: true,  // Return updated document
+        upsert: true // Create if not exists
+      }
+    );
+    // let resume = await this.resumeModel.findOne({ userId });
   
-    if (resume) {
-      resume[field] = value;
-      return resume.save();
-    } 
-    else {
-      return this.resumeModel.create({
-        userId,
-        personalDetails: { email: userEmail },
-        [field]: value,
-      });
-    }
+    // if (resume) {
+    //   resume[field] = value;
+    //   return resume.save();
+    // } 
+    // else {
+    //   return this.resumeModel.create({
+    //     userId,
+    //     personalDetails: { email: userEmail },
+    //     [field]: value,
+    //   });
+    // }
   }
   
 

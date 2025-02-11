@@ -299,7 +299,7 @@ const Template3 = ({data}) => {
             )}
 
             {/* Extracurricular Activities Section */}
-            {isNonEmpty(data.extracurricularActivities) && (
+            {isNonEmpty(data.extraCurricularActivities) && (
               <Box sx={{ mb: 4 }}>
                 <Typography
                   variant="h6"

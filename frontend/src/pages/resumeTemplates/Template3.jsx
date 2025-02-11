@@ -321,7 +321,7 @@ const Template3 = ({data}) => {
                     {activity.achievements && (<Typography variant="body2" color="text.secondary">
                       Achievements: {activity.achievements}
                     </Typography>)}
-                    <Divider sx={{ mt: 2 }} />
+                    {/* <Divider sx={{ mt: 2 }} /> */}
                   </Box>)
                 ))}
               </Box>

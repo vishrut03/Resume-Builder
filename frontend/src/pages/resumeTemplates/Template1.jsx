@@ -123,7 +123,7 @@ const Template1 = ({data}) => {
           </Box>
         )}
 
-                {/* Projects */}
+          {/* Projects */}
           {isNonEmpty(data.projects) && (
           <Box mb={3}>
             <Typography variant="h6" gutterBottom color="primary">

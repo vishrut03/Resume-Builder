@@ -6,7 +6,7 @@ import { User } from "./schemas/user.schema";
 import * as mongoose from "mongoose";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
-
+import * as CryptoJS from 'crypto-js'; 
 
 @Injectable()
 
@@ -28,7 +28,9 @@ export class AuthService {
         }
 
         // Validate password
-        const isPasswordValid = await bcrypt.compare(user.password, existingUser.password);
+        const secretKey = 'your_secret_key';
+        const decryptedPassword = CryptoJS.AES.decrypt(user.password, process.env.SECRET_CRYPTO || secretKey).toString(CryptoJS.enc.Utf8);
+        const isPasswordValid = await bcrypt.compare(decryptedPassword, existingUser.password);
 
         if (!isPasswordValid) {
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
@@ -59,7 +61,9 @@ export class AuthService {
         
         // Hash the password
         const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(user.password, saltOrRounds);
+        const secretKey = 'your_secret_key';
+        const decryptedPassword = CryptoJS.AES.decrypt(user.password, process.env.SECRET_CRYPTO || secretKey).toString(CryptoJS.enc.Utf8);
+        const hashedPassword = await bcrypt.hash(decryptedPassword, saltOrRounds);
 
         // Save user to database
         const newUser = new this.userModel({

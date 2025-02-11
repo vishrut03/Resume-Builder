@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.4.0",
     "axios": "^1.7.9",
+    "crypto-js": "^4.2.0",
     "html2pdf.js": "^0.10.2",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.474.0",

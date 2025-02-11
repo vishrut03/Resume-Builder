@@ -6,6 +6,8 @@ import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material"
 import PersonalDetails from "./PersonalDetails"
 import Signin from "./Signin"
 import axios from "axios"
+import CryptoJS from 'crypto-js';
+
 
 const Signup = () => {
   const [email, setEmail] = useState("")
@@ -29,12 +31,16 @@ const Signup = () => {
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
-
+  const encryptPassword = (password) => {
+    const secretKey = import.meta.env.VITE_SECRET_CRYPTO || 'your_secret_key';      
+    return CryptoJS.AES.encrypt(password, secretKey).toString();
+  };
   const handleSignUp = async (e) => {
     e.preventDefault()
     if (validateForm()) {
       try {
-        const response = await axios.post("http://localhost:3001/auth/signup", { email, password })
+        const encryptedPassword = encryptPassword(password);
+        const response = await axios.post("http://localhost:3001/auth/signup", { email, password:encryptedPassword })
         if (response.data.message === "Signup successful") setCurrent("signin")
       } catch (error) {
         console.error("Signup error:", error)

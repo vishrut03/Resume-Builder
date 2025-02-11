@@ -7,6 +7,7 @@ import Signup from './Signup';
 import PersonalDetails from './PersonalDetails';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import CryptoJS from 'crypto-js';
 
 const Signin = () => {
   const [email, setEmail] = useState('');
@@ -52,24 +53,31 @@ const Signin = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const encryptPassword = (password) => {
+    const secretKey = import.meta.env.VITE_SECRET_CRYPTO || 'your_secret_key';     
+    return CryptoJS.AES.encrypt(password, secretKey).toString();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      try {
-        const response = await axios.post('http://localhost:3001/auth/signin', { email, password });
-        // console.log('Signin attempt with:', { email, password });
-        // console.log(response.data.token);
+    try {
+      const encryptedPassword = encryptPassword(password);
+      const response = await axios.post('http://localhost:3001/auth/signin', {
+        email,
+        password: encryptedPassword, // Sending encrypted password
+      });
 
-        Cookies.set('token', response.data.token, { expires: 1, secure: true });
-        if (response.data.message === 'Login successful') {
-          setCurrent('personaldetails');
-        }
-      } catch (error) {
-        console.error('Signin error:', error);
-        setErrors({ submit: 'Invalid email or password' });
+      Cookies.set('token', response.data.token, { expires: 1, secure: true });
+      if (response.data.message === 'Login successful') {
+        setCurrent('personaldetails');
       }
+    } catch (error) {
+      console.error('Signin error:', error);
+      setErrors({ submit: 'Invalid email or password' });
     }
-  };
+  }
+};
 
   if (current === 'signup') {
     return <Signup />;

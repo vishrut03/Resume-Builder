@@ -15,7 +15,7 @@ func GenerateJWT(user models.UserOAuth) (string, error) {
 	claims := jwt.MapClaims{
 		"email": user.Email,
 		"sub":   user.ID.Hex(), // using Hex string of ObjectID
-		"exp":   time.Now().Add(time.Hour * 1).Unix(),
+		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(secret))

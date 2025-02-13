@@ -23,15 +23,15 @@ func ProcessUserAndGenerateJWT(c echo.Context, userData map[string]interface{}) 
 	// Extract details
 	email, _ := userData["email"].(string)
 	name, _ := userData["name"].(string)
-	googleID, _ := userData["id"].(string)
-	picture, _ := userData["picture"].(string)
+	// googleID, _ := userData["id"].(string)
+	// picture, _ := userData["picture"].(string)
 
 	// Create a user object
 	newUser := models.UserOAuth{
-		Email:     email,
-		Name:      name,
-		GoogleID:  googleID,
-		Picture:   picture,
+		Email: email,
+		Name:  name,
+		// GoogleID:  googleID,
+		// Picture:   picture,
 		CreatedAt: time.Now().Unix(),
 	}
 

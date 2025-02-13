@@ -35,6 +35,6 @@ func ConnectDB() {
 	}
 
 	// Choose your database name (it can be from .env as well)
-	DB = client.Database("go-db")
+	DB = client.Database("test")
 	log.Println("Connected to MongoDB")
 }

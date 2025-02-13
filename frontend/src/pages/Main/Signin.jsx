@@ -93,7 +93,7 @@ const Signin = () => {
       if (token) {
         console.log('Received token:', token);
         Cookies.set("token", token, { expires: 1});
-        // setCurrent('personaldetails');
+        setCurrent('personaldetails');
       }
     };
 

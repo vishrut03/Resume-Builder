@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"oauth-app/database"
+	"oauth-app/github"
 	"oauth-app/google"
 
 	"github.com/joho/godotenv"
@@ -26,6 +27,7 @@ func main() {
 
 	// Initialize Google OAuth configuration (assume you have an InitGoogleOAuth() function)
 	google.InitGoogleOAuth()
+	github.InitGitHubOAuth()
 
 	e := echo.New()
 
@@ -42,6 +44,7 @@ func main() {
 
 	// Register Google OAuth routes
 	google.RegisterGoogleRoutes(e)
+	github.RegisterGitHubRoutes(e)
 
 	// Basic test route
 	e.GET("/", func(c echo.Context) error {

@@ -129,7 +129,7 @@ const Signin = () => {
   };
 
   const handleGithubSignIn = () => {
-    window.location.href = 'http://localhost:3001/auth/github';
+    window.location.href = 'http://localhost:8000/auth/github/login';
   };
 
   if (current === 'signup') {

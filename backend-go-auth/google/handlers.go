@@ -3,6 +3,7 @@ package google
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -34,6 +35,8 @@ func handleGoogleCallback(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "Failed to get access token")
 	}
 
+	fmt.Println("Google token:", token.AccessToken)
+	fmt.Println("Google refresh token:", token.RefreshToken)
 	// Fetch user info
 	client := GoogleOAuthConfig.Client(context.Background(), token)
 	resp, err := client.Get("https://www.googleapis.com/oauth2/v2/userinfo")

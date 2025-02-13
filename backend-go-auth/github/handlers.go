@@ -18,13 +18,10 @@ func RegisterGitHubRoutes(e *echo.Echo) {
 
 // handleGitHubLogin redirects the user to GitHub's OAuth 2.0 consent page.
 func handleGitHubLogin(c echo.Context) error {
-	// Request offline access and force consent to get a refresh token.
 	url := oauthConf.AuthCodeURL(oauthStateString, oauth2.AccessTypeOffline, oauth2.SetAuthURLParam("prompt", "consent"))
 	return c.Redirect(http.StatusTemporaryRedirect, url)
 }
 
-// handleGitHubCallback handles the OAuth callback from GitHub.
-// handleGitHubCallback handles the OAuth callback from GitHub.
 // handleGitHubCallback handles the OAuth callback from GitHub.
 func handleGitHubCallback(c echo.Context) error {
 	state := c.QueryParam("state")
@@ -38,7 +35,6 @@ func handleGitHubCallback(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("Code exchange failed: %s", err.Error()))
 	}
 
-	// Fetch user details from GitHub API using the access token.
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if err != nil {
@@ -70,7 +66,6 @@ func handleGitHubCallback(c echo.Context) error {
 	}
 	defer respEmails.Body.Close()
 
-	// GitHub returns a list of emails.
 	var emails []struct {
 		Email    string `json:"email"`
 		Primary  bool   `json:"primary"`
@@ -80,7 +75,6 @@ func handleGitHubCallback(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "Failed to decode user emails: "+err.Error())
 	}
 
-	// Find primary, verified email.
 	primaryEmail := ""
 	for _, e := range emails {
 		if e.Primary && e.Verified {
@@ -88,7 +82,6 @@ func handleGitHubCallback(c echo.Context) error {
 			break
 		}
 	}
-	// Fallback: if no primary found, use the first email
 	if primaryEmail == "" && len(emails) > 0 {
 		primaryEmail = emails[0].Email
 	}
@@ -96,10 +89,28 @@ func handleGitHubCallback(c echo.Context) error {
 	githubUser := map[string]interface{}{
 		"email": primaryEmail,
 		"name":  userInfo["name"],
-		"login": userInfo["login"],
 	}
 
-	// Now, call the function that processes the GitHub user and generates a JWT token.
-	// (Assuming ProcessGitHubUserAndGenerateJWT is defined in your package.)
-	return ProcessGitHubUserAndGenerateJWT(c, githubUser)
+	// Process the GitHub user and generate a JWT token
+	jwtToken, err := ProcessGitHubUserAndGenerateJWT(githubUser)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to process GitHub user")
+	}
+
+	// Send the token to the frontend using postMessage and close the popup
+	htmlResponse := fmt.Sprintf(`
+      <html>
+      <head>
+        <script>
+          window.opener.postMessage({ token: "%s" }, "http://localhost:5173");
+          window.close();
+        </script>
+      </head>
+      <body>
+        GitHub authentication successful. You can close this window.
+      </body>
+      </html>
+    `, jwtToken)
+
+	return c.HTML(http.StatusOK, htmlResponse)
 }

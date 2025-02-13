@@ -18,6 +18,7 @@ import PersonalDetails from './PersonalDetails';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
+import { Cookie } from 'lucide-react';
 
 // Updated Google icon using the provided SVG and adjusted to 24x24
 const GoogleIcon = () => (
@@ -59,6 +60,18 @@ const Signin = () => {
   const [current, setCurrent] = useState('signin');
   const [errors, setErrors] = useState({});
 
+  // Listen for token from popup
+window.addEventListener('message', (event) => {
+  if (event.origin === 'http://localhost:5173') {
+    const { token } = event.data;
+    if (token) {
+      document.cookie = `jwt=${token}; path=/; secure; samesite=strict`;
+      console.log('JWT Token received and stored:', token);
+    }
+  }
+});
+
+
   useEffect(() => {
     const verifyToken = async () => {
       const token = Cookies.get("token");
@@ -83,7 +96,6 @@ const Signin = () => {
     verifyToken();
   }, []);
 
-
   useEffect(() => {
     const handleMessage = (event) => {
       // Verify that the message comes from your backend (adjust origin as needed)
@@ -91,8 +103,9 @@ const Signin = () => {
 
       const { token } = event.data;
       if (token) {
-        console.log('Received token:', token);
+        //console.log('Received token:', token);
         Cookies.set("token", token, { expires: 1});
+        console.log(Cookies.get("token"));
         setCurrent('personaldetails');
       }
     };
@@ -167,9 +180,25 @@ const Signin = () => {
   //   window.location.href = 'http://localhost:8000/auth/google';
   // };
 
-  const handleGithubSignIn = () => {
-    window.location.href = 'http://localhost:8000/auth/github/login';
+  const openGithubPopup = () => {
+    const width = 1100;
+    const height = 800;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    const popup = window.open(
+      'http://localhost:8000/auth/github/login',
+      'GitHub OAuth',
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    if (!popup) {
+      alert('Popup blocked. Please allow popups for this site.');
+    }
   };
+  
+  const handleGithubSignIn = () => {
+    openGithubPopup();
+  };
+  
 
   if (current === 'signup') {
     return <Signup />;

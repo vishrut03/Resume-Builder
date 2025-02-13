@@ -83,6 +83,37 @@ const Signin = () => {
     verifyToken();
   }, []);
 
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      // Verify that the message comes from your backend (adjust origin as needed)
+      if (event.origin !== 'http://localhost:8000') return;
+
+      const { token } = event.data;
+      if (token) {
+        // console.log('Received token:', token);
+        Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'strict' });
+        setCurrent('personaldetails');
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  // Function to open the OAuth popup
+  const openOAuthPopup = () => {
+    const popup = window.open(
+      'http://localhost:8000/auth/google', // Your backend's OAuth endpoint
+      'Google OAuth',
+      'width=600,height=600'
+    );
+    if (!popup) {
+      alert('Popup blocked. Please allow popups for this site.');
+    }
+  };
+
+
   const validateForm = () => {
     const newErrors = {};
     if (!email) {
@@ -225,7 +256,7 @@ const Signin = () => {
             fullWidth
             variant="outlined"
             sx={{ mt: 2, mb: 1, py: 1.5 }}
-            onClick={handleGoogleSignIn}
+            onClick={openOAuthPopup}
             startIcon={<GoogleIcon />}
           >
             Sign in with Google

@@ -51,5 +51,31 @@ func handleGoogleCallback(c echo.Context) error {
 	}
 
 	// Process user details, store in DB, generate JWT and set cookie
-	return ProcessUserAndGenerateJWT(c, user)
+	jwtToken, err := ProcessUserAndGenerateJWT(user)
+
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to process user data")
+	}
+	// return c.JSON(http.StatusOK, map[string]string{
+	// 	"token": jwtToken,
+	// });
+
+	fmt.Println("JWT token:", jwtToken) // Ab yahan actual token print hoga
+
+	// Ab popup ke liye HTML response with postMessage
+	htmlResponse := fmt.Sprintf(`
+      <html>
+      <head>
+        <script>
+          window.opener.postMessage({ token: "%s" }, "http://localhost:5173");
+          window.close();
+        </script>
+      </head>
+      <body>
+        Authentication successful. You can close this window.
+      </body>
+      </html>
+    `, jwtToken)
+
+	return c.HTML(http.StatusOK, htmlResponse)
 }

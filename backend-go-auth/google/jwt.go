@@ -1,8 +1,9 @@
-// google/jwt.go
 package google
 
 import (
+	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	"oauth-app/models"
@@ -11,7 +12,14 @@ import (
 )
 
 func GenerateJWT(user models.UserOAuth) (string, error) {
-	secret := os.Getenv("JWT_SECRET")
+	// Retrieve and trim the secret
+	secret := strings.TrimSpace(os.Getenv("JWT_SECRET"))
+	fmt.Printf("Using secret: %s\n", secret)
+	if secret == "" {
+		secret = "defaultSecret" // same as in NestJS
+	}
+	fmt.Printf("Using secret: %s\n", secret)
+
 	claims := jwt.MapClaims{
 		"email": user.Email,
 		"sub":   user.ID.Hex(), // using Hex string of ObjectID

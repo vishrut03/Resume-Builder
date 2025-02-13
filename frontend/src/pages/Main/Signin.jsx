@@ -61,9 +61,9 @@ const Signin = () => {
 
   useEffect(() => {
     const verifyToken = async () => {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       if (!token) return;
-
+      console.log('firstfront')
       try {
         const response = await axios.get('http://localhost:3001/auth/verify', {
           headers: { Authorization: `Bearer ${token}` },
@@ -91,9 +91,9 @@ const Signin = () => {
 
       const { token } = event.data;
       if (token) {
-        // console.log('Received token:', token);
-        Cookies.set('token', token, { expires: 1, secure: true, sameSite: 'strict' });
-        setCurrent('personaldetails');
+        console.log('Received token:', token);
+        Cookies.set("token", token, { expires: 1});
+        // setCurrent('personaldetails');
       }
     };
 
@@ -103,11 +103,19 @@ const Signin = () => {
 
   // Function to open the OAuth popup
   const openOAuthPopup = () => {
+    const width = 1100;
+    const height = 800;
+    // Calculate horizontal center position
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    // Calculate vertical center position
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    
     const popup = window.open(
-      'http://localhost:8000/auth/google', // Your backend's OAuth endpoint
+      'http://localhost:8000/auth/google',
       'Google OAuth',
-      'width=600,height=600'
+      `width=${width},height=${height},left=${left},top=${top}`
     );
+    
     if (!popup) {
       alert('Popup blocked. Please allow popups for this site.');
     }
@@ -143,7 +151,7 @@ const Signin = () => {
           password: encryptedPassword,
         });
 
-        Cookies.set('token', response.data.token, { expires: 1, secure: true });
+        Cookies.set('token', response.data.token, { expires: 1 });
         if (response.data.message === 'Login successful') {
           setCurrent('personaldetails');
         }
@@ -155,9 +163,9 @@ const Signin = () => {
   };
 
   // Social sign-in handlers
-  const handleGoogleSignIn = () => {
-    window.location.href = 'http://localhost:8000/auth/google';
-  };
+  // const handleGoogleSignIn = () => {
+  //   window.location.href = 'http://localhost:8000/auth/google';
+  // };
 
   const handleGithubSignIn = () => {
     window.location.href = 'http://localhost:8000/auth/github/login';

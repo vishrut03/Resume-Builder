@@ -52,8 +52,7 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	e.POST("/auth/gmail/request-otp", gmail.RequestOTP)
-	e.POST("/auth/gmail/verify-otp", gmail.VerifyOTP)
+	gmail.RegisterRoutes(e)
 
 	port := os.Getenv("PORT")
 	if port == "" {

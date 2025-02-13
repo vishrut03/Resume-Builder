@@ -1,113 +1,162 @@
 package gmail
 
 import (
+	"context"
 	"crypto/rand"
 	"fmt"
 	"log"
+	"math/big"
 	"net/http"
-	"net/smtp"
 	"os"
-	"sync"
 	"time"
+
+	"oauth-app/database"
+	"oauth-app/models"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"gopkg.in/gomail.v2"
 )
 
-// Store OTP in memory (cache)
-var otpCache = sync.Map{}
+// OTP Cache (In-Memory)
+var otpCache = make(map[string]string)
 
-var jwtSecret = []byte("your-secret-key")
-
-// Generate 6-digit OTP
-func generateOTP() string {
-	b := make([]byte, 4)
-	_, _ = rand.Read(b)
-	return fmt.Sprintf("%06d", b[0])
+// Structs for OTP Handling
+type OTPRequest struct {
+	Email string `json:"email"`
 }
 
-// Send OTP via Gmail
-func sendEmail(email, otp string) error {
-	from := os.Getenv("GMAIL_USER")
-	password := os.Getenv("GMAIL_PASSWORD")
+type OTPVerify struct {
+	Email string `json:"email"`
+	OTP   string `json:"otp"`
+}
 
-	to := []string{email}
-	smtpServer := "smtp.gmail.com"
-	auth := smtp.PlainAuth("", from, password, smtpServer)
+// Generate a 6-digit OTP
+func GenerateOTP() string {
+	n, _ := rand.Int(rand.Reader, big.NewInt(899999))
+	return fmt.Sprintf("%06d", n.Int64()+100000)
+}
 
-	msg := []byte("Subject: Your OTP Code\n\nYour OTP code is: " + otp)
-	err := smtp.SendMail(smtpServer+":587", auth, from, to, msg)
-	if err != nil {
-		log.Println("Failed to send email:", err)
+// Store OTP in cache
+func StoreOTP(email, otp string) {
+	otpCache[email] = otp
+}
+
+// Validate OTP
+func ValidateOTP(email, otp string) bool {
+	storedOTP, exists := otpCache[email]
+	if !exists || storedOTP != otp {
+		return false
+	}
+	delete(otpCache, email) // Remove OTP after successful validation
+	return true
+}
+
+// Send OTP via Email
+func SendOTP(email, otp string) error {
+	m := gomail.NewMessage()
+	m.SetHeader("From", os.Getenv("SMTP_EMAIL"))
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "Your OTP Code")
+	m.SetBody("text/plain", "Your OTP code is: "+otp)
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, os.Getenv("SMTP_EMAIL"), os.Getenv("SMTP_PASSWORD"))
+
+	if err := d.DialAndSend(m); err != nil {
+		log.Println("Failed to send OTP:", err)
 		return err
 	}
 	return nil
 }
 
-// Request OTP API
-func RequestOTP(c echo.Context) error {
-	var request struct {
-		Email string `json:"email"`
-	}
-	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid request"})
-	}
-
-	otp := generateOTP()
-	otpCache.Store(request.Email, otp)
-
-	go func() {
-		if err := sendEmail(request.Email, otp); err != nil {
-			log.Println("Failed to send OTP:", err)
-		}
-	}()
-
-	return c.JSON(http.StatusOK, echo.Map{"message": "OTP sent"})
-}
-
 // Generate JWT Token
-func generateTokens(email string) (string, string, error) {
-	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": email,
-		"exp":   time.Now().Add(time.Minute * 15).Unix(),
-	})
-	accessTokenString, err := accessToken.SignedString(jwtSecret)
-	if err != nil {
-		return "", "", err
+func GenerateToken(user models.UserOAuth) (string, error) {
+	claims := jwt.MapClaims{
+		"user_id": user.ID.Hex(),
+		"email":   user.Email,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
-
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": email,
-		"exp":   time.Now().Add(time.Hour * 24 * 7).Unix(),
-	})
-	refreshTokenString, err := refreshToken.SignedString(jwtSecret)
-	return accessTokenString, refreshTokenString, err
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
-// Verify OTP API
+// Request OTP Handler
+func RequestOTP(c echo.Context) error {
+	var req OTPRequest
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request"})
+	}
+
+	otp := GenerateOTP()
+	StoreOTP(req.Email, otp)
+
+	if err := SendOTP(req.Email, otp); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to send OTP"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]string{"message": "OTP sent successfully"})
+}
+
+// Verify OTP & Authenticate User
 func VerifyOTP(c echo.Context) error {
-	var request struct {
-		Email string `json:"email"`
-		OTP   string `json:"otp"`
-	}
-	if err := c.Bind(&request); err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"error": "Invalid request"})
+	var req OTPVerify
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request"})
 	}
 
-	storedOTP, exists := otpCache.Load(request.Email)
-	if !exists || storedOTP.(string) != request.OTP {
-		return c.JSON(http.StatusUnauthorized, echo.Map{"error": "Invalid OTP"})
+	// Validate OTP
+	if !ValidateOTP(req.Email, req.OTP) {
+		return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid OTP"})
 	}
 
-	otpCache.Delete(request.Email)
+	// MongoDB User Collection
+	collection := database.DB.Collection("users")
 
-	accessToken, refreshToken, err := generateTokens(request.Email)
+	// Check if user exists
+	var existingUser models.UserOAuth
+	err := collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
+
+	if err == mongo.ErrNoDocuments {
+		// If user does not exist, create a new user
+		newUser := models.UserOAuth{
+			ID:        primitive.NewObjectID(),
+			Email:     req.Email,
+			Name:      "", // You can fetch the name later if needed
+			CreatedAt: time.Now().Unix(),
+		}
+
+		_, err := collection.InsertOne(context.TODO(), newUser)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to create user"})
+		}
+		existingUser = newUser
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Database error"})
+	}
+
+	// Generate JWT Token
+	token, err := GenerateToken(existingUser)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "Token generation failed"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to generate token"})
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{
-		"access_token":  accessToken,
-		"refresh_token": refreshToken,
+	// Return Response
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"message": "Login successful",
+		"user": map[string]interface{}{
+			"id":    existingUser.ID.Hex(),
+			"email": existingUser.Email,
+			"name":  existingUser.Name,
+		},
+		"token": token,
 	})
+}
+
+// Register Routes
+func RegisterRoutes(e *echo.Echo) {
+	e.POST("/auth/gmail/request-otp", RequestOTP)
+	e.POST("/auth/gmail/verify-otp", VerifyOTP)
 }

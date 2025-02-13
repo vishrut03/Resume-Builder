@@ -25,6 +25,7 @@ func handleGitHubLogin(c echo.Context) error {
 
 // handleGitHubCallback handles the OAuth callback from GitHub.
 // handleGitHubCallback handles the OAuth callback from GitHub.
+// handleGitHubCallback handles the OAuth callback from GitHub.
 func handleGitHubCallback(c echo.Context) error {
 	state := c.QueryParam("state")
 	if state != oauthStateString {
@@ -56,14 +57,50 @@ func handleGitHubCallback(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, "Failed to decode user details: "+err.Error())
 	}
 
-	fmt.Println("GitHub Access Token:", token.AccessToken)
-	// fmt.Println("GitHub Refresh Token:", token.RefreshToken) // Refresh token might be empty
-	fmt.Println("GitHub User Info:", userInfo)
+	// Fetch user's emails from GitHub API.
+	reqEmails, err := http.NewRequest("GET", "https://api.github.com/user/emails", nil)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to create request for user emails")
+	}
+	reqEmails.Header.Set("Authorization", "Bearer "+token.AccessToken)
+	reqEmails.Header.Set("Accept", "application/vnd.github.v3+json")
+	respEmails, err := client.Do(reqEmails)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to fetch user emails: "+err.Error())
+	}
+	defer respEmails.Body.Close()
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
+	// GitHub returns a list of emails.
+	var emails []struct {
+		Email    string `json:"email"`
+		Primary  bool   `json:"primary"`
+		Verified bool   `json:"verified"`
+	}
+	if err := json.NewDecoder(respEmails.Body).Decode(&emails); err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to decode user emails: "+err.Error())
+	}
+
+	// Find primary, verified email.
+	primaryEmail := ""
+	for _, e := range emails {
+		if e.Primary && e.Verified {
+			primaryEmail = e.Email
+			break
+		}
+	}
+	// Fallback: if no primary found, use the first email
+	if primaryEmail == "" && len(emails) > 0 {
+		primaryEmail = emails[0].Email
+	}
+
+	// Construct the response with only the desired fields.
+	result := map[string]interface{}{
 		"access_token": token.AccessToken,
-		"token_type":   token.TokenType,
+		"username":     userInfo["login"],
+		"name":         userInfo["name"],
+		"email":        primaryEmail,
 		"expiry":       token.Expiry,
-		"user":         userInfo,
-	})
+	}
+
+	return c.JSON(http.StatusOK, result)
 }

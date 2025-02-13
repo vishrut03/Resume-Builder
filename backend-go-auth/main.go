@@ -8,6 +8,7 @@ import (
 
 	"oauth-app/database"
 	"oauth-app/github"
+	"oauth-app/gmail"
 	"oauth-app/google"
 
 	"github.com/joho/godotenv"
@@ -50,6 +51,9 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
+
+	e.POST("/auth/gmail/request-otp", gmail.RequestOTP)
+	e.POST("/auth/gmail/verify-otp", gmail.VerifyOTP)
 
 	port := os.Getenv("PORT")
 	if port == "" {

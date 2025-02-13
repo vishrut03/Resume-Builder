@@ -2,6 +2,7 @@ package github
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -43,6 +44,7 @@ func handleGitHubLogin(c echo.Context) error {
 }
 
 // handleGitHubCallback handles the OAuth callback from GitHub.
+// handleGitHubCallback handles the OAuth callback from GitHub.
 func handleGitHubCallback(c echo.Context) error {
 	state := c.QueryParam("state")
 	if state != oauthStateString {
@@ -55,15 +57,33 @@ func handleGitHubCallback(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("Code exchange failed: %s", err.Error()))
 	}
 
-	// Here, you can use the token to get user info from GitHub's API if desired.
-	// For simplicity, we're just returning the token as JSON.
-	fmt.Println("GitHub Access Token:", token.AccessToken)
-	fmt.Println("GitHub Refresh Token:", token.RefreshToken)
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"access_token":  token.AccessToken,
-		"refresh_token": token.RefreshToken, // this will be populated now
-		"token_type":    token.TokenType,
-		"expiry":        token.Expiry,
-	})
+	// Fetch user details from GitHub API using the access token.
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to create request for user details")
+	}
+	req.Header.Set("Authorization", "Bearer "+token.AccessToken)
+	req.Header.Set("Accept", "application/vnd.github.v3+json")
+	resp, err := client.Do(req)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to fetch user details: "+err.Error())
+	}
+	defer resp.Body.Close()
 
+	var userInfo map[string]interface{}
+	if err := json.NewDecoder(resp.Body).Decode(&userInfo); err != nil {
+		return c.String(http.StatusInternalServerError, "Failed to decode user details: "+err.Error())
+	}
+
+	fmt.Println("GitHub Access Token:", token.AccessToken)
+	// fmt.Println("GitHub Refresh Token:", token.RefreshToken) // Refresh token might be empty
+	fmt.Println("GitHub User Info:", userInfo)
+
+	return c.JSON(http.StatusOK, map[string]interface{}{
+		"access_token": token.AccessToken,
+		"token_type":   token.TokenType,
+		"expiry":       token.Expiry,
+		"user":         userInfo,
+	})
 }

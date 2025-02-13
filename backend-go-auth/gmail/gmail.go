@@ -17,7 +17,7 @@ import (
 // Store OTP in memory (cache)
 var otpCache = sync.Map{}
 
-var jwtSecret = os.Getenv("JWT_SECRET")
+var jwtSecret = []byte("your-secret-key")
 
 // Generate 6-digit OTP
 func generateOTP() string {

@@ -125,7 +125,7 @@ const Signin = () => {
 
   // Social sign-in handlers
   const handleGoogleSignIn = () => {
-    window.location.href = 'http://localhost:3001/auth/google';
+    window.location.href = 'http://localhost:8000/auth/google';
   };
 
   const handleGithubSignIn = () => {

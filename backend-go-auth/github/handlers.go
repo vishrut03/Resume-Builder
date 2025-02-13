@@ -93,14 +93,13 @@ func handleGitHubCallback(c echo.Context) error {
 		primaryEmail = emails[0].Email
 	}
 
-	// Construct the response with only the desired fields.
-	result := map[string]interface{}{
-		"access_token": token.AccessToken,
-		"username":     userInfo["login"],
-		"name":         userInfo["name"],
-		"email":        primaryEmail,
-		"expiry":       token.Expiry,
+	githubUser := map[string]interface{}{
+		"email": primaryEmail,
+		"name":  userInfo["name"],
+		"login": userInfo["login"],
 	}
 
-	return c.JSON(http.StatusOK, result)
+	// Now, call the function that processes the GitHub user and generates a JWT token.
+	// (Assuming ProcessGitHubUserAndGenerateJWT is defined in your package.)
+	return ProcessGitHubUserAndGenerateJWT(c, githubUser)
 }

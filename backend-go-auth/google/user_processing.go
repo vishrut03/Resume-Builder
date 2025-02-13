@@ -14,9 +14,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// processUserAndGenerateJWT extracts user details from Google data,
+// ProcessUserAndGenerateJWT extracts user details from Google data,
 // stores (or fetches) the user from the users_oauth collection,
-// generates a JWT, sets it as an HTTP-only cookie, and returns a JSON response.
+// generates a JWT, and returns a JSON response with the token.
+// The front-end (localhost:5173) is responsible for setting the cookie.
+
 func ProcessUserAndGenerateJWT(c echo.Context, userData map[string]interface{}) error {
 	// Extract details
 	email, _ := userData["email"].(string)
@@ -58,16 +60,8 @@ func ProcessUserAndGenerateJWT(c echo.Context, userData map[string]interface{}) 
 		return c.String(http.StatusInternalServerError, "Failed to generate JWT")
 	}
 
-	// Set JWT token in an HTTP-only cookie
-	c.SetCookie(&http.Cookie{
-		Name:     "token",
-		Value:    jwtToken,
-		Path:     "/",
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: true,
-	})
-
-	// Return response with user info and token
+	// Instead of setting the cookie from the backend, we return the token in the JSON response.
+	// The front-end at localhost:5173 should set the cookie (using js-cookie or document.cookie) as needed.
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Login successful",
 		"user":    existingUser,

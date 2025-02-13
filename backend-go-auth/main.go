@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"os"
 
-	"oauth-app/google" // Import the google package
+	"oauth-app/database"
+	"oauth-app/google"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -20,20 +21,17 @@ func main() {
 		log.Println("Warning: No .env file found")
 	}
 
-	// Get port from environment or use default
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8000" // Default fallback port
-	}
+	// Connect to MongoDB
+	database.ConnectDB()
 
-	// Initialize Google OAuth (AFTER loading .env)
+	// Initialize Google OAuth configuration (assume you have an InitGoogleOAuth() function)
 	google.InitGoogleOAuth()
 
 	e := echo.New()
 
 	// Middleware
-	e.Use(middleware.Logger())  // Logs requests
-	e.Use(middleware.Recover()) // Recover from panics
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
@@ -42,7 +40,7 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	// Register routes from google package
+	// Register Google OAuth routes
 	google.RegisterGoogleRoutes(e)
 
 	// Basic test route
@@ -50,10 +48,10 @@ func main() {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	fmt.Println("✅ Server starting at port:", port)
-
-	// Start the server
-	if err := e.Start(":" + port); err != nil {
-		log.Fatal("Error starting server:", err)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000"
 	}
+	fmt.Println("✅ Server starting at port:", port)
+	log.Fatal(e.Start(":" + port))
 }

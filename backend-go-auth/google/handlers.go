@@ -17,11 +17,11 @@ func RegisterGoogleRoutes(e *echo.Echo) {
 
 // Redirects user to Google login
 func handleGoogleLogin(c echo.Context) error {
-	url := GoogleOAuthConfig.AuthCodeURL("randomstate", oauth2.AccessTypeOffline)
+	url := GoogleOAuthConfig.AuthCodeURL("randomstate", oauth2.AccessTypeOffline, oauth2.ApprovalForce)
 	return c.Redirect(http.StatusSeeOther, url)
 }
 
-// Handles Google OAuth callback & fetches user info
+// Handles Google OAuth callback, fetches user info, and processes the user
 func handleGoogleCallback(c echo.Context) error {
 	code := c.QueryParam("code")
 	if code == "" {
@@ -42,12 +42,11 @@ func handleGoogleCallback(c echo.Context) error {
 	}
 	defer resp.Body.Close()
 
-	// Decode user info
 	var user map[string]interface{}
 	if err := json.NewDecoder(resp.Body).Decode(&user); err != nil {
 		return c.String(http.StatusInternalServerError, "Failed to decode user info")
 	}
 
-	// Return user info as JSON
-	return c.JSON(http.StatusOK, user)
+	// Process user details, store in DB, generate JWT and set cookie
+	return ProcessUserAndGenerateJWT(c, user)
 }

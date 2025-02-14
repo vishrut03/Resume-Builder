@@ -155,6 +155,8 @@ const Signin = () => {
 
         Cookies.set('token', response.data.token, { expires: 1 });
         if (response.data.message === 'Login successful') {
+          localStorage.setItem("currentStep", "personaldetails");
+          window.location.reload();
           setCurrent('personaldetails');
         }
       } catch (error) {

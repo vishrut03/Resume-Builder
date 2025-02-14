@@ -6,6 +6,7 @@ import temp1 from "../../assets/template-1.svg";
 import temp2 from "../../assets/ats-friendly-Combined-Resume-Template.png";
 import temp3 from "../../assets/temp3.webp";
 import temp4 from "../../assets/template-2.png";
+import PersonalDetailsRedirect from "./personalDetailsRedirect";
 
 const Home = () => {
   const [currentStep, setCurrentStep] = useState(() => {
@@ -52,7 +53,7 @@ const Home = () => {
   }
 
   if(currentStep === "personaldetails") {
-    return <PersonalDetails/>
+    return <PersonalDetailsRedirect />;
   }
 
   return (

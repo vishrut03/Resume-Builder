@@ -23,7 +23,6 @@ export default function Header() {
 
   const handleSignOut = () => {
     Cookie.remove("token");
-    localStorage.removeItem("currentStep");
     setToken(null);
     window.location.reload()
   }

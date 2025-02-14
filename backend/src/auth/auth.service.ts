@@ -24,6 +24,7 @@ export class AuthService {
         const existingUser = await this.userModel.findOne({ email: user.email });
 
         if (!existingUser) {
+            //console.log("first");
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
         }
 
@@ -33,6 +34,7 @@ export class AuthService {
         const isPasswordValid = await bcrypt.compare(decryptedPassword, existingUser.password);
 
         if (!isPasswordValid) {
+            //console.log("second");
             throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
         }
 

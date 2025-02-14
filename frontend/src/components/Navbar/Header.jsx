@@ -1,4 +1,4 @@
-import React from "react"
+import {React, useState} from "react"
 import {
   AppBar,
   Toolbar,
@@ -19,9 +19,12 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 
 export default function Header() {
   const theme = useTheme()
+  const [token, setToken] = useState(Cookie.get("token"));
 
   const handleSignOut = () => {
-    Cookie.remove("token")
+    Cookie.remove("token");
+    localStorage.removeItem("currentStep");
+    setToken(null);
     window.location.reload()
   }
 
@@ -34,24 +37,26 @@ export default function Header() {
             ResumeBuilder
           </Typography>
         </Box>
-        <Button
-          onClick={handleSignOut}
-          variant="contained"
-          sx={{
-            background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-            color: "#fff",
-            fontWeight: "bold",
-            textTransform: "none",
-            borderRadius: "8px",
-            boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-            padding: "6px 16px",
-            "&:hover": {
-              background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
-            },
-          }}
-        >
-          Sign Out
-        </Button>
+        {token && (
+          <Button
+            onClick={handleSignOut}
+            variant="contained"
+            sx={{
+              background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+              color: "#fff",
+              fontWeight: "bold",
+              textTransform: "none",
+              borderRadius: "8px",
+              boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+              padding: "6px 16px",
+              "&:hover": {
+                background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
+              },
+            }}
+          >
+            Sign Out
+          </Button>
+        )}
       </Toolbar>
     </StyledAppBar>
   )

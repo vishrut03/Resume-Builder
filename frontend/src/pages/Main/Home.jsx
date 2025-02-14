@@ -8,7 +8,9 @@ import temp3 from "../../assets/temp3.webp";
 import temp4 from "../../assets/template-2.png";
 
 const Home = () => {
-  const [currentStep, setCurrentStep] = useState("Home");
+  const [currentStep, setCurrentStep] = useState(() => {
+    return localStorage.getItem("currentStep") || "Home";
+  });
   const [scrolled, setScrolled] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState("signin");
@@ -48,6 +50,11 @@ const Home = () => {
   if(currentStep === "signin") {
     return <Signin/>
   }
+
+  if(currentStep === "personaldetails") {
+    return <PersonalDetails/>
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {currentStep === "Step1" ? (

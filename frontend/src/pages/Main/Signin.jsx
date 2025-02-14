@@ -18,7 +18,6 @@ import PersonalDetails from './PersonalDetails';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
-import { Cookie } from 'lucide-react';
 
 // Updated Google icon using the provided SVG and adjusted to 24x24
 const GoogleIcon = () => (
@@ -60,18 +59,6 @@ const Signin = () => {
   const [current, setCurrent] = useState('signin');
   const [errors, setErrors] = useState({});
 
-  // Listen for token from popup
-window.addEventListener('message', (event) => {
-  if (event.origin === 'http://localhost:5173') {
-    const { token } = event.data;
-    if (token) {
-      document.cookie = `jwt=${token}; path=/; secure; samesite=strict`;
-      console.log('JWT Token received and stored:', token);
-    }
-  }
-});
-
-
   useEffect(() => {
     const verifyToken = async () => {
       const token = Cookies.get("token");
@@ -106,6 +93,8 @@ window.addEventListener('message', (event) => {
         //console.log('Received token:', token);
         Cookies.set("token", token, { expires: 1});
         console.log(Cookies.get("token"));
+        localStorage.setItem("currentStep", "personaldetails");
+        window.location.reload();
         setCurrent('personaldetails');
       }
     };

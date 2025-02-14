@@ -11,44 +11,76 @@ import (
 	"time"
 
 	"oauth-app/database"
-	"oauth-app/models"
 
-	"github.com/dgrijalva/jwt-go"
+	"crypto/aes"
+	"crypto/cipher"
+	"encoding/base64"
+
+	"golang.org/x/crypto/bcrypt"
+
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/gomail.v2"
 )
 
-// OTP Cache (In-Memory)
-var otpCache = make(map[string]string)
+// OTP Cache with Expiry
+var otpCache = make(map[string]struct {
+	OTP    string
+	Expiry time.Time
+})
 
-// Structs for OTP Handling
+// Structs
 type OTPRequest struct {
-	Email string `json:"email"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type OTPVerify struct {
-	Email string `json:"email"`
-	OTP   string `json:"otp"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	OTP      string `json:"otp"`
 }
 
-// Generate a 6-digit OTP
+// User Model
+type User struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Email     string             `bson:"email" json:"email"`
+	Password  string             `bson:"password" json:"password"`
+	CreatedAt int64              `bson:"created_at" json:"created_at"`
+}
+
+// Generate Secure 6-digit OTP
 func GenerateOTP() string {
-	n, _ := rand.Int(rand.Reader, big.NewInt(899999))
+	n, _ := rand.Int(rand.Reader, big.NewInt(900000))
 	return fmt.Sprintf("%06d", n.Int64()+100000)
 }
 
-// Store OTP in cache
+// Store OTP in cache with expiry
 func StoreOTP(email, otp string) {
-	otpCache[email] = otp
+	otpCache[email] = struct {
+		OTP    string
+		Expiry time.Time
+	}{OTP: otp, Expiry: time.Now().Add(5 * time.Minute)}
+
+	// Automatically remove OTP after expiry
+	go func(email string) {
+		time.Sleep(5 * time.Minute)
+		delete(otpCache, email)
+	}(email)
 }
 
-// Validate OTP
+// Validate OTP with expiry check
 func ValidateOTP(email, otp string) bool {
-	storedOTP, exists := otpCache[email]
-	if !exists || storedOTP != otp {
+	data, exists := otpCache[email]
+	fmt.Print(data.OTP)
+	fmt.Print(otp)
+	fmt.Printf("var1 = %T\n", data.OTP)
+	fmt.Printf("var1 = %T\n", otp)
+	fmt.Print(exists)
+
+	if !exists || data.Expiry.Before(time.Now()) || data.OTP != otp {
 		return false
 	}
 	delete(otpCache, email) // Remove OTP after successful validation
@@ -73,7 +105,7 @@ func SendOTP(email, otp string) error {
 }
 
 // Generate JWT Token
-func GenerateToken(user models.UserOAuth) (string, error) {
+func GenerateToken(user User) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": user.ID.Hex(),
 		"email":   user.Email,
@@ -83,6 +115,18 @@ func GenerateToken(user models.UserOAuth) (string, error) {
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 }
 
+// Hash Password using bcrypt
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return string(bytes), err
+}
+
+// Compare Hashed Password
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 // Request OTP Handler
 func RequestOTP(c echo.Context) error {
 	var req OTPRequest
@@ -90,6 +134,16 @@ func RequestOTP(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request"})
 	}
 
+	collection := database.DB.Collection("users")
+
+	// Check if user already exists
+	var existingUser User
+	err := collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
+	if err == nil {
+		return c.JSON(http.StatusConflict, map[string]string{"message": "User already exists"})
+	}
+
+	// Generate and send OTP
 	otp := GenerateOTP()
 	StoreOTP(req.Email, otp)
 
@@ -100,7 +154,37 @@ func RequestOTP(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]string{"message": "OTP sent successfully"})
 }
 
-// Verify OTP & Authenticate User
+// Decrypt AES encrypted password
+func DecryptPassword(encryptedPassword string) (string, error) {
+	key := []byte(os.Getenv("VITE_SECRET_CRYPTO")) // Use the same key as frontend
+	ciphertext, _ := base64.StdEncoding.DecodeString(encryptedPassword)
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	iv := ciphertext[:aes.BlockSize] // Extract IV
+	ciphertext = ciphertext[aes.BlockSize:]
+
+	mode := cipher.NewCBCDecrypter(block, iv)
+	mode.CryptBlocks(ciphertext, ciphertext)
+
+	// Remove padding
+	ciphertext = PKCS5UnPadding(ciphertext)
+
+	return string(ciphertext), nil
+}
+
+// Remove padding after decryption
+func PKCS5UnPadding(src []byte) []byte {
+	length := len(src)
+	unpadding := int(src[length-1])
+	return src[:(length - unpadding)]
+}
+
+// Verify OTP & Register User
+// Verify OTP and Register User
 func VerifyOTP(c echo.Context) error {
 	var req OTPVerify
 	if err := c.Bind(&req); err != nil {
@@ -112,33 +196,46 @@ func VerifyOTP(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid OTP"})
 	}
 
+	// Decrypt password
+	fmt.Print(req.Password)
+	/*decryptedPassword, err := DecryptPassword(req.Password)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to decrypt password"})
+	}
+	fmt.Print(decryptedPassword)*/
+
+	// Hash the password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to hash password"})
+	}
+	fmt.Print(hashedPassword)
+
 	// MongoDB User Collection
 	collection := database.DB.Collection("users")
 
-	// Check if user exists
-	var existingUser models.UserOAuth
-	err := collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
+	// Check if user already exists
+	var existingUser User
+	err = collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
+	if err == nil {
+		return c.JSON(http.StatusConflict, map[string]string{"message": "User already exists"})
+	}
 
-	if err == mongo.ErrNoDocuments {
-		// If user does not exist, create a new user
-		newUser := models.UserOAuth{
-			ID:        primitive.NewObjectID(),
-			Email:     req.Email,
-			Name:      "", // You can fetch the name later if needed
-			CreatedAt: time.Now().Unix(),
-		}
+	// If user does not exist, create new user
+	newUser := User{
+		ID:        primitive.NewObjectID(),
+		Email:     req.Email,
+		Password:  string(hashedPassword), // Store hashed password
+		CreatedAt: time.Now().Unix(),
+	}
 
-		_, err := collection.InsertOne(context.TODO(), newUser)
-		if err != nil {
-			return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to create user"})
-		}
-		existingUser = newUser
-	} else if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Database error"})
+	_, err = collection.InsertOne(context.TODO(), newUser)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to create user"})
 	}
 
 	// Generate JWT Token
-	token, err := GenerateToken(existingUser)
+	token, err := GenerateToken(newUser)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to generate token"})
 	}
@@ -147,9 +244,8 @@ func VerifyOTP(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Login successful",
 		"user": map[string]interface{}{
-			"id":    existingUser.ID.Hex(),
-			"email": existingUser.Email,
-			"name":  existingUser.Name,
+			"id":    newUser.ID.Hex(),
+			"email": newUser.Email,
 		},
 		"token": token,
 	})

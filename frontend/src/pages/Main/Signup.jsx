@@ -1,18 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { Box, Button, TextField, Typography, Link, Divider, InputAdornment, IconButton } from "@mui/material"
+import { Box, Button, TextField, Typography, Link, InputAdornment, IconButton } from "@mui/material"
 import { Email, Lock, Visibility, VisibilityOff } from "@mui/icons-material"
-import PersonalDetails from "./PersonalDetails"
 import Signin from "./Signin"
 import axios from "axios"
 import CryptoJS from 'crypto-js';
-
 
 const Signup = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [otp, setOtp] = useState("")
+  const [otpSent, setOtpSent] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [current, setCurrent] = useState("signup")
@@ -31,30 +31,44 @@ const Signup = () => {
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
-  const encryptPassword = (password) => {
+
+ /*const encryptPassword = (password) => {
     const secretKey = import.meta.env.VITE_SECRET_CRYPTO || 'your_secret_key';      
     return CryptoJS.AES.encrypt(password, secretKey).toString();
-  };
-  const handleSignUp = async (e) => {
+  };*/
+
+  // ✅ Step 1: Request OTP
+  const handleRequestOTP = async (e) => {
     e.preventDefault()
     if (validateForm()) {
       try {
-        const encryptedPassword = encryptPassword(password);
-        const response = await axios.post("http://localhost:3001/auth/signup", { email, password:encryptedPassword })
-        if (response.data.message === "Signup successful") setCurrent("signin")
+        await axios.post("http://localhost:8000/auth/gmail/request-otp", { email })
+        setOtpSent(true) // Show OTP field
       } catch (error) {
-        console.error("Signup error:", error)
-        setErrors({ submit: "Failed to sign up. Please try again." })
+        console.error("OTP Request Error:", error)
+        setErrors({ submit: "Failed to send OTP. Please try again." })
       }
+    }
+  }
+
+  // ✅ Step 2: Verify OTP & Signup
+  const handleVerifyOTP = async () => {
+    try {
+      //const encryptedPassword = encryptPassword(password)
+      console.log(email,password,otp)
+      const response = await axios.post("http://localhost:8000/auth/gmail/verify-otp", { email, password , otp })
+
+      if (response.data.message === "Login successful") {
+        setCurrent("signin") // Redirect to Signin page
+      }
+    } catch (error) {
+      console.error("OTP Verification Error:", error)
+      setErrors({ otp: "Invalid OTP. Please try again." })
     }
   }
 
   if (current === "signin") {
     return <Signin />
-  }
-
-  if (current === "personaldetails") {
-    return <PersonalDetails />
   }
 
   return (
@@ -75,7 +89,9 @@ const Signup = () => {
       <Typography variant="h4" component="h1" gutterBottom sx={{ color: "primary.main" }}>
         Create Account
       </Typography>
-      <Box component="form" onSubmit={handleSignUp} sx={{ mt: 1, width: "100%" }}>
+      
+      <Box component="form" onSubmit={handleRequestOTP} sx={{ mt: 1, width: "100%" }}>
+        {/* Email Field */}
         <TextField
           margin="normal"
           required
@@ -97,6 +113,8 @@ const Signup = () => {
             ),
           }}
         />
+
+        {/* Password Field */}
         <TextField
           margin="normal"
           required
@@ -129,6 +147,8 @@ const Signup = () => {
             ),
           }}
         />
+
+        {/* Confirm Password Field */}
         <TextField
           margin="normal"
           required
@@ -161,14 +181,41 @@ const Signup = () => {
             ),
           }}
         />
+
         {errors.submit && (
           <Typography color="error" variant="body2" sx={{ mt: 1 }}>
             {errors.submit}
           </Typography>
         )}
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1.5 }}>
-          Sign Up
-        </Button>
+
+        {/* Signup Button (Request OTP) */}
+        {!otpSent ? (
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1.5 }}>
+            Sign Up
+          </Button>
+        ) : (
+          <>
+            {/* OTP Input Field */}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="otp"
+              label="Enter OTP"
+              name="otp"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              error={!!errors.otp}
+              helperText={errors.otp}
+            />
+
+            {/* Verify OTP Button */}
+            <Button onClick={handleVerifyOTP} fullWidth variant="contained" sx={{ mt: 2, mb: 2, py: 1.5 }}>
+              Verify OTP
+            </Button>
+          </>
+        )}
+
         <Box sx={{ textAlign: "center" }}>
           <Link onClick={() => setCurrent("signin")} variant="body2" sx={{ cursor: "pointer" }}>
             Already have an account? Sign In

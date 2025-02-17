@@ -11,7 +11,6 @@ import (
 var oauthConf *oauth2.Config
 
 // A random string for OAuth2 API calls to protect against CSRF attacks.
-// In production, you should generate this dynamically and store it in session.
 var oauthStateString = "randomstatestring"
 
 // InitGitHubOAuth initializes the GitHub OAuth configuration.

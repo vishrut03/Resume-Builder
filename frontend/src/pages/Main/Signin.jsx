@@ -12,12 +12,14 @@ import {
   IconButton,
   Divider,
 } from '@mui/material';
-import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
+
+import { Email, Lock, Visibility, VisibilityOff, Person } from '@mui/icons-material';
 import Signup from './Signup';
 import PersonalDetails from './PersonalDetails';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
+import UsernameLogin from './UsernameLogin';
 
 // Updated Google icon using the provided SVG and adjusted to 24x24
 const GoogleIcon = () => (
@@ -197,12 +199,16 @@ const Signin = () => {
   if (current === 'personaldetails') {
     return <PersonalDetails />;
   }
+  if(current === 'usernameLogin') {
+    return <UsernameLogin />
+  }
 
   return (
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
           marginTop: 8,
+          marginBottom: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -292,11 +298,20 @@ const Signin = () => {
           <Button
             fullWidth
             variant="outlined"
-            sx={{ mt: 1, mb: 2, py: 1.5 }}
+            sx={{ mt: 1, mb: 1, py: 1.5 }}
             onClick={handleGithubSignIn}
             startIcon={<GithubIcon />}
           >
             Sign in with GitHub
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            sx={{ mt: 1, mb: 2, py: 1.5 }}
+            onClick={() => setCurrent("usernameLogin")}
+            startIcon={<Person />}
+          >
+            Sign in with Username
           </Button>
 
           <Box sx={{ textAlign: 'center' }}>

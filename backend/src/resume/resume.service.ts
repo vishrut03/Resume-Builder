@@ -13,7 +13,7 @@ export class ResumeService {
 
   constructor(@InjectModel(Resume.name) private resumeModel: Model<Resume>) {}
 
-  async updateResume(request: AuthenticatedRequest, userEmail: string, field: string, value: any) {
+  async updateResume(request: AuthenticatedRequest, field: string, value: any) {
     const allowedFields = [
       "personalDetails",
       "briefDescription",

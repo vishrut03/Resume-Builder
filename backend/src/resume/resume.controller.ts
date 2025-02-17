@@ -23,10 +23,7 @@ export class ResumeController {
     if (!field || Object.keys(data).length === 0) {
       throw new BadRequestException('Field name and data are required');
     }
-
-    const userEmail = request.user.email; // Extract email from JWT token
-    return this.resumeService.updateResume(request, userEmail, field, data);
-
+    return this.resumeService.updateResume(request, field, data);
   }
 
   @UseGuards(AuthGuard)

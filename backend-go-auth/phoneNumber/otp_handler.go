@@ -1,11 +1,13 @@
 package phoneNumber
 
 import (
+	"context"
 	"net/http"
 	"os"
 	"strings"
 	"time"
 
+	"oauth-app/database"
 	"oauth-app/models"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -47,21 +49,37 @@ func (h *OTPHandler) VerifyOTP(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Phone number and OTP are required"})
 	}
 
+	// Verify OTP
 	if h.service.VerifyOTP(phone, otp) {
-		// For demonstration, we create a temporary user object.
-		// In a real-world scenario, you might want to fetch or create the user in your DB.
+		// Create a new user
 		user := models.UserPhone{
 			ID:          primitive.NewObjectID(),
 			PhoneNumber: phone,
 			CreatedAt:   time.Now().Unix(),
 		}
+
+		// Insert user into the database
+		collection := database.DB.Collection("user_ph")
+		_, err := collection.InsertOne(context.Background(), user)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save user to database"})
+		}
+
+		// Generate JWT for the user
 		token, err := generateJWTForPhone(user)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to generate JWT"})
 		}
+
+		// Return success response with JWT and user details
 		return c.JSON(http.StatusOK, map[string]interface{}{
 			"message": "OTP verified successfully",
 			"token":   token,
+			"user": map[string]interface{}{
+				"id":         user.ID.Hex(),
+				"phone":      user.PhoneNumber,
+				"created_at": user.CreatedAt,
+			},
 		})
 	}
 

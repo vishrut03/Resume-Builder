@@ -31,6 +31,7 @@ func NewOTPService() *OTPService {
 func (s *OTPService) GenerateOTP(phone string) string {
 	rand.Seed(time.Now().UnixNano())
 	otp := fmt.Sprintf("%06d", rand.Intn(1000000))
+	fmt.Printf("Generated OTP %s for phone %s\n", otp, phone)
 	otpStorage[phone] = otp
 	return otp
 }

@@ -46,6 +46,8 @@ func (s *OTPService) SendOTP(phone string) error {
 	params.SetBody("Your OTP code is: " + otp)
 
 	_, err := s.twilioClient.Api.CreateMessage(params)
+	fmt.Printf("Sent OTP %s to phone %s\n", otp, phone)
+	fmt.Printf("Twilio error: %v\n", err)
 	if err != nil {
 		return err
 	}

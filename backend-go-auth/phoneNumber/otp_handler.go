@@ -12,6 +12,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/labstack/echo/v4"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -51,21 +52,45 @@ func (h *OTPHandler) VerifyOTP(c echo.Context) error {
 
 	// Verify OTP
 	if h.service.VerifyOTP(phone, otp) {
-		// Create a new user
+		collection := database.DB.Collection("user_ph")
+
+		// Check if user already exists
+		var existingUser models.UserPhone
+		err := collection.FindOne(context.Background(), bson.M{"phone_number": phone}).Decode(&existingUser)
+
+		if err == nil {
+			// User already exists, generate JWT and return
+			token, err := generateJWTForPhone(existingUser)
+			if err != nil {
+				return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to generate JWT"})
+			}
+			return c.JSON(http.StatusOK, map[string]interface{}{
+				"message": "OTP verified successfully",
+				"token":   token,
+				"user": map[string]interface{}{
+					"id":         existingUser.ID.Hex(),
+					"phone":      existingUser.PhoneNumber,
+					"created_at": existingUser.CreatedAt,
+				},
+			})
+		} else if err.Error() != "mongo: no documents in result" {
+			// If it's an error other than "no document found", return an error response
+			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Database query failed"})
+		}
+
+		// Create a new user (only if not found)
 		user := models.UserPhone{
 			ID:          primitive.NewObjectID(),
 			PhoneNumber: phone,
 			CreatedAt:   time.Now().Unix(),
 		}
 
-		// Insert user into the database
-		collection := database.DB.Collection("user_ph")
-		_, err := collection.InsertOne(context.Background(), user)
+		_, err = collection.InsertOne(context.Background(), user)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to save user to database"})
 		}
 
-		// Generate JWT for the user
+		// Generate JWT for the new user
 		token, err := generateJWTForPhone(user)
 		if err != nil {
 			return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to generate JWT"})

@@ -53,6 +53,7 @@ const Home = () => {
   }
 
   if(currentStep === "personaldetails") {
+    console.log("Personal Details toh khula hai");
     return <PersonalDetailsRedirect />;
   }
 

@@ -1,3 +1,4 @@
+// main.go
 package main
 
 import (
@@ -25,17 +26,16 @@ func main() {
 		log.Println("Warning: No .env file found")
 	}
 
-	// Connect to MongoDB
+	// Connect to MongoDB and ensure unique index
 	database.ConnectDB()
 
-	// Initialize Google OAuth configuration (assume you have an InitGoogleOAuth() function)
+	// Initialize OAuth configurations
 	google.InitGoogleOAuth()
 	github.InitGitHubOAuth()
 
 	e := echo.New()
 
 	// Middleware
-	// e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins:     []string{"*"},
@@ -45,19 +45,19 @@ func main() {
 		AllowCredentials: true,
 	}))
 
-	// Register Google OAuth routes
+	// Register Routes
 	google.RegisterGoogleRoutes(e)
 	github.RegisterGitHubRoutes(e)
 	phoneNumber.RegisterOTPRoutes(e)
 	usernamepassword.RegisterUsernamePasswordRoutes(e)
+	gmail.RegisterRoutes(e)
 
 	// Basic test route
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")
 	})
 
-	gmail.RegisterRoutes(e)
-
+	// Start server
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8000"

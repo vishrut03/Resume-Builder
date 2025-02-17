@@ -2,8 +2,11 @@
 
 import { useState } from "react"
 import { TextField, Button, Typography, Link, Box, Container, InputAdornment } from "@mui/material"
-import { Phone,Lock } from "@mui/icons-material"
+import { Phone, Lock } from "@mui/icons-material"
+import Cookies from "js-cookie"
+import axios from "axios"
 import Signin from "./Signin"
+import PersonalDetails from "./PersonalDetails"
 
 const PhoneNumber = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -27,33 +30,37 @@ const PhoneNumber = () => {
     e.preventDefault()
     if (validatePhoneNumber()) {
       try {
-        // Replace this with your actual API call to send OTP
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulating API call
+        const { data } = await axios.post("http://localhost:8000/otp/request", new URLSearchParams({ phone: `+91${phoneNumber}` }), {
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        })
         setOtpSent(true)
       } catch (error) {
-        console.error("Error sending OTP:", error)
-        setErrors({ submit: "Failed to send OTP. Please try again." })
+        setErrors({ submit: error.response?.data?.error || "Failed to send OTP. Please try again." })
       }
     }
   }
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault()
-    if (otp) {
-      try {
-        // Replace this with your actual API call to verify OTP
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulating API call
-        // After successful verification, you can redirect to the personal details page
-        // setCurrent('personaldetails');
-        console.log("OTP verified successfully")
-      } catch (error) {
-        console.error("Error verifying OTP:", error)
-        setErrors({ otp: "Invalid OTP. Please try again." })
-      }
-    } else {
+    if (!otp) {
       setErrors({ otp: "OTP is required" })
+      return
+    }
+    try {
+      const { data } = await axios.post("http://localhost:8000/otp/verify", new URLSearchParams({ phone: `+91${phoneNumber}`, otp }), {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+      Cookies.set("token", data.token, { expires: 1 }) // Store JWT in a cookie
+
+      if (data.message === "OTP verified successfully") {
+        localStorage.setItem("currentStep", "personaldetails")
+        window.location.reload()
+      }
+    } catch (error) {
+      setErrors({ otp: error.response?.data?.error || "Invalid OTP. Please try again." })
     }
   }
+
 
   if (current === "signin") {
     return <Signin />
@@ -145,4 +152,3 @@ const PhoneNumber = () => {
 }
 
 export default PhoneNumber
-

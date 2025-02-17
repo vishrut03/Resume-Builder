@@ -11,6 +11,7 @@ import (
 	"oauth-app/gmail"
 	"oauth-app/google"
 	"oauth-app/phoneNumber"
+	"oauth-app/usernamepassword"
 
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -48,6 +49,7 @@ func main() {
 	google.RegisterGoogleRoutes(e)
 	github.RegisterGitHubRoutes(e)
 	phoneNumber.RegisterOTPRoutes(e)
+	usernamepassword.RegisterUsernamePasswordRoutes(e)
 
 	// Basic test route
 	e.GET("/", func(c echo.Context) error {

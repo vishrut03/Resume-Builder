@@ -4,7 +4,9 @@ import { useState } from "react"
 import { TextField, Button, Typography, Link, Box, Container, InputAdornment, IconButton } from "@mui/material"
 import { Person, Lock, Visibility, VisibilityOff } from "@mui/icons-material"
 import Signin from "./Signin"
-
+import axios from "axios"
+import Cookies from "js-cookie"
+import PersonalDetails from "./PersonalDetails"
 const UsernameLogin = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -23,15 +25,31 @@ const UsernameLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (validateForm()) {
-      // Implement your login logic here
-      console.log("Login with:", username, password)
-      // After successful login, you can redirect to the personal details page
-      // setCurrent('personaldetails');
+      try {
+        const response = await axios.post("http://localhost:8000/auth/username", {
+          username,
+          password,
+        })
+        console.log(response)
+        if (response.data.token) {
+          Cookies.set("token", response.data.token, { expires: 1 })
+          // After successful login, you can redirect or change the current view.
+          localStorage.setItem("currentStep", "personaldetails")
+          window.location.reload()
+          setCurrent("personaldetails")
+        }
+      } catch (error) {
+        console.error("Login error:", error)
+        setErrors({ submit: "Invalid username or password" })
+      }
     }
   }
 
   if (current === "signin") {
     return <Signin />
+  }
+  if(current === "personaldetails") {
+    return <PersonalDetails />
   }
 
   return (
@@ -120,4 +138,3 @@ const UsernameLogin = () => {
 }
 
 export default UsernameLogin
-

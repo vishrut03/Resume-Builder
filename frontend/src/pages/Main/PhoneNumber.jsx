@@ -6,7 +6,8 @@ import { Phone, Lock } from "@mui/icons-material"
 import Cookies from "js-cookie"
 import axios from "axios"
 import Signin from "./Signin"
-import PersonalDetails from "./PersonalDetails"
+import ToastTheme from "../../utils/ToastTheme";
+import { toast } from "react-toastify";
 
 const PhoneNumber = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
@@ -41,25 +42,35 @@ const PhoneNumber = () => {
   }
 
   const handleVerifyOtp = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!otp) {
-      setErrors({ otp: "OTP is required" })
-      return
+      setErrors({ otp: "OTP is required" });
+      return;
     }
     try {
-      const { data } = await axios.post("http://localhost:8000/otp/verify", new URLSearchParams({ phone: `+91${phoneNumber}`, otp }), {
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      })
-      Cookies.set("token", data.token, { expires: 1 }) // Store JWT in a cookie
-
+      const { data } = await axios.post(
+        "http://localhost:8000/otp/verify",
+        new URLSearchParams({ phone: `+91${phoneNumber}`, otp }),
+        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+      );
+  
+      Cookies.set("token", data.token, { expires: 1 });
+  
       if (data.message === "OTP verified successfully") {
-        localStorage.setItem("currentStep", "personaldetails")
-        window.location.reload()
+        localStorage.setItem("currentStep", "personaldetails");
+        window.location.reload();
       }
     } catch (error) {
-      setErrors({ otp: error.response?.data?.error || "Invalid OTP. Please try again." })
+      const errorMessage = error.response?.data?.error || "Invalid OTP. Please try again.";
+  
+      if (errorMessage === "OTP expired") {
+        toast.error("OTP expired. Please request a new one.", ToastTheme);
+        setOtpSent(false); // Allow user to request a new OTP
+      } else {
+        setErrors({ otp: errorMessage });
+      }
     }
-  }
+  };
 
 
   if (current === "signin") {

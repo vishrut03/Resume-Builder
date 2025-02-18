@@ -8,7 +8,7 @@ import Signin from "./Signin"
 import PersonalDetails from "./PersonalDetails"
 import axios from "axios"
 import Cookies from "js-cookie"
-const API_BASE_URL = "http://localhost:8000/auth/gmail" 
+const API_BASE_URL = "http://localhost:8000/auth/gmail"
 
 const EmailOtp = () => {
   const [email, setEmail] = useState("")
@@ -74,7 +74,7 @@ const EmailOtp = () => {
       <div className="w-full max-w-md bg-white bg-opacity-20 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden">
         <Box className="p-8">
           <Typography component="h1" variant="h4" className="text-4xl font-bold text-white mb-8 text-center">
-            Sign in with Email
+            Sign In with Email
           </Typography>
           <Box component="form" onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} noValidate className="mt-1 w-full">
             <TextField

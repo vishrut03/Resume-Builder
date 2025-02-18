@@ -6,8 +6,8 @@ import { Email, Lock } from "@mui/icons-material"
 import Signin from "./Signin"
 import PersonalDetails from "./PersonalDetails"
 import axios from "axios"
-
-const API_BASE_URL = "http://localhost:8000/auth/gmail" // Update if needed
+import Cookies from "js-cookie"
+const API_BASE_URL = "http://localhost:8000/auth/gmail" 
 
 const EmailOtp = () => {
   const [email, setEmail] = useState("")
@@ -41,6 +41,7 @@ const EmailOtp = () => {
     }
   }
 
+
   const handleVerifyOtp = async (e) => {
     e.preventDefault()
     if (otp) {
@@ -48,11 +49,13 @@ const EmailOtp = () => {
         const response = await axios.post(`${API_BASE_URL}/verify-otp`, { email, otp })
         console.log("OTP Verified:", response.data)
 
-        // Save token in local storage
-        localStorage.setItem("authToken", response.data.token)
+        Cookies.set("token", response.data.token, { expires: 1 });
 
-        // Navigate to PersonalDetails component
-        setCurrent("personaldetails")
+        if (response.data.message === "Login successful") {
+          localStorage.setItem("currentStep", "personaldetails");
+          setCurrent("personaldetails");
+          window.location.reload();
+        }
       } catch (error) {
         console.error("Error verifying OTP:", error)
         setErrors({ otp: error.response?.data?.message || "Invalid OTP. Please try again." })

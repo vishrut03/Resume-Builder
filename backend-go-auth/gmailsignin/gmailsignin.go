@@ -20,10 +20,8 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-// OTP Cache (In-Memory)
 var otpCache = make(map[string]string)
 
-// Structs for OTP Handling
 type OTPRequest struct {
 	Email string `json:"email"`
 }
@@ -31,6 +29,13 @@ type OTPRequest struct {
 type OTPVerify struct {
 	Email string `json:"email"`
 	OTP   string `json:"otp"`
+}
+
+// User struct for MongoDB
+type User struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	Email     string             `bson:"email"`
+	CreatedAt time.Time          `bson:"created_at"`
 }
 
 // Generate a 6-digit OTP
@@ -50,7 +55,7 @@ func ValidateOTP(email, otp string) bool {
 	if !exists || storedOTP != otp {
 		return false
 	}
-	delete(otpCache, email) // Remove OTP after successful validation
+	delete(otpCache, email)
 	return true
 }
 
@@ -71,7 +76,6 @@ func SendOTP(email, otp string) error {
 	return nil
 }
 
-// Generate JWT Token
 func GenerateToken(userID primitive.ObjectID, email string) (string, error) {
 	claims := jwt.MapClaims{
 		"user_id": userID.Hex(),
@@ -89,19 +93,25 @@ func RequestOTP(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"message": "Invalid request"})
 	}
 
-	// MongoDB Users Collection
 	collection := database.DB.Collection("users")
 
 	// Check if user exists
-	var existingUser struct {
-		ID    primitive.ObjectID `bson:"_id"`
-		Email string             `bson:"email"`
-		Name  string             `bson:"name"`
-	}
+	var existingUser User
 	err := collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
 
 	if err == mongo.ErrNoDocuments {
-		return c.JSON(http.StatusUnauthorized, map[string]string{"message": "User does not exist. Please sign up."})
+		// Create a new user
+		newUser := User{
+			ID:        primitive.NewObjectID(),
+			Email:     req.Email,
+			CreatedAt: time.Now(),
+		}
+
+		_, err := collection.InsertOne(context.TODO(), newUser)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to create user"})
+		}
+		existingUser = newUser
 	} else if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Database error"})
 	}
@@ -129,15 +139,10 @@ func VerifyOTP(c echo.Context) error {
 		return c.JSON(http.StatusUnauthorized, map[string]string{"message": "Invalid OTP"})
 	}
 
-	// MongoDB Users Collection
 	collection := database.DB.Collection("users")
 
-	// Check if user exists
-	var existingUser struct {
-		ID    primitive.ObjectID `bson:"_id"`
-		Email string             `bson:"email"`
-		Name  string             `bson:"name"`
-	}
+	// Retrieve user
+	var existingUser User
 	err := collection.FindOne(context.TODO(), bson.M{"email": req.Email}).Decode(&existingUser)
 
 	if err == mongo.ErrNoDocuments {
@@ -152,13 +157,11 @@ func VerifyOTP(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to generate token"})
 	}
 
-	// Return Response
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"message": "Login successful",
 		"user": map[string]interface{}{
 			"id":    existingUser.ID.Hex(),
 			"email": existingUser.Email,
-			"name":  existingUser.Name,
 		},
 		"token": token,
 	})

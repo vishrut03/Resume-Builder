@@ -58,6 +58,7 @@ const PhoneNumber = () => {
   
       if (data.message === "OTP verified successfully") {
         localStorage.setItem("currentStep", "personaldetails");
+        setCurrent("personaldetails");
         window.location.reload();
       }
     } catch (error) {
@@ -76,7 +77,9 @@ const PhoneNumber = () => {
   if (current === "signin") {
     return <Signin />
   }
-
+  if(current === "personaldetails") {
+    return <PersonalDetails />
+  }
   return (
     <Container component="main" maxWidth="xs">
       <Box

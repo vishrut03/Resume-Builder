@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { TextField, Button, Typography, Link, Box, Container, InputAdornment } from "@mui/material"
+import { TextField, Button, Typography, Link, Box } from "@mui/material"
+import { InputAdornment } from "@mui/material"
 import { Email, Lock } from "@mui/icons-material"
 import Signin from "./Signin"
 import PersonalDetails from "./PersonalDetails"
@@ -65,96 +66,77 @@ const EmailOtp = () => {
     }
   }
 
-  if (current === "signin") {
-    return <Signin />
-  }
-
-  if (current === "personaldetails") {
-    return <PersonalDetails />
-  }
+  if (current === "signin") return <Signin />
+  if (current === "personaldetails") return <PersonalDetails />
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          padding: 3,
-          borderRadius: 2,
-          boxShadow: 3,
-          backgroundColor: "background.paper",
-        }}
-      >
-        <Typography component="h1" variant="h4" sx={{ mb: 3, color: "primary.main" }}>
-          Sign Up with Email
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}
-          noValidate
-          sx={{ mt: 1, width: "100%" }}
-        >
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={!!errors.email}
-            helperText={errors.email}
-            disabled={otpSent}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Email color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
-          {otpSent && (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-400 to-purple-500 p-4">
+      <div className="w-full max-w-md bg-white bg-opacity-20 backdrop-blur-lg rounded-3xl shadow-2xl overflow-hidden">
+        <Box className="p-8">
+          <Typography component="h1" variant="h4" className="text-4xl font-bold text-white mb-8 text-center">
+            Sign in with Email
+          </Typography>
+          <Box component="form" onSubmit={otpSent ? handleVerifyOtp : handleSendOtp} noValidate className="mt-1 w-full">
             <TextField
               margin="normal"
               required
               fullWidth
-              id="otp"
-              label="Enter OTP"
-              name="otp"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              error={!!errors.otp}
-              helperText={errors.otp}
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              error={!!errors.email}
+              helperText={errors.email}
+              disabled={otpSent}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Lock color="action" />
+                    <Email color="action" />
                   </InputAdornment>
                 ),
               }}
             />
-          )}
-          {errors.submit && (
-            <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-              {errors.submit}
-            </Typography>
-          )}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2, py: 1.5 }}>
-            {otpSent ? "Verify OTP" : "Send OTP"}
-          </Button>
-          <Box sx={{ textAlign: "center" }}>
-            <Link onClick={() => setCurrent("signin")} variant="body2" sx={{ cursor: "pointer" }}>
-              Back to Sign In options
-            </Link>
+            {otpSent && (
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="otp"
+                label="Enter OTP"
+                name="otp"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                error={!!errors.otp}
+                helperText={errors.otp}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock color="action" />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
+            {errors.submit && (
+              <Typography color="error" variant="body2" className="mt-1">
+                {errors.submit}
+              </Typography>
+            )}
+            <Button type="submit" fullWidth variant="contained" className="mt-3 mb-2 py-3">
+              {otpSent ? "Verify OTP" : "Send OTP"}
+            </Button>
+            <Box className="text-center mt-4">
+              <Link onClick={() => setCurrent("signin")} variant="body2" className="cursor-pointer">
+                Back to Sign In options
+              </Link>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </div>
+    </div>
   )
 }
 

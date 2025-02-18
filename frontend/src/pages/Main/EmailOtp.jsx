@@ -4,6 +4,10 @@ import { useState } from "react"
 import { TextField, Button, Typography, Link, Box, Container, InputAdornment } from "@mui/material"
 import { Email, Lock } from "@mui/icons-material"
 import Signin from "./Signin"
+import PersonalDetails from "./PersonalDetails"
+import axios from "axios"
+
+const API_BASE_URL = "http://localhost:8000/auth/gmail" // Update if needed
 
 const EmailOtp = () => {
   const [email, setEmail] = useState("")
@@ -27,11 +31,12 @@ const EmailOtp = () => {
     e.preventDefault()
     if (validateEmail()) {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulating API call
+        const response = await axios.post(`${API_BASE_URL}/request-otp`, { email })
+        console.log("OTP Sent:", response.data)
         setOtpSent(true)
       } catch (error) {
         console.error("Error sending OTP:", error)
-        setErrors({ submit: "Failed to send OTP. Please try again." })
+        setErrors({ submit: error.response?.data?.message || "Failed to send OTP. Please try again." })
       }
     }
   }
@@ -40,11 +45,17 @@ const EmailOtp = () => {
     e.preventDefault()
     if (otp) {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulating API call
-        console.log("OTP verified successfully")
+        const response = await axios.post(`${API_BASE_URL}/verify-otp`, { email, otp })
+        console.log("OTP Verified:", response.data)
+
+        // Save token in local storage
+        localStorage.setItem("authToken", response.data.token)
+
+        // Navigate to PersonalDetails component
+        setCurrent("personaldetails")
       } catch (error) {
         console.error("Error verifying OTP:", error)
-        setErrors({ otp: "Invalid OTP. Please try again." })
+        setErrors({ otp: error.response?.data?.message || "Invalid OTP. Please try again." })
       }
     } else {
       setErrors({ otp: "OTP is required" })
@@ -53,6 +64,10 @@ const EmailOtp = () => {
 
   if (current === "signin") {
     return <Signin />
+  }
+
+  if (current === "personaldetails") {
+    return <PersonalDetails />
   }
 
   return (
@@ -70,7 +85,7 @@ const EmailOtp = () => {
         }}
       >
         <Typography component="h1" variant="h4" sx={{ mb: 3, color: "primary.main" }}>
-          Sign In with Email
+          Sign Up with Email
         </Typography>
         <Box
           component="form"
@@ -106,7 +121,7 @@ const EmailOtp = () => {
               required
               fullWidth
               id="otp"
-              label="OTP"
+              label="Enter OTP"
               name="otp"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}

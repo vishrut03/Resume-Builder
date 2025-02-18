@@ -10,6 +10,7 @@ import (
 	"oauth-app/database"
 	"oauth-app/github"
 	"oauth-app/gmail"
+	gmailauth "oauth-app/gmailsignin"
 	"oauth-app/google"
 	"oauth-app/phoneNumber"
 	"oauth-app/usernamepassword"
@@ -51,6 +52,7 @@ func main() {
 	phoneNumber.RegisterOTPRoutes(e)
 	usernamepassword.RegisterUsernamePasswordRoutes(e)
 	gmail.RegisterRoutes(e)
+	gmailauth.RegisterRoutes(e)
 
 	// Basic test route
 	e.GET("/", func(c echo.Context) error {

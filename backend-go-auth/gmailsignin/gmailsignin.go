@@ -78,9 +78,9 @@ func SendOTP(email, otp string) error {
 
 func GenerateToken(userID primitive.ObjectID, email string) (string, error) {
 	claims := jwt.MapClaims{
-		"user_id": userID.Hex(),
-		"email":   email,
-		"exp":     jwt.NewNumericDate(time.Now().Add(time.Hour * 24)), // Token expires in 24 hours
+		"sub":   userID.Hex(),
+		"email": email,
+		"exp":   jwt.NewNumericDate(time.Now().Add(time.Hour * 24)), // Token expires in 24 hours
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString([]byte(os.Getenv("JWT_SECRET")))
@@ -153,6 +153,7 @@ func VerifyOTP(c echo.Context) error {
 
 	// Generate JWT Token
 	token, err := GenerateToken(existingUser.ID, existingUser.Email)
+	fmt.Printf("Token: %v\n", token)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"message": "Failed to generate token"})
 	}

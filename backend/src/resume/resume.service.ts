@@ -98,7 +98,8 @@ export class ResumeService {
       throw new BadRequestException(`Invalid field: ${field}`);
     }
 
-    const userId = request.user?.id;
+    const userId = request.user?.id; 
+    console.log(request.user);
     if (!userId) {
       throw new BadRequestException('User ID is required');
     }

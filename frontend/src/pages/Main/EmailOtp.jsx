@@ -47,10 +47,13 @@ const EmailOtp = () => {
     e.preventDefault()
     if (otp) {
       try {
+        console.log("chal ja plz");
         const response = await axios.post(`${API_BASE_URL}/verify-otp`, { email, otp })
+        console.log("chala");
         console.log("OTP Verified:", response.data)
 
         Cookies.set("token", response.data.token, { expires: 1 });
+        console.log("Token set:", response.data.token)
 
         if (response.data.message === "Login successful") {
           localStorage.setItem("currentStep", "personaldetails");

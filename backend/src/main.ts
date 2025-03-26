@@ -32,7 +32,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup("api", app, document)
 
-  await app.listen("https://resume-builder-1-4fhh.onrender.com")
+  await app.listen(3001);
 
 }
 

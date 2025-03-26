@@ -23,7 +23,7 @@ export default function Achievements({ fromReview }) {
     const fetchAchievements = async () => {
       try {
         const token = getToken();
-        const res = await axios.get("http://localhost:3001/resume/achievements", {
+        const res = await axios.get("https://resume-builder-1-4fhh.onrender.com/resume/achievements", {
           headers: { Authorization: `Bearer ${token}` },
         });
         // Expect the GET endpoint to return an array of achievements.
@@ -48,7 +48,7 @@ export default function Achievements({ fromReview }) {
       try {
         const token = getToken();
         // POST the updated achievements array to update the resume.
-        await axios.post("http://localhost:3001/resume/achievements", updatedAchievements, {
+        await axios.post("https://resume-builder-1-4fhh.onrender.com/resume/achievements", updatedAchievements, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export default function Achievements({ fromReview }) {
   const handleDeleteAchievement = async (index) => {
     try {
       const token = getToken();
-      await axios.delete(`http://localhost:3001/resume/achievements/${index}`, {
+      await axios.delete(`https://resume-builder-1-4fhh.onrender.com/resume/achievements/${index}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       // Remove the deleted achievement from local state.

@@ -8,7 +8,7 @@ async function bootstrap() {
 
   // Enable CORS for frontend (http://localhost:5173)
   app.enableCors({
-    origin: "http://localhost:5173",  // Allow requests from your frontend
+    origin: ["http://localhost:5173","https://resume-builder-eagleview.vercel.app"],  // Allow requests from your frontend
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
     allowedHeaders: "Content-Type, Authorization",
     credentials: true,
@@ -32,7 +32,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup("api", app, document)
 
-  await app.listen(process.env.PORT ?? 3001)
+  await app.listen("https://resume-builder-1-4fhh.onrender.com")
 
 }
 

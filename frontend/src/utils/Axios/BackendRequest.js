@@ -12,7 +12,7 @@ export async function getDetails(field) {
   // console.log('hello');
 
   try {
-    const response = await axios.get(`http://localhost:3001/resume/${field}`, {
+    const response = await axios.get(`https://resume-builder-1-4fhh.onrender.com/resume/${field}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -30,7 +30,7 @@ export async function addDetails(field, data) {
   const token = getToken();
 
   try {
-    const response = await axios.post(`http://localhost:3001/resume/${field}`, data, {
+    const response = await axios.post(`https://resume-builder-1-4fhh.onrender.com/resume/${field}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export async function updateDetails(field, id, data) {
   const token = getToken();
 
   try {
-    const response = await axios.put(`http://localhost:3001/resume/${field}/${id}`, data, {
+    const response = await axios.put(`https://resume-builder-1-4fhh.onrender.com/resume/${field}/${id}`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ export async function deleteDetails(field, id) {
   const token = getToken();
 
   try {
-    const response = await axios.delete(`http://localhost:3001/resume/${field}/${id}`, {
+    const response = await axios.delete(`https://resume-builder-1-4fhh.onrender.com/resume/${field}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

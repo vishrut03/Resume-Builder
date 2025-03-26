@@ -47,7 +47,7 @@ const Signin = () => {
       const token = Cookies.get("token")
       if (!token) return
       try {
-        const response = await axios.get("http://localhost:3001/auth/verify", {
+        const response = await axios.get("https://resume-builder-1-4fhh.onrender.com/auth/verify", {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (response.data.message === "Token is valid") {

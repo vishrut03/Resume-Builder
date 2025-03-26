@@ -39,7 +39,10 @@ func main() {
 	// Middleware
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{
+			"http://localhost:3000",                    // Local development
+			"https://resume-builder-1g5v.onrender.com", // Production URL
+		},
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},

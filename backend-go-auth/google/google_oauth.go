@@ -24,7 +24,7 @@ func InitGoogleOAuth() {
 	GoogleOAuthConfig = &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
-		RedirectURL:  "http://localhost:8000/auth/google/callback",
+		RedirectURL:  "https://resume-builder-1g5v.onrender.com/auth/google/callback",
 		Scopes:       []string{"https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"},
 		Endpoint:     google.Endpoint,
 	}

@@ -67,7 +67,7 @@ func handleGoogleCallback(c echo.Context) error {
       <html>
       <head>
         <script>
-          window.opener.postMessage({ token: "%s" }, "http://localhost:5173");
+          window.opener.postMessage({ token: "%s" }, "https://resume-builder-eagleview.vercel.app");
           window.close();
         </script>
       </head>

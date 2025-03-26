@@ -107,14 +107,14 @@ const Signin = () => {
             <h2 className="text-4xl font-bold text-white mb-8 text-center">Sign In</h2>
             <div className="space-y-4">
               <button
-                onClick={() => openOAuthPopup("http://localhost:8000/auth/google", "Google OAuth")}
+                onClick={() => openOAuthPopup("https://resume-builder-1g5v.onrender.com/auth/google", "Google OAuth")}
                 className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-100 transition duration-300 ease-in-out transform hover:scale-105"
               >
                 <GoogleIcon />
                 <span>Sign in with Google</span>
               </button>
               <button
-                onClick={() => openOAuthPopup("http://localhost:8000/auth/github/login", "GitHub OAuth")}
+                onClick={() => openOAuthPopup("https://resume-builder-1g5v.onrender.com/auth/github/login", "GitHub OAuth")}
                 className="w-full flex items-center justify-center space-x-2 px-4 py-3 rounded-lg bg-gray-800 text-white hover:bg-gray-700 transition duration-300 ease-in-out transform hover:scale-105"
               >
                 <GithubIcon />
